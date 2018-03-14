@@ -14,10 +14,20 @@ namespace WPFScadaDashboard.DataPointClasses
         // Result TimeStamp
         public DateTime ResultTime_ { get; set; }
 
+        // Result units
+        public string Units_ { get; set; }
+
         public ScadaPointResult(double val, string DataQuality, DateTime ResultTime) : base(val)
         {
             DataQuality_ = DataQuality;
             ResultTime_ = ResultTime;
+        }
+
+        public ScadaPointResult(double val, string DataQuality, DateTime ResultTime, string Units) : base(val)
+        {
+            DataQuality_ = DataQuality;
+            ResultTime_ = ResultTime;
+            Units_ = Units;
         }
     }
 }

@@ -28,7 +28,11 @@ namespace WPFScadaDashboard.DataPointClasses
             ScadaPoint_ = ScadaPoint;
         }
 
-        // Overriding the 
+        // Implementing the Interface
+        public DashBoardDataPoint GetPointId()
+        {
+            throw new NotImplementedException();
+        }
 
         public void SetFetchPeriodMins(int mins)
         {
@@ -43,6 +47,6 @@ namespace WPFScadaDashboard.DataPointClasses
         public void SetFetchPeriodDays(int days)
         {
             FetchPeriodSecs_ = days * 24 * 60 * 60;
-        }
+        }        
     }
 }

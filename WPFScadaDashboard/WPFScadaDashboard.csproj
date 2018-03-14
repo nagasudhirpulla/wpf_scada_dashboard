@@ -65,11 +65,12 @@
     <Compile Include="DashBoardAnatomy\Dashboard.cs" />
     <Compile Include="DashBoardAnatomy\DashboardCell.cs" />
     <Compile Include="DashBoardAnatomy\DashboardCellPosition.cs" />
-    <Compile Include="DataFetchClasses\FetchClassBase.cs" />
+    <Compile Include="DataFetchers\IFetcherBase.cs" />
+    <Compile Include="DataFetchers\ScadaFetcher.cs" />
     <Compile Include="DataPointClasses\DashBoardDataPoint.cs" />
     <Compile Include="DataPointClasses\DashboardScadaPoint.cs" />
     <Compile Include="DataPointClasses\DashboardScadaTimeSeriesPoint.cs" />
-    <Compile Include="DataPointClasses\DashboardTimeSeriesPoint.cs" />
+    <Compile Include="DataPointClasses\IDashboardTimeSeriesPoint.cs" />
     <Compile Include="DataPointClasses\PointResult.cs" />
     <Compile Include="DataPointClasses\ScadaPointResult.cs" />
     <Compile Include="MainWindow.xaml.cs">

@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace WPFScadaDashboard.DataPointClasses
 {
-    class DashboardScadaTimeSeriesPoint : DashboardTimeSeriesPoint
+    public class DashboardScadaTimeSeriesPoint : IDashboardTimeSeriesPoint
     {
+
+        public DateTime StartTime_ { get; set; }
+        public DateTime EndTime_ { get; set; }
+
         // The Scada Point of the TimeSeries Data Configuration
         public DashboardScadaPoint ScadaPoint_ { get; set; }
 
@@ -17,10 +21,14 @@ namespace WPFScadaDashboard.DataPointClasses
         // Periodicity of history fetch
         public int FetchPeriodSecs_ { get; set; } = 60;
 
-        public DashboardScadaTimeSeriesPoint(DashboardScadaPoint ScadaPoint, DateTime StartTime, DateTime EndTime) : base(StartTime, EndTime)
+        public DashboardScadaTimeSeriesPoint(DashboardScadaPoint ScadaPoint, DateTime StartTime, DateTime EndTime)
         {
+            StartTime_ = StartTime;
+            EndTime_ = EndTime;
             ScadaPoint_ = ScadaPoint;
         }
+
+        // Overriding the 
 
         public void SetFetchPeriodMins(int mins)
         {

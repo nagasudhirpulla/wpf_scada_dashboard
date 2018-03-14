@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace WPFScadaDashboard.DataPointClasses
 {
-    class DashBoardDataPoint
+    public class DashBoardDataPoint
     {
         // This is a generic dashboard DataPoint Class which other specific data point types are going to implement
         public string Name_ { get; set; }
         public string Id_ { get; set; }
-        public string PointType_ { get; set; } = "Generic";
+
+        // Specifies the point type for serialization purposes
+        public virtual string PointType_ { get; } = "Generic";
 
         // Constructor. We are not allowing to have null Id
         public DashBoardDataPoint(string Id)

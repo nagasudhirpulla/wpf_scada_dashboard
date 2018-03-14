@@ -6,13 +6,8 @@ using System.Threading.Tasks;
 
 namespace WPFScadaDashboard.DataPointClasses
 {
-    public class PointResult
+    public interface IDashboardTimeSeriesPoint
     {
-        public double Val_ { get; set; }
-
-        public PointResult(double val)
-        {
-            Val_ = val;
-        }
+        DashBoardDataPoint GetPointId();
     }
 }

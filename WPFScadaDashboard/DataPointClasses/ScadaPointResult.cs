@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WPFScadaDashboard.DataPointClasses
 {
-    class ScadaPointResult : PointResult
+    public class ScadaPointResult : PointResult
     {
         // Data Quality of the result
         public string DataQuality_ { get; set; }

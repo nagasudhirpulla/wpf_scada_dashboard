@@ -57,6 +57,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="DashboardUserControls\DashboardUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -68,6 +72,10 @@
     <Compile Include="DashBoardAnatomy\Dashboard.cs" />
     <Compile Include="DashBoardAnatomy\DashboardCell.cs" />
     <Compile Include="DashBoardAnatomy\DashboardCellPosition.cs" />
+    <Compile Include="DashboardUserControls\ConsoleContent.cs" />
+    <Compile Include="DashboardUserControls\DashboardUC.xaml.cs">
+      <DependentUpon>DashboardUC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DataFetchers\IFetcherBase.cs" />
     <Compile Include="DataFetchers\ScadaFetcher.cs" />
     <Compile Include="DataPointClasses\DashBoardDataPoint.cs" />

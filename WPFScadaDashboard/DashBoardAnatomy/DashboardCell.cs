@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WPFScadaDashboard.DashBoardAnatomy
 {
-    class DashboardCell
+    public class DashboardCell
     {
         // Name of the Cell
         public string Name_ { get; set; } = "Cell_Name";
@@ -15,19 +15,14 @@ namespace WPFScadaDashboard.DashBoardAnatomy
         public DashboardCellPosition CellPosition_ = new DashboardCellPosition();
 
         // Type of DataViz
-        private string VizType_;
-
-        public string GetVizType()
-        {
-            return VizType_;
-        }
+        public virtual string VizType_ { get; private set; } = "Generic";
 
         // todo add list of data points for the cell to visualize
 
         // Constructor
         public DashboardCell()
         {
-            VizType_ = "Generic";
+            
         }
     }
 }

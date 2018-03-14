@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPFScadaDashboard.DashboardUserControls;
 
 namespace WPFScadaDashboard
 {
@@ -23,6 +24,8 @@ namespace WPFScadaDashboard
         public MainWindow()
         {
             InitializeComponent();
+            // load a dashboard in the view space
+            MainContainer.Content = new DashboardUC();
         }
     }
 }

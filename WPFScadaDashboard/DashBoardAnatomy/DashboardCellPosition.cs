@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 
 namespace WPFScadaDashboard.DashBoardAnatomy
 {
-    class DashboardCellPosition
+    public class DashboardCellPosition
     {
-        public int XIndex_ { get; set; }
-        public int YIndex_ { get; set; }
+        public int ColIndex_ { get; set; }
+        public int RowIndex_ { get; set; }
 
         public DashboardCellPosition()
         {
-            XIndex_ = 0;
-            YIndex_ = 0;
+            ColIndex_ = 0;
+            RowIndex_ = 0;
         }
 
-        public DashboardCellPosition(int xIndex, int yIndex)
+        public DashboardCellPosition(int ColIndex, int RowIndex)
         {
-            XIndex_ = xIndex;
-            YIndex_ = yIndex;
+            ColIndex_ = ColIndex;
+            RowIndex_ = RowIndex;
         }
     }
 }

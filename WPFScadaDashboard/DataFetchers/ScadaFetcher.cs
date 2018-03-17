@@ -62,8 +62,8 @@ namespace WPFScadaDashboard.DataFetchers
                 uint s = 0;
                 double dval = 0;
                 DateTime timestamp = DateTime.Now;
-                DateTime startTime = dashboardScadaTimeSeriesPoint.StartTime_;
-                DateTime endTime = dashboardScadaTimeSeriesPoint.EndTime_;
+                DateTime startTime = dashboardScadaTimeSeriesPoint.StartTimeAbsolute_;
+                DateTime endTime = dashboardScadaTimeSeriesPoint.EndTimeAbsolute_;
                 string status = "";
                 TimeSpan period = TimeSpan.FromSeconds(dashboardScadaTimeSeriesPoint.FetchPeriodSecs_);
                 //history request initiation

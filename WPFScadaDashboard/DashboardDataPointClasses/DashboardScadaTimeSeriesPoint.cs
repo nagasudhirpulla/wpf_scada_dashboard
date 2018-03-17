@@ -8,8 +8,15 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
 {
     public class DashboardScadaTimeSeriesPoint : IDashboardTimeSeriesPoint
     {
-        public DateTime StartTime_ { get; set; }
-        public DateTime EndTime_ { get; set; }
+        private const string AbsoluteMode = "absolute";
+        private const string VariableMode = "variable";
+
+        public DateTime StartTimeAbsolute_ { get; set; }
+        public DateTime EndTimeAbsolute_ { get; set; }
+        public string StartTimeMode_ { get; set; } = AbsoluteMode;
+        public string EndTimeMode_ { get; set; } = AbsoluteMode;
+        public VariableTime StartTimeVariable_ { get; set; }
+        public VariableTime EndTimeVariable_ { get; set; }
 
         // The Scada Point of the TimeSeries Data Configuration
         public ScadaDataPoint ScadaPoint_ { get; set; }
@@ -22,8 +29,8 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
 
         public DashboardScadaTimeSeriesPoint(ScadaDataPoint ScadaPoint, DateTime StartTime, DateTime EndTime)
         {
-            StartTime_ = StartTime;
-            EndTime_ = EndTime;
+            StartTimeAbsolute_ = StartTime;
+            EndTimeAbsolute_ = EndTime;
             ScadaPoint_ = ScadaPoint;
         }
 
@@ -36,13 +43,27 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
         // Implementing Interface
         public DateTime GetStartTime()
         {
-            return StartTime_;
+            if (StartTimeMode_ == AbsoluteMode)
+            {
+                return StartTimeAbsolute_;
+            }
+            else
+            {
+                return DateTime.Now.AddHours(StartTimeVariable_.HoursOffset_).AddMinutes(StartTimeVariable_.MinsOffset_).AddSeconds(StartTimeVariable_.SecsOffset_);
+            }
         }
 
         // Implementing Interface
         public DateTime GetEndTime()
         {
-            return EndTime_;
+            if (EndTimeMode_ == AbsoluteMode)
+            {
+                return EndTimeAbsolute_;
+            }
+            else
+            {
+                return DateTime.Now.AddHours(EndTimeVariable_.HoursOffset_).AddMinutes(EndTimeVariable_.MinsOffset_).AddSeconds(EndTimeVariable_.SecsOffset_);
+            }
         }
 
         public void SetFetchPeriodMins(int mins)
@@ -58,6 +79,6 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
         public void SetFetchPeriodDays(int days)
         {
             FetchPeriodSecs_ = days * 24 * 60 * 60;
-        }        
+        }
     }
 }

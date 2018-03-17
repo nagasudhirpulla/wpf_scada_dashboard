@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WPFScadaDashboard.DataPointClasses
+namespace WPFScadaDashboard.DashboardDataPointClasses
 {
-    public interface IDashboardTimeSeriesPoint
+    public interface IPointResult
     {
-        DashBoardDataPoint GetPointId();
+        double GetVal();        
     }
 }

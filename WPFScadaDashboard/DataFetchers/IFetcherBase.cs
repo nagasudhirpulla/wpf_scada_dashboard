@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WPFScadaDashboard.DataPointClasses;
+using WPFScadaDashboard.DashboardDataPointClasses;
 
 namespace WPFScadaDashboard.DataFetchers
 {
     public interface IFetcherBase
     {
-        PointResult FetchCurrentPointData(DashBoardDataPoint point);
+        IPointResult FetchCurrentPointData(IDataPoint point);
 
-        List<PointResult> FetchHistoricalPointData(IDashboardTimeSeriesPoint dashboardTimeSeriesPoint);
+        List<IPointResult> FetchHistoricalPointData(IDashboardTimeSeriesPoint dashboardTimeSeriesPoint);
     }
 }

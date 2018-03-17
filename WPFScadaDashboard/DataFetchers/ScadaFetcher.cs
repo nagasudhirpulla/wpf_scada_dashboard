@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WPFScadaDashboard.DataPointClasses;
+using WPFScadaDashboard.DashboardDataPointClasses;
 using InStep.eDNA.EzDNAApiNet;
 
 namespace WPFScadaDashboard.DataFetchers
@@ -11,12 +11,12 @@ namespace WPFScadaDashboard.DataFetchers
     class ScadaFetcher : IFetcherBase
     {
         // Implementing the interface
-        public PointResult FetchCurrentPointData(DashBoardDataPoint point)
+        public IPointResult FetchCurrentPointData(IDataPoint point)
         {
-            return FetchCurrentPointData((DashboardScadaPoint)point);
+            return FetchCurrentPointData((ScadaDataPoint)point);
         }
 
-        public ScadaPointResult FetchCurrentPointData(DashboardScadaPoint point)
+        public ScadaPointResult FetchCurrentPointData(ScadaDataPoint point)
         {
             // Fetch a realtime value of the point
             DateTime timestamp = DateTime.Now;
@@ -33,23 +33,21 @@ namespace WPFScadaDashboard.DataFetchers
             return null;
         }
 
-        // Implementing the interface
-        public List<PointResult> FetchHistoricalPointData(IDashboardTimeSeriesPoint dashboardTimeSeriesPoint)
+        // Implementing interface
+        public List<IPointResult> FetchHistoricalPointData(IDashboardTimeSeriesPoint dashboardTimeSeriesPoint)
         {
-            if (dashboardTimeSeriesPoint.GetType().Equals(typeof(DashboardScadaTimeSeriesPoint)))
+            if (dashboardTimeSeriesPoint.GetType().FullName == typeof(DashboardScadaTimeSeriesPoint).FullName)
             {
-                // Check if the point is of type DashboardScadaTimeSeriesPoint
+                List<ScadaPointResult> scadaPointResults = FetchHistoricalPointData((DashboardScadaTimeSeriesPoint)dashboardTimeSeriesPoint);
 
-                // Now get the data
-                List<ScadaPointResult> ScadaResults = FetchHistoricalPointData((DashboardScadaTimeSeriesPoint)dashboardTimeSeriesPoint);
+                List<IPointResult> pointResults = new List<IPointResult>();
 
-                // Convert the data into desired format
-                List<PointResult> results = new List<PointResult>();
-                for (int i = 0; i < ScadaResults.Count; i++)
+                for (int i = 0; i < scadaPointResults.Count; i++)
                 {
-                    ScadaPointResult res = ScadaResults[i];
-                    results.Add(new PointResult(res.Val_));
+                    pointResults.Add(scadaPointResults.ElementAt(i));
                 }
+
+                return pointResults;
             }
             return null;
         }

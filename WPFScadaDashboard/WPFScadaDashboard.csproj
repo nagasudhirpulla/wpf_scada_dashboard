@@ -69,21 +69,23 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DashBoardAnatomy\Dashboard.cs" />
-    <Compile Include="DashBoardAnatomy\DashboardCell.cs" />
-    <Compile Include="DashBoardAnatomy\DashboardCellPosition.cs" />
+    <Compile Include="DashboardConfigClasses\DashboardConfig.cs" />
+    <Compile Include="DashboardConfigClasses\DashboardCellPosition.cs" />
+    <Compile Include="DashboardConfigClasses\DashboardConfigBundle.cs" />
+    <Compile Include="DashboardConfigClasses\IDashboardCellConfig.cs" />
+    <Compile Include="DashboardConfigClasses\LinePlotCellConfig.cs" />
+    <Compile Include="DashboardDataPointClasses\IDataPoint.cs" />
+    <Compile Include="DashboardDataPointClasses\IPointResult.cs" />
+    <Compile Include="DashboardDataPointClasses\ScadaDataPoint.cs" />
     <Compile Include="DashboardUserControls\ConsoleContent.cs" />
     <Compile Include="DashboardUserControls\DashboardUC.xaml.cs">
       <DependentUpon>DashboardUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataFetchers\IFetcherBase.cs" />
     <Compile Include="DataFetchers\ScadaFetcher.cs" />
-    <Compile Include="DataPointClasses\DashBoardDataPoint.cs" />
-    <Compile Include="DataPointClasses\DashboardScadaPoint.cs" />
-    <Compile Include="DataPointClasses\DashboardScadaTimeSeriesPoint.cs" />
-    <Compile Include="DataPointClasses\IDashboardTimeSeriesPoint.cs" />
-    <Compile Include="DataPointClasses\PointResult.cs" />
-    <Compile Include="DataPointClasses\ScadaPointResult.cs" />
+    <Compile Include="DashboardDataPointClasses\DashboardScadaTimeSeriesPoint.cs" />
+    <Compile Include="DashboardDataPointClasses\IDashboardTimeSeriesPoint.cs" />
+    <Compile Include="DashboardDataPointClasses\ScadaPointResult.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

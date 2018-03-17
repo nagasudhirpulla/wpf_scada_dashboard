@@ -11,7 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WPFScadaDashboard.DashBoardAnatomy;
+using WPFScadaDashboard.DashboardConfigClasses;
 
 namespace WPFScadaDashboard.DashboardUserControls
 {
@@ -30,7 +30,7 @@ namespace WPFScadaDashboard.DashboardUserControls
         }
 
         // List of cells
-        public List<DashboardCell> DashboardCells_ { get; private set; } = new List<DashboardCell>();
+        public List<IDashboardCellConfig> DashboardCells_ { get; private set; } = new List<IDashboardCellConfig>();
 
         private RowDefinition GetNewRowDefinition()
         {
@@ -51,13 +51,13 @@ namespace WPFScadaDashboard.DashboardUserControls
             DashboardCellPosition maxIndexPos = new DashboardCellPosition(0, 0);
             for (int i = 0; i < DashboardCells_.Count; i++)
             {
-                if (DashboardCells_[i].CellPosition_.ColIndex_ > maxIndexPos.ColIndex_)
+                if (DashboardCells_[i].GetCellPosition().ColIndex_ > maxIndexPos.ColIndex_)
                 {
-                    maxIndexPos.ColIndex_ = DashboardCells_[i].CellPosition_.ColIndex_;
+                    maxIndexPos.ColIndex_ = DashboardCells_[i].GetCellPosition().ColIndex_;
                 }
-                if (DashboardCells_[i].CellPosition_.RowIndex_ > maxIndexPos.RowIndex_)
+                if (DashboardCells_[i].GetCellPosition().RowIndex_ > maxIndexPos.RowIndex_)
                 {
-                    maxIndexPos.RowIndex_ = DashboardCells_[i].CellPosition_.RowIndex_;
+                    maxIndexPos.RowIndex_ = DashboardCells_[i].GetCellPosition().RowIndex_;
                 }
             }
             return maxIndexPos;
@@ -118,7 +118,7 @@ namespace WPFScadaDashboard.DashboardUserControls
             }
         }
 
-        public void SetDashBoardCells(List<DashboardCell> cells)
+        public void SetDashBoardCells(List<IDashboardCellConfig> cells)
         {
             DashboardCells_ = cells;
             SyncRowColDefinitionsWithCells();

@@ -6,9 +6,18 @@ using System.Threading.Tasks;
 
 namespace WPFScadaDashboard.DashboardConfigClasses
 {
-    class DashboardConfig
+    public class DashboardConfig
     {
         // Name of the dashboard
-        public string DashboardName_ { get; set; } = "Dashboard_Name";        
+        public string DashboardName_ { get; set; } = "Dashboard_Name";
+
+        public DashboardConfig(string dashboardName_)
+        {
+            DashboardName_ = dashboardName_;
+        }
+
+        public DashboardConfig()
+        {
+        }
     }
 }

@@ -21,16 +21,26 @@ namespace WPFScadaDashboard.DashboardUserControls
     public partial class DashboardUC : UserControl
     {
         ConsoleContent dc = new ConsoleContent();
-        public DashboardUC()
+        public DashboardConfig DashboardConfig_ { get; set; } = new DashboardConfig();
+
+        private void DoInitialWireUp()
         {
             InitializeComponent();
             consoleItems.ItemsSource = dc.ConsoleOutput;
-            dc.AddItemsToConsole("Hello User!");            
+            dc.AddItemsToConsole("Hello User!");
             DataContext = this;
         }
 
-        // List of cells
-        public List<IDashboardCellConfig> DashboardCells_ { get; private set; } = new List<IDashboardCellConfig>();
+        public DashboardUC()
+        {
+            DoInitialWireUp();
+        }
+
+        public DashboardUC(DashboardConfig dashboardConfig)
+        {
+            DashboardConfig_ = dashboardConfig;
+            DoInitialWireUp();
+        }
 
         private RowDefinition GetNewRowDefinition()
         {
@@ -49,15 +59,16 @@ namespace WPFScadaDashboard.DashboardUserControls
         public DashboardCellPosition GetMaxRowColumnIndex()
         {
             DashboardCellPosition maxIndexPos = new DashboardCellPosition(0, 0);
-            for (int i = 0; i < DashboardCells_.Count; i++)
+            for (int i = 0; i < CellsContainer.Children.Count; i++)
             {
-                if (DashboardCells_[i].GetCellPosition().ColIndex_ > maxIndexPos.ColIndex_)
+                DashboardCellPosition cellPosition = ((ICellUC)(CellsContainer.Children[i])).GetDashboardCellConfig().GetCellPosition();
+                if (cellPosition.ColIndex_ > maxIndexPos.ColIndex_)
                 {
-                    maxIndexPos.ColIndex_ = DashboardCells_[i].GetCellPosition().ColIndex_;
+                    maxIndexPos.ColIndex_ = cellPosition.ColIndex_;
                 }
-                if (DashboardCells_[i].GetCellPosition().RowIndex_ > maxIndexPos.RowIndex_)
+                if (cellPosition.RowIndex_ > maxIndexPos.RowIndex_)
                 {
-                    maxIndexPos.RowIndex_ = DashboardCells_[i].GetCellPosition().RowIndex_;
+                    maxIndexPos.RowIndex_ = cellPosition.RowIndex_;
                 }
             }
             return maxIndexPos;
@@ -65,62 +76,84 @@ namespace WPFScadaDashboard.DashboardUserControls
 
         public void SyncRowColDefinitionsWithCells()
         {
-            // Add or delete the row and column definitions
+            List<DashboardCellPosition> cellPositions = new List<DashboardCellPosition>();
 
-            // Get the present Row Column definitions count
-            int presentRowCount = CellsContainer.RowDefinitions.Count;
-            int presentColCount = CellsContainer.ColumnDefinitions.Count;
-
-            // get the required Max Row Columns Count
-            DashboardCellPosition maxRowColIndex = GetMaxRowColumnIndex();
-            if (maxRowColIndex.RowIndex_ + 1 != presentRowCount)
+            // iterate through each cell in the cells container
+            for (int cell_iter = 0; cell_iter < CellsContainer.Children.Count; cell_iter++)
             {
-                if (presentRowCount > maxRowColIndex.RowIndex_ + 1)
+                ICellUC cellUC = (ICellUC)CellsContainer.Children[cell_iter];
+                IDashboardCellConfig dashboardCellConfig = cellUC.GetDashboardCellConfig();
+                DashboardCellPosition cellPosition = dashboardCellConfig.GetCellPosition();
+                // manipulate cell position to avoid duplicate cell position by pushing the cell position down by one row
+                if (cellPositions.Exists(x => x.RowIndex_ == cellPosition.RowIndex_ && x.ColIndex_ == cellPosition.ColIndex_))
                 {
-                    // remove excess row definitions
-                    int numRowDefsToRemove = presentRowCount - maxRowColIndex.RowIndex_ - 1;
-                    for (int i = 0; i < numRowDefsToRemove; i++)
-                    {
-                        CellsContainer.RowDefinitions.RemoveAt(0);
-                    }
+                    // get the maximum row Index
+                    int maxRowIndex = (from pos in cellPositions select pos.RowIndex_).Max();
+                    //modify the rowIndex to avoid duplicates
+                    cellPosition.RowIndex_ = maxRowIndex + 1;
+                    cellUC.GetDashboardCellConfig().SetCellPosition(cellPosition);
                 }
-                else
+                cellPositions.Add(cellPosition);
+            }
+
+            int maxRows = (from pos in cellPositions select pos.RowIndex_).Max() + 1;
+            int maxCols = (from pos in cellPositions select pos.ColIndex_).Max() + 1;
+
+            // Add adequate number of row and column definitions
+            // Find rows deficit
+            int rowDeficit = maxRows - CellsContainer.RowDefinitions.Count();
+            int colDeficit = maxCols - CellsContainer.ColumnDefinitions.Count();
+            // todo do addition or deletion of row definitions
+            if (rowDeficit > 0)
+            {
+                // add deficit rows
+                for (int i = 0; i < rowDeficit; i++)
                 {
-                    // add new row definitions if short
-                    int numRowDefsToAdd = maxRowColIndex.RowIndex_ + 1 - presentRowCount;
-                    for (int i = 0; i < numRowDefsToAdd; i++)
-                    {
-                        CellsContainer.RowDefinitions.Add(GetNewRowDefinition());
-                    }
+                    CellsContainer.RowDefinitions.Add(GetNewRowDefinition());
+                }
+
+            }
+            else if(rowDeficit < 0)
+            {
+                // delete excess rows
+                for (int i = 0; i < -rowDeficit; i++)
+                {
+                    CellsContainer.RowDefinitions.RemoveAt(0);
                 }
             }
 
-            if (maxRowColIndex.ColIndex_ + 1 != presentColCount)
+            if (colDeficit > 0)
             {
-                if (presentColCount > maxRowColIndex.ColIndex_ + 1)
+                // add deficit rows
+                for (int i = 0; i < colDeficit; i++)
                 {
-                    // remove excess column definitions
-                    int numColDefsToRemove = presentColCount - maxRowColIndex.ColIndex_ - 1;
-                    for (int i = 0; i < numColDefsToRemove; i++)
-                    {
-                        CellsContainer.ColumnDefinitions.RemoveAt(0);
-                    }
+                    CellsContainer.ColumnDefinitions.Add(GetNewColDefinition());
                 }
-                else
+
+            }
+            else if (colDeficit < 0)
+            {
+                // delete excess rows
+                for (int i = 0; i < -colDeficit; i++)
                 {
-                    // add new column definitions if short
-                    int numColDefsToAdd = maxRowColIndex.ColIndex_ + 1 - presentColCount;
-                    for (int i = 0; i < numColDefsToAdd; i++)
-                    {
-                        CellsContainer.ColumnDefinitions.Add(GetNewColDefinition());
-                    }
+                    CellsContainer.ColumnDefinitions.RemoveAt(0);
                 }
             }
+            // todo do addition or deletion of col definitions
         }
 
-        public void SetDashBoardCells(List<IDashboardCellConfig> cells)
+        public void AddDashBoardCells(IDashboardCellConfig dashboardCellConfig)
         {
-            DashboardCells_ = cells;
+            if (dashboardCellConfig == null)
+            {
+                return;
+            }
+            if (dashboardCellConfig.GetType().FullName == typeof(LinePlotCellConfig).FullName)
+            {
+                // Add a line plot User Control to the Cell Container
+                LinePlotCellUC linePlotCellUC = new LinePlotCellUC((LinePlotCellConfig)dashboardCellConfig);
+                CellsContainer.Children.Add(linePlotCellUC);
+            }
             SyncRowColDefinitionsWithCells();
         }
     }

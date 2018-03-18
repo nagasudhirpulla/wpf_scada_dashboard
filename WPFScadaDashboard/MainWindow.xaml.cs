@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPFScadaDashboard.DashboardConfigClasses;
 using WPFScadaDashboard.DashboardUserControls;
 
 namespace WPFScadaDashboard
@@ -21,11 +22,46 @@ namespace WPFScadaDashboard
     /// </summary>
     public partial class MainWindow : Window
     {
+        DashboardUC DashboardUC_;
         public MainWindow()
         {
             InitializeComponent();
-            // load a dashboard in the view space
-            MainContainer.Content = new DashboardUC();
+            // load a dashboard in the view space            
+            DashboardConfig dashboardConfig = new DashboardConfig("Example Dashboard");
+            DashboardUC_ = new DashboardUC(dashboardConfig);
+            MainContainer.Content = DashboardUC_;
+            this.Title = DashboardUC_.DashboardConfig_.DashboardName_;
+            AddSeedCells();
+        }
+
+        public void AddSeedCells()
+        {
+            LinePlotCellConfig linePlotCellConfig = new LinePlotCellConfig
+            {
+                Name_ = "First Cell Name",
+                Width_ = 1,
+                WidthMode_ = LinePlotCellConfig.VariableWidthMode,
+                Height_ = 300
+            };
+            LinePlotCellConfig linePlotCellConfig2 = new LinePlotCellConfig
+            {
+                Name_ = "Second Cell Name",
+                CellPosition_ = new DashboardCellPosition(1, 0),
+                Width_ = 2,
+                WidthMode_ = LinePlotCellConfig.VariableWidthMode,
+                Height_ = 150
+            };
+            LinePlotCellConfig linePlotCellConfig3 = new LinePlotCellConfig
+            {
+                Name_ = "Third Cell Name",
+                CellPosition_ = new DashboardCellPosition(1, 0),
+                Width_ = 1,
+                Height_ = 150,
+                WidthMode_ = LinePlotCellConfig.VariableWidthMode,
+            };
+            DashboardUC_.AddDashBoardCells(linePlotCellConfig);
+            DashboardUC_.AddDashBoardCells(linePlotCellConfig2);
+            DashboardUC_.AddDashBoardCells(linePlotCellConfig3);
         }
     }
 }

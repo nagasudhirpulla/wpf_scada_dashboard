@@ -6,22 +6,26 @@
              xmlns:local="clr-namespace:WPFScadaDashboard.DashboardUserControls"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="800">
-    <Grid x:Name="DashboardContainer">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="100"></RowDefinition>            
-        </Grid.RowDefinitions>
-        <Grid x:Name="CellsContainer" Grid.Row="0"></Grid>
-        <ScrollViewer Name="Scroller" Margin="0" Background="Black" Grid.Row="1">
-            <StackPanel>
-                <ItemsControl Name="consoleItems">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Path=.}" Foreground="White" FontFamily="Consolas"/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </StackPanel>
-        </ScrollViewer>
-    </Grid>
+    <ScrollViewer Margin="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Grid x:Name="DashboardContainer">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="100"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid x:Name="CellsContainer" Grid.Row="0" Width="Auto">
+
+            </Grid>
+            <ScrollViewer Name="Scroller" Margin="0" Background="Black" Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <ItemsControl Name="consoleItems">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=.}" Foreground="White" FontFamily="Consolas"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </ScrollViewer>
 </UserControl>

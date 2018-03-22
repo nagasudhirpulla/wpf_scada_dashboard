@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFScadaDashboard.DashboardUserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="100" d:DesignWidth="500" Grid.Column="{Binding ColumnIndex}" Grid.Row="{Binding RowIndex}" Width="{Binding CellWidth}" Height="{Binding CellHeight}" MinHeight="{Binding CellMinHeight}" MinWidth="{Binding CellMinWidth}">
+             d:DesignHeight="500" d:DesignWidth="500" Grid.Column="{Binding ColumnIndex}" Grid.Row="{Binding RowIndex}" Grid.RowSpan="{Binding RowSpan}" Grid.ColumnSpan="{Binding ColumnSpan}" Width="{Binding CellWidth}" Height="{Binding CellHeight}" MinHeight="{Binding CellMinHeight}" MinWidth="{Binding CellMinWidth}" VerticalAlignment="{Binding CellVerticalAlignment}" HorizontalAlignment="{Binding CellHorizontalAlignment}">
     <Border BorderBrush="Black" BorderThickness="1">
         <Grid x:Name="CellContainer">
             <Grid.RowDefinitions>

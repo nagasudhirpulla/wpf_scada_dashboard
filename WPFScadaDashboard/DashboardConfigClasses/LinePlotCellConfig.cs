@@ -14,6 +14,12 @@ namespace WPFScadaDashboard.DashboardConfigClasses
         public const string AbsoluteHeightMode = "absolute";
         public const string VariableWidthMode = "variable";
         public const string VariableHeightMode = "variable";
+        public const string AlignmentModeStretch = "Stretch";
+        public const string AlignmentModeCenter = "Center";
+        public const string AlignmentModeTop = "Top";
+        public const string AlignmentModeBottom = "Bottom";
+        public const string AlignmentModeLeft = "Left";
+        public const string AlignmentModeRight = "Right";
 
         public string Name_ { get; set; } = "Line Plot Cell";
 
@@ -25,9 +31,13 @@ namespace WPFScadaDashboard.DashboardConfigClasses
 
         public double Height_ { get; set; } = 100;
 
-        public string WidthMode_ = AbsoluteWidthMode;
+        public string WidthMode_ { get; set; } = AbsoluteWidthMode;
 
-        public string HeightMode_ = AbsoluteHeightMode;
+        public string HeightMode_ { get; set; } = AbsoluteHeightMode;
+
+        public string HorizontalAlignment_ { get; set; } = AlignmentModeStretch;
+
+        public string VerticalAlignment_ { get; set; } = AlignmentModeStretch;
 
         // Cell Position
         public DashboardCellPosition CellPosition_ { get; set; } = new DashboardCellPosition();
@@ -129,6 +139,46 @@ namespace WPFScadaDashboard.DashboardConfigClasses
                 HeightMode_ = AbsoluteHeightMode;
             }
             HeightMode_ = mode;
+        }
+
+        // Implementing Interface
+        public void SetName(string name)
+        {
+            Name_ = name;
+        }
+
+        // Implementing Interface
+        public string GetHorizontalAlignment()
+        {
+            return HorizontalAlignment_;
+        }
+
+        // Implementing Interface
+        public void SetHorizontalAlignment(string alignmentString)
+        {
+            if (alignmentString != AlignmentModeStretch && alignmentString != AlignmentModeLeft && alignmentString != AlignmentModeRight && alignmentString != AlignmentModeCenter)
+            {
+                HorizontalAlignment_ = AlignmentModeStretch;
+                return;
+            }
+            HorizontalAlignment_ = alignmentString;
+        }
+
+        // Implementing Interface
+        public string GetVerticalAlignment()
+        {
+            return VerticalAlignment_;
+        }
+
+        // Implementing Interface
+        public void SetVerticalAlignment(string alignmentString)
+        {
+            if (alignmentString != AlignmentModeStretch && alignmentString != AlignmentModeTop && alignmentString != AlignmentModeBottom && alignmentString != AlignmentModeCenter)
+            {
+                VerticalAlignment_ = AlignmentModeStretch;
+                return;
+            }
+            VerticalAlignment_ = alignmentString;
         }
     }
 }

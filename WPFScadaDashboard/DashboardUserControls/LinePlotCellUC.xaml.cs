@@ -54,16 +54,19 @@ namespace WPFScadaDashboard.DashboardUserControls
 
         public int ColumnIndex { get { return LinePlotCellConfig_.CellPosition_.ColIndex_; } }
 
+        public int RowSpan { get { return LinePlotCellConfig_.CellPosition_.RowSpan_; } }
+
+        public int ColumnSpan { get { return LinePlotCellConfig_.CellPosition_.ColSpan_; } }
+
         public string CellHeight
         {
             get
             {
-                string starChar = "";
                 if (LinePlotCellConfig_.GetHeightMode() == LinePlotCellConfig.VariableHeightMode)
                 {
-                    starChar = "*";
+                    return "";
                 }
-                return LinePlotCellConfig_.Height_.ToString() + starChar;
+                return LinePlotCellConfig_.Height_.ToString();
             }
         }
 
@@ -71,17 +74,20 @@ namespace WPFScadaDashboard.DashboardUserControls
         {
             get
             {
-                string starChar = "";
                 if (LinePlotCellConfig_.GetWidthMode() == LinePlotCellConfig.VariableWidthMode)
                 {
-                    starChar = "*";
+                    return "";
                 }
-                return LinePlotCellConfig_.Width_.ToString() + starChar;
+                return LinePlotCellConfig_.Width_.ToString();
             }
         }
 
         public double CellMinHeight { get { return LinePlotCellConfig_.MinHeight_; } set { LinePlotCellConfig_.MinHeight_ = value; } }
 
         public double CellMinWidth { get { return LinePlotCellConfig_.MinWidth_; } set { LinePlotCellConfig_.MinWidth_ = value; } }
+
+        public string CellHorizontalAlignment { get { return LinePlotCellConfig_.HorizontalAlignment_; } set { LinePlotCellConfig_.SetHorizontalAlignment(value); } }
+
+        public string CellVerticalAlignment { get { return LinePlotCellConfig_.VerticalAlignment_; } set { LinePlotCellConfig_.SetVerticalAlignment(value); } }
     }
 }

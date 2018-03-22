@@ -10,17 +10,27 @@ namespace WPFScadaDashboard.DashboardConfigClasses
     {
         public int ColIndex_ { get; set; }
         public int RowIndex_ { get; set; }
+        public int ColSpan_ { get; set; } = 1;
+        public int RowSpan_ { get; set; } = 1;
 
         public DashboardCellPosition()
-        {
-            ColIndex_ = 0;
+        {            
             RowIndex_ = 0;
+            ColIndex_ = 0;
         }
 
-        public DashboardCellPosition(int ColIndex, int RowIndex)
-        {
-            ColIndex_ = ColIndex;
+        public DashboardCellPosition(int RowIndex, int ColIndex)
+        {            
             RowIndex_ = RowIndex;
+            ColIndex_ = ColIndex;
+        }
+
+        public DashboardCellPosition(int RowIndex, int ColIndex, int RowSpan, int ColSpan)
+        {
+            RowIndex_ = RowIndex;
+            ColIndex_ = ColIndex;
+            RowSpan_ = RowSpan;
+            ColSpan_ = ColSpan;
         }
     }
 }

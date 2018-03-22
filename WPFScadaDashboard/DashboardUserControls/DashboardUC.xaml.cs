@@ -56,6 +56,7 @@ namespace WPFScadaDashboard.DashboardUserControls
             return colDef;
         }
 
+        // not used but kept as utility function
         public DashboardCellPosition GetMaxRowColumnIndex()
         {
             DashboardCellPosition maxIndexPos = new DashboardCellPosition(0, 0);
@@ -84,7 +85,7 @@ namespace WPFScadaDashboard.DashboardUserControls
                 ICellUC cellUC = (ICellUC)CellsContainer.Children[cell_iter];
                 IDashboardCellConfig dashboardCellConfig = cellUC.GetDashboardCellConfig();
                 DashboardCellPosition cellPosition = dashboardCellConfig.GetCellPosition();
-                // manipulate cell position to avoid duplicate cell position by pushing the cell position down by one row
+                // manipulate cell position to avoid cell position conflicts by pushing the cell position down by one row
                 if (cellPositions.Exists(x => x.RowIndex_ == cellPosition.RowIndex_ && x.ColIndex_ == cellPosition.ColIndex_))
                 {
                     // get the maximum row Index
@@ -103,7 +104,7 @@ namespace WPFScadaDashboard.DashboardUserControls
             // Find rows deficit
             int rowDeficit = maxRows - CellsContainer.RowDefinitions.Count();
             int colDeficit = maxCols - CellsContainer.ColumnDefinitions.Count();
-            // todo do addition or deletion of row definitions
+            // Do addition or deletion of row definitions for Row Grids
             if (rowDeficit > 0)
             {
                 // add deficit rows
@@ -158,3 +159,8 @@ namespace WPFScadaDashboard.DashboardUserControls
         }
     }
 }
+
+/*
+ We use css like grid system using Grid view
+ Each view will express its height and width in terms of min width, min height, cell colspan, cell rowspan, cell alignment, cell absolute width/height if required
+ */

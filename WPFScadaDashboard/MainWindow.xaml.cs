@@ -39,7 +39,6 @@ namespace WPFScadaDashboard
             LinePlotCellConfig linePlotCellConfig = new LinePlotCellConfig
             {
                 Name_ = "First Cell Name",
-                Width_ = 1,
                 WidthMode_ = LinePlotCellConfig.VariableWidthMode,
                 Height_ = 300
             };
@@ -47,17 +46,17 @@ namespace WPFScadaDashboard
             {
                 Name_ = "Second Cell Name",
                 CellPosition_ = new DashboardCellPosition(1, 0),
-                Width_ = 2,
                 WidthMode_ = LinePlotCellConfig.VariableWidthMode,
-                Height_ = 150
+                Height_ = 150,
+                VerticalAlignment_ = "Top"
             };
             LinePlotCellConfig linePlotCellConfig3 = new LinePlotCellConfig
             {
                 Name_ = "Third Cell Name",
-                CellPosition_ = new DashboardCellPosition(1, 0),
-                Width_ = 1,
-                Height_ = 150,
+                CellPosition_ = new DashboardCellPosition(1, 1),
                 WidthMode_ = LinePlotCellConfig.VariableWidthMode,
+                Height_ = 250,
+                VerticalAlignment_ = "Top"
             };
             DashboardUC_.AddDashBoardCells(linePlotCellConfig);
             DashboardUC_.AddDashBoardCells(linePlotCellConfig2);

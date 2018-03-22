@@ -98,5 +98,17 @@ namespace WPFScadaDashboard.DataFetchers
             }
             return null;
         }
+
+        public List<ScadaPointResult> FetchHistoricalPointDataTest(DashboardScadaTimeSeriesPoint dashboardScadaTimeSeriesPoint)
+        {
+            // return random values for testing
+            List<ScadaPointResult> historyResults = new List<ScadaPointResult>();
+            Random rand = new Random();
+            for (int i = 0; i < (dashboardScadaTimeSeriesPoint.GetStartTime() - dashboardScadaTimeSeriesPoint.GetEndTime()).Seconds / dashboardScadaTimeSeriesPoint.FetchPeriodSecs_; i++)
+            {
+                historyResults.Add(new ScadaPointResult(rand.Next(0, 100), "Good", dashboardScadaTimeSeriesPoint.GetStartTime().AddSeconds(dashboardScadaTimeSeriesPoint.FetchPeriodSecs_ * i)));
+            }
+            return historyResults;
+        }
     }
 }

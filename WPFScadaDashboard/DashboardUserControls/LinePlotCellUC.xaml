@@ -4,15 +4,36 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFScadaDashboard.DashboardUserControls"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+            xmlns:geared="clr-namespace:LiveCharts.Geared;assembly=LiveCharts.Geared"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="500" Grid.Column="{Binding ColumnIndex}" Grid.Row="{Binding RowIndex}" Grid.RowSpan="{Binding RowSpan}" Grid.ColumnSpan="{Binding ColumnSpan}" Width="{Binding CellWidth}" Height="{Binding CellHeight}" MinHeight="{Binding CellMinHeight}" MinWidth="{Binding CellMinWidth}" VerticalAlignment="{Binding CellVerticalAlignment}" HorizontalAlignment="{Binding CellHorizontalAlignment}">
     <Border BorderBrush="Black" BorderThickness="1">
         <Grid x:Name="CellContainer">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <TextBlock Text="{Binding CellTitle}"></TextBlock>
+            <lvc:CartesianChart Series="{Binding SeriesCollection}" Grid.Row="1" Name="MyChart" Zoom="Xy" Pan="Xy" DisableAnimations="True" Hoverable="True" Background="#171717">
+                <lvc:CartesianChart.ChartLegend>
+                    <lvc:DefaultLegend Foreground="White"/>
+                </lvc:CartesianChart.ChartLegend>
+                <lvc:CartesianChart.AxisY>
+                    <lvc:Axis Title="" LabelFormatter="{Binding YFormatter}" Foreground="White">
+                        <lvc:Axis.Separator>
+                            <lvc:Separator IsEnabled="True" Stroke="#3c3c3c"></lvc:Separator>
+                        </lvc:Axis.Separator>
+                    </lvc:Axis>
+                </lvc:CartesianChart.AxisY>
+                <lvc:CartesianChart.AxisX>
+                    <lvc:Axis Title="" LabelFormatter="{Binding XFormatter}" Foreground="White">
+                        <lvc:Axis.Separator>
+                            <lvc:Separator IsEnabled="True" Stroke="#3c3c3c"></lvc:Separator>
+                        </lvc:Axis.Separator>
+                    </lvc:Axis>
+                </lvc:CartesianChart.AxisX>
+            </lvc:CartesianChart>
         </Grid>
     </Border>
 </UserControl>

@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WPFScadaDashboard.DashboardConfigClasses;
+using WPFScadaDashboard.DashboardDataPointClasses;
 using WPFScadaDashboard.DashboardUserControls;
 
 namespace WPFScadaDashboard
@@ -40,7 +41,8 @@ namespace WPFScadaDashboard
             {
                 Name_ = "First Cell Name",
                 WidthMode_ = LinePlotCellConfig.VariableWidthMode,
-                Height_ = 300
+                Height_ = 300,
+                TimeSeriesPoints_ = new List<IDashboardTimeSeriesPoint> { new DashboardScadaTimeSeriesPoint(new ScadaDataPoint("123"), DateTime.Now.AddHours(-1), DateTime.Now) }
             };
             LinePlotCellConfig linePlotCellConfig2 = new LinePlotCellConfig
             {

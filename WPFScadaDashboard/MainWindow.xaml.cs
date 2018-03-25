@@ -40,25 +40,18 @@ namespace WPFScadaDashboard
             LinePlotCellConfig linePlotCellConfig = new LinePlotCellConfig
             {
                 Name_ = "First Cell Name",
-                WidthMode_ = LinePlotCellConfig.VariableWidthMode,
-                Height_ = 300,
+                CellPosition_ = new DashboardCellPosition(0,0,1,2),
                 TimeSeriesPoints_ = new List<IDashboardTimeSeriesPoint> { new DashboardScadaTimeSeriesPoint(new ScadaDataPoint("123"), DateTime.Now.AddHours(-1), DateTime.Now) }
             };
             LinePlotCellConfig linePlotCellConfig2 = new LinePlotCellConfig
             {
                 Name_ = "Second Cell Name",
-                CellPosition_ = new DashboardCellPosition(1, 0),
-                WidthMode_ = LinePlotCellConfig.VariableWidthMode,
-                Height_ = 150,
-                VerticalAlignment_ = "Top"
+                CellPosition_ = new DashboardCellPosition(1, 0)
             };
             LinePlotCellConfig linePlotCellConfig3 = new LinePlotCellConfig
             {
                 Name_ = "Third Cell Name",
-                CellPosition_ = new DashboardCellPosition(1, 1),
-                WidthMode_ = LinePlotCellConfig.VariableWidthMode,
-                Height_ = 250,
-                VerticalAlignment_ = "Top"
+                CellPosition_ = new DashboardCellPosition(1, 1)
             };
             DashboardUC_.AddDashBoardCells(linePlotCellConfig);
             DashboardUC_.AddDashBoardCells(linePlotCellConfig2);

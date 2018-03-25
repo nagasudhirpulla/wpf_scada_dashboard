@@ -1,5 +1,7 @@
 ﻿using LiveCharts;
+using LiveCharts.Configurations;
 using LiveCharts.Geared;
+using LiveCharts.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,31 +29,27 @@ namespace WPFScadaDashboard.DashboardUserControls
     {
         public LinePlotCellConfig LinePlotCellConfig_;
         public SeriesCollection SeriesCollection { get; set; }
-        public long Step { get; set; }
         public Func<double, string> YFormatter { get; set; }
         public Func<double, string> XFormatter { get; set; }
-        public List<DateTime> timeStamps_ { get; set; }
+        public DateTime StartDateTime_ { get; set; }
         public double MeasPeriodSecs_ { get; set; } = 1;
 
         private void DoInitialWireUp()
         {
             InitializeComponent();
+
             SeriesCollection = new SeriesCollection();
-            timeStamps_ = new List<DateTime> { DateTime.Now };
-            //Labels = new string[0];
-            Step = 1;
 
             YFormatter = value => String.Format("{0:0.###}", value);
-            XFormatter = delegate (double val)
+            XFormatter = delegate (double value)
             {
-                if (timeStamps_.Count > 0)
+                if (StartDateTime_.Ticks != 0)
                 {
-                    DateTime startTimeStamp = timeStamps_.ElementAt(0);
                     DateTime timeStamp;
-                    timeStamp = startTimeStamp.AddSeconds(val * MeasPeriodSecs_);
+                    timeStamp = StartDateTime_.AddSeconds(value * MeasPeriodSecs_);
                     return timeStamp.ToString("HH:mm:ss.fff\ndd-MMM-yy");
                 }
-                return val.ToString();
+                return value.ToString();
             };
             MyChart.LegendLocation = LegendLocation.Top;
             DataContext = this;
@@ -126,39 +124,40 @@ namespace WPFScadaDashboard.DashboardUserControls
             // iterate through each timeseries point in the config
             for (int i = 0; i < LinePlotCellConfig_.TimeSeriesPoints_.Count; i++)
             {
-                if (i == 0)
-                {
-                    timeStamps_.Clear();
-                }
                 IDashboardTimeSeriesPoint pnt = LinePlotCellConfig_.TimeSeriesPoints_.ElementAt(i);
                 if (pnt.GetType().FullName == typeof(DashboardScadaTimeSeriesPoint).FullName)
                 {
                     // handle if the point is a scada point
                     ScadaFetcher scadaFetcher = new ScadaFetcher();
                     DashboardScadaTimeSeriesPoint scadaTimeseriesPnt = (DashboardScadaTimeSeriesPoint)pnt;
+
+                    // fetch the results from the data fetcher
                     List<ScadaPointResult> results = scadaFetcher.FetchHistoricalPointDataTest(scadaTimeseriesPnt);
+
+                    // Get Plot Values from ScadaResults
                     List<double> plotVals = new List<double>();
                     for (int resCounter = 0; resCounter < results.Count; resCounter++)
                     {
                         ScadaPointResult res = results[resCounter];
                         plotVals.Add(res.Val_);
-                        if (i == 0)
+                    }
+
+                    // change the plot values spacing in secs and the starting dateTime
+                    if (i == 0)
+                    {
+                        MeasPeriodSecs_ = scadaTimeseriesPnt.FetchPeriodSecs_;
+                        if (plotVals.Count > 0)
                         {
-                            timeStamps_.Add(res.ResultTime_);
+                            StartDateTime_ = new DateTime(results[0].ResultTime_.Ticks);
                         }
                     }
-                    if (i == 0 && timeStamps_.Count > 1)
-                    {
-                        MeasPeriodSecs_ = (timeStamps_[1] - timeStamps_[0]).Seconds;
-                        Step = (long)MeasPeriodSecs_;
-                    }
+
+                    // Add the Data Point fetch results to the Plot lines Collection
                     SeriesCollection.Add(new GLineSeries() { Title = scadaTimeseriesPnt.ScadaPoint_.Name_, Values = new GearedValues<double>(plotVals), PointGeometry = null, Fill = Brushes.Transparent, StrokeThickness = 1, LineSmoothness = 0 });
                 }
             }
 
         }
-
-
     }
 }
 
@@ -167,4 +166,6 @@ namespace WPFScadaDashboard.DashboardUserControls
  todo keep customizable legend locations by binding
  todo handle zoom, pan, disable Animations, hoverable by binding so that they can be defined in config
  todo use labels for each time series since the the plots may be aligned but the timestamps may be different
+ 
+ The constraints faced here is that since we are using geared values, the periodicity of all the fetched series should be same.
      */

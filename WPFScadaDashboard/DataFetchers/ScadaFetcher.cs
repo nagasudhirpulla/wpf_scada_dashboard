@@ -104,7 +104,8 @@ namespace WPFScadaDashboard.DataFetchers
             // return random values for testing
             List<ScadaPointResult> historyResults = new List<ScadaPointResult>();
             Random rand = new Random();
-            for (int i = 0; i < (dashboardScadaTimeSeriesPoint.GetStartTime() - dashboardScadaTimeSeriesPoint.GetEndTime()).Seconds / dashboardScadaTimeSeriesPoint.FetchPeriodSecs_; i++)
+            int numPeriods = (int)(dashboardScadaTimeSeriesPoint.GetEndTime() - dashboardScadaTimeSeriesPoint.GetStartTime()).TotalSeconds / dashboardScadaTimeSeriesPoint.FetchPeriodSecs_;
+            for (int i = 0; i < numPeriods; i++)
             {
                 historyResults.Add(new ScadaPointResult(rand.Next(0, 100), "Good", dashboardScadaTimeSeriesPoint.GetStartTime().AddSeconds(dashboardScadaTimeSeriesPoint.FetchPeriodSecs_ * i)));
             }

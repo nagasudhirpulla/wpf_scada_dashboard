@@ -31,9 +31,9 @@ namespace WPFScadaDashboard.DashboardConfigClasses
 
         public double Height_ { get; set; } = 100;
 
-        public string WidthMode_ { get; set; } = AbsoluteWidthMode;
+        public string WidthMode_ { get; set; } = VariableWidthMode;
 
-        public string HeightMode_ { get; set; } = AbsoluteHeightMode;
+        public string HeightMode_ { get; set; } = VariableHeightMode;
 
         public string HorizontalAlignment_ { get; set; } = AlignmentModeStretch;
 

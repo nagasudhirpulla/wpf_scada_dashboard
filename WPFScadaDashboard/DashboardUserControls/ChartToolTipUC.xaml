@@ -1,0 +1,28 @@
+﻿<UserControl x:Class="WPFScadaDashboard.DashboardUserControls.ChartToolTipUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFScadaDashboard.DashboardUserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance local:ChartToolTipUC}"
+             Background="#E4555555" Padding="20 10" BorderThickness="2" BorderBrush="#555555">
+    <ItemsControl ItemsSource="{Binding Data.Points}" Grid.IsSharedSizeScope="True">
+        <ItemsControl.ItemTemplate>
+            <DataTemplate DataType="{x:Type wpf:DataPointViewModel}">
+                <Grid Margin="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Title"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="LastName"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{Binding ChartPoint.Instance.X}" 
+                               Margin="5 0 0 0" VerticalAlignment="Center" Foreground="White"/>
+                    <TextBlock Grid.Column="1" Text="{Binding ChartPoint.Instance.Y}" 
+                               Margin="5 0 0 0" VerticalAlignment="Center" Foreground="White"/>
+                </Grid>
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
+</UserControl>

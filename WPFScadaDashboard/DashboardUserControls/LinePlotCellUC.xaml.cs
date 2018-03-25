@@ -52,6 +52,9 @@ namespace WPFScadaDashboard.DashboardUserControls
                 return value.ToString();
             };
             MyChart.LegendLocation = LegendLocation.Top;
+
+            // MyChart.DataTooltip = new ChartToolTipUC();
+
             DataContext = this;
             FetchAndPlotData();
         }
@@ -119,7 +122,13 @@ namespace WPFScadaDashboard.DashboardUserControls
 
         public void FetchAndPlotData()
         {
+            // clear the current series of the plot
             SeriesCollection.Clear();
+            double minXVal = 0;
+            double maxXVal = double.NaN;
+            double minYVal = double.NaN;
+            double maxYVal = double.NaN;
+
             // get each point data and bind it to the Series Collection
             // iterate through each timeseries point in the config
             for (int i = 0; i < LinePlotCellConfig_.TimeSeriesPoints_.Count; i++)
@@ -154,9 +163,41 @@ namespace WPFScadaDashboard.DashboardUserControls
 
                     // Add the Data Point fetch results to the Plot lines Collection
                     SeriesCollection.Add(new GLineSeries() { Title = scadaTimeseriesPnt.ScadaPoint_.Name_, Values = new GearedValues<double>(plotVals), PointGeometry = null, Fill = Brushes.Transparent, StrokeThickness = 1, LineSmoothness = 0 });
+
+                    // update min max Y Vals, max X val
+                    double tempVal = plotVals.Count;
+                    if (double.IsNaN(maxXVal) || maxXVal < tempVal)
+                    {
+                        maxXVal = tempVal;
+                    }
+
+                    tempVal = plotVals.Max();
+                    if (double.IsNaN(maxYVal) || maxYVal < tempVal)
+                    {
+                        maxYVal = tempVal;
+                    }
+
+                    tempVal = plotVals.Min();
+                    if (double.IsNaN(minYVal) || minYVal > tempVal)
+                    {
+                        minYVal = tempVal;
+                    }
                 }
             }
+            // Set Axes limits
+            MyChart.AxisX[0].MinValue = minXVal;
+            MyChart.AxisX[0].MaxValue = maxXVal;
+            MyChart.AxisY[0].MinValue = minYVal;
+            MyChart.AxisY[0].MaxValue = maxYVal;
+        }
 
+        private void ResetAxes()
+        {
+            MyChart.AxisX[0].MinValue = double.NaN;
+            MyChart.AxisX[0].MaxValue = double.NaN;
+            MyChart.AxisY[0].MinValue = double.NaN;
+            MyChart.AxisY[0].MaxValue = double.NaN;
+            //addLinesToConsole("Reset Axis done...");
         }
     }
 }

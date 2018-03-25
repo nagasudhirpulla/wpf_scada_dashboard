@@ -66,6 +66,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="DashboardUserControls\ChartToolTipUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DashboardUserControls\DashboardUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -91,7 +95,10 @@
     <Compile Include="DashboardDataPointClasses\IPointResult.cs" />
     <Compile Include="DashboardDataPointClasses\ScadaDataPoint.cs" />
     <Compile Include="DashboardDataPointClasses\VariableTime.cs" />
-    <Compile Include="DashboardUserControls\ChartPoint.cs" />
+    <Compile Include="DashboardDataPointClasses\ChartTimePoint.cs" />
+    <Compile Include="DashboardUserControls\ChartToolTipUC.xaml.cs">
+      <DependentUpon>ChartToolTipUC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DashboardUserControls\ConsoleContent.cs" />
     <Compile Include="DashboardUserControls\DashboardUC.xaml.cs">
       <DependentUpon>DashboardUC.xaml</DependentUpon>

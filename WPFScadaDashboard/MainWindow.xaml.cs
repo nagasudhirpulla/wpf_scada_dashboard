@@ -41,7 +41,7 @@ namespace WPFScadaDashboard
             {
                 Name_ = "First Cell Name",
                 CellPosition_ = new DashboardCellPosition(0,0,1,2),
-                TimeSeriesPoints_ = new List<IDashboardTimeSeriesPoint> { new DashboardScadaTimeSeriesPoint(new ScadaDataPoint("123"), DateTime.Now.AddHours(-1), DateTime.Now) }
+                TimeSeriesPoints_ = new List<IDashboardTimeSeriesPoint> { new DashboardScadaTimeSeriesPoint(new ScadaDataPoint("123"), DateTime.Now.AddHours(-10), DateTime.Now) }
             };
             LinePlotCellConfig linePlotCellConfig2 = new LinePlotCellConfig
             {

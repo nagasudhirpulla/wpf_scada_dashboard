@@ -8,14 +8,14 @@ namespace WPFScadaDashboard.DashboardUserControls
 
         public string MessageType_ { get; set; }
 
-        public string MessageInfo_ { get; set; }
+        public string MessageStr_ { get; set; }
 
         public object MessageObject_ { get; set; } = null;
 
         public DashBoardEventArgs(string messageType_, string messageInfo_)
         {
             MessageType_ = messageType_;
-            MessageInfo_ = messageInfo_;            
+            MessageStr_ = messageInfo_;            
         }
 
         public DashBoardEventArgs(string messageType_, string messageInfo_, string senderName_) : this(messageType_, messageInfo_)

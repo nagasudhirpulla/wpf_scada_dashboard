@@ -171,10 +171,40 @@ namespace WPFScadaDashboard.DashboardUserControls
                     if (e.MessageType_ == ConsoleMessageTypeStr)
                     {
                         // Create a console entry
-                        dc.AddItemsToConsole($"({e.SenderName_}) {e.MessageInfo_}");
+                        dc.AddItemsToConsole($"({e.SenderName_}) {e.MessageStr_}");
                     }
                 }
             }
+        }
+
+        private void Open_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SaveAs_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void NewWindow_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void FetchBtn_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

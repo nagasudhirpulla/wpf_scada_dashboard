@@ -6,26 +6,50 @@
              xmlns:local="clr-namespace:WPFScadaDashboard.DashboardUserControls"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="800">
-    <ScrollViewer Margin="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-        <Grid x:Name="DashboardContainer">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="100"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid x:Name="CellsContainer" Grid.Row="0" Width="Auto">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Orientation="Vertical">
+            <Menu IsMainMenu="True">
+                <MenuItem Header="_File">
+                    <MenuItem Header="Open Dashboard" Click="Open_Click"/>
+                    <Separator />
+                    <MenuItem Header="Save Dashboard" Click="Save_Click"/>
+                    <MenuItem Header="Save Dashboard As" Click="SaveAs_Click"/>
+                    <Separator />
+                </MenuItem>
+                <MenuItem Header="_Edit" />
+                <MenuItem Header="_View"/>
+                <MenuItem Header="_Window" >
+                    <MenuItem Header="NewWindow" Click="NewWindow_Click"/>
+                </MenuItem>
+                <MenuItem Header="_Help">
+                    <MenuItem Header="_About" Click="About_Click"/>
+                </MenuItem>
+                <MenuItem Header="FetchData" Click="FetchBtn_Click"></MenuItem>
+            </Menu>
+        </StackPanel>
 
+        <ScrollViewer Margin="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <Grid x:Name="DashboardContainer">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="100"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid x:Name="CellsContainer" Grid.Row="0" Width="Auto">
+
+                </Grid>
+                <ScrollViewer Name="Scroller" Margin="0" Background="Black" Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <ItemsControl Name="consoleItems">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=.}" Foreground="White" FontFamily="Consolas"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </ScrollViewer>
             </Grid>
-            <ScrollViewer Name="Scroller" Margin="0" Background="Black" Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                <StackPanel>
-                    <ItemsControl Name="consoleItems">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Path=.}" Foreground="White" FontFamily="Consolas"/>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
-            </ScrollViewer>
-        </Grid>
-    </ScrollViewer>
+        </ScrollViewer>        
+        
+    </DockPanel>
 </UserControl>

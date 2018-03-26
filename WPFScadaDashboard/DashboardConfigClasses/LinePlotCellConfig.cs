@@ -9,7 +9,9 @@ namespace WPFScadaDashboard.DashboardConfigClasses
 {
     public class LinePlotCellConfig : IDashboardCellConfig
     {
-        public const string CellType = "Time_Series_Line_Plot";
+        private const string CellType = "Time_Series_Line_Plot";
+        // Implemening Interface
+        public string VizType_ { get { return CellType; } set { } }
         public const string AbsoluteWidthMode = "absolute";
         public const string AbsoluteHeightMode = "absolute";
         public const string VariableWidthMode = "variable";
@@ -20,6 +22,10 @@ namespace WPFScadaDashboard.DashboardConfigClasses
         public const string AlignmentModeBottom = "Bottom";
         public const string AlignmentModeLeft = "Left";
         public const string AlignmentModeRight = "Right";
+        private string widthMode = VariableWidthMode;
+        private string heightMode = VariableHeightMode;
+        private string horizontalAlignment = AlignmentModeStretch;
+        private string verticalAlignment = AlignmentModeStretch;
 
         public string Name_ { get; set; } = "Line Plot Cell";
 
@@ -31,13 +37,66 @@ namespace WPFScadaDashboard.DashboardConfigClasses
 
         public double Height_ { get; set; } = 100;
 
-        public string WidthMode_ { get; set; } = VariableWidthMode;
+        public string WidthMode_
+        {
+            get { return widthMode; }
+            set
+            {
+                if (value != AbsoluteWidthMode && value != VariableWidthMode)
+                {
+                    widthMode = VariableWidthMode;
+                    return;
+                }
+                widthMode = value;
+            }
+        }
 
-        public string HeightMode_ { get; set; } = VariableHeightMode;
+        public string HeightMode_
+        {
+            get { return heightMode; }
+            set
+            {
+                if (value != AbsoluteHeightMode && value != VariableHeightMode)
+                {
+                    heightMode = VariableHeightMode;
+                    return;
+                }
+                heightMode = value;
+            }
+        }
 
-        public string HorizontalAlignment_ { get; set; } = AlignmentModeStretch;
+        public string HorizontalAlignment_
+        {
+            get { return horizontalAlignment; }
+            set
+            {
+                if (value != AlignmentModeStretch && value != AlignmentModeLeft && value != AlignmentModeRight && value != AlignmentModeCenter)
+                {
+                    HorizontalAlignment_ = AlignmentModeStretch;
+                    return;
+                }
+                HorizontalAlignment_ = value;
+            }
+        }
 
-        public string VerticalAlignment_ { get; set; } = AlignmentModeStretch;
+        public string VerticalAlignment_
+        {
+            get { return verticalAlignment; }
+            set
+            {
+                if (value != AlignmentModeStretch && value != AlignmentModeTop && value != AlignmentModeBottom && value != AlignmentModeCenter)
+                {
+                    VerticalAlignment_ = AlignmentModeStretch;
+                    return;
+                }
+                VerticalAlignment_ = value;
+
+            }
+        }
+
+        public double CellWidth_ { get { return Width_; } set { Width_ = value; } }
+
+        public double CellHeight_ { get { return Height_; } set { Height_ = value; } }
 
         // Cell Position
         public DashboardCellPosition CellPosition_ { get; set; } = new DashboardCellPosition();
@@ -51,30 +110,6 @@ namespace WPFScadaDashboard.DashboardConfigClasses
         }
 
         // Implementing Interface
-        public string GetName()
-        {
-            return Name_;
-        }
-
-        // Implementing Interface
-        public DashboardCellPosition GetCellPosition()
-        {
-            return CellPosition_;
-        }
-
-        // Implementing Interface
-        public void SetCellPosition(DashboardCellPosition cellPosition)
-        {
-            CellPosition_ = cellPosition;
-        }
-
-        // Implementing Interface
-        public string GetVizType()
-        {
-            return CellType;
-        }
-
-        // Implementing Interface
         public List<IDataPoint> GetCellDataPoints()
         {
             List<IDataPoint> dataPoints = new List<IDataPoint>();
@@ -85,100 +120,5 @@ namespace WPFScadaDashboard.DashboardConfigClasses
             return dataPoints;
         }
 
-        // Implementing Interface
-        public double GetCellWidth()
-        {
-            return Width_;
-        }
-
-        // Implementing Interface
-        public double GetCellHeight()
-        {
-            return Height_;
-        }
-
-        // Implementing Interface
-        public string GetWidthMode()
-        {
-            return WidthMode_;
-        }
-
-        // Implementing Interface
-        public string GetHeightMode()
-        {
-            return HeightMode_;
-        }
-
-        // Implementing Interface
-        public void SetCellWidth(double width)
-        {
-            Width_ = width;
-        }
-
-        // Implementing Interface
-        public void SetCellHeight(double height)
-        {
-            Height_ = height;
-        }
-
-        // Implementing Interface
-        public void SetWidthMode(string mode)
-        {
-            if (mode != AbsoluteWidthMode && mode != VariableWidthMode)
-            {
-                WidthMode_ = AbsoluteWidthMode;
-            }
-            WidthMode_ = mode;
-        }
-
-        // Implementing Interface
-        public void SetHeightMode(string mode)
-        {
-            if (mode != AbsoluteHeightMode && mode != VariableWidthMode)
-            {
-                HeightMode_ = AbsoluteHeightMode;
-            }
-            HeightMode_ = mode;
-        }
-
-        // Implementing Interface
-        public void SetName(string name)
-        {
-            Name_ = name;
-        }
-
-        // Implementing Interface
-        public string GetHorizontalAlignment()
-        {
-            return HorizontalAlignment_;
-        }
-
-        // Implementing Interface
-        public void SetHorizontalAlignment(string alignmentString)
-        {
-            if (alignmentString != AlignmentModeStretch && alignmentString != AlignmentModeLeft && alignmentString != AlignmentModeRight && alignmentString != AlignmentModeCenter)
-            {
-                HorizontalAlignment_ = AlignmentModeStretch;
-                return;
-            }
-            HorizontalAlignment_ = alignmentString;
-        }
-
-        // Implementing Interface
-        public string GetVerticalAlignment()
-        {
-            return VerticalAlignment_;
-        }
-
-        // Implementing Interface
-        public void SetVerticalAlignment(string alignmentString)
-        {
-            if (alignmentString != AlignmentModeStretch && alignmentString != AlignmentModeTop && alignmentString != AlignmentModeBottom && alignmentString != AlignmentModeCenter)
-            {
-                VerticalAlignment_ = AlignmentModeStretch;
-                return;
-            }
-            VerticalAlignment_ = alignmentString;
-        }
     }
 }

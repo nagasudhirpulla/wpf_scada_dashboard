@@ -8,6 +8,6 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
 {
     public interface IPointResult
     {
-        double GetVal();        
+        double Val_ { get; set; }
     }
 }

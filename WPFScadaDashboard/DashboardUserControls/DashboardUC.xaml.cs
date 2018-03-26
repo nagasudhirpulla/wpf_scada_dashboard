@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +26,7 @@ namespace WPFScadaDashboard.DashboardUserControls
     {
         public static string ConsoleMessageTypeStr = "console";
 
+        public string DashBoardFileName_ { get; set; } = null;
         ConsoleContent dc = new ConsoleContent();
         public DashboardConfig DashboardConfig_ { get; set; } = new DashboardConfig();
 
@@ -65,7 +69,7 @@ namespace WPFScadaDashboard.DashboardUserControls
             DashboardCellPosition maxIndexPos = new DashboardCellPosition(0, 0);
             for (int i = 0; i < CellsContainer.Children.Count; i++)
             {
-                DashboardCellPosition cellPosition = ((ICellUC)(CellsContainer.Children[i])).GetDashboardCellConfig().GetCellPosition();
+                DashboardCellPosition cellPosition = ((ICellUC)(CellsContainer.Children[i])).GetDashboardCellConfig().CellPosition_;
                 if (cellPosition.ColIndex_ > maxIndexPos.ColIndex_)
                 {
                     maxIndexPos.ColIndex_ = cellPosition.ColIndex_;
@@ -87,7 +91,7 @@ namespace WPFScadaDashboard.DashboardUserControls
             {
                 ICellUC cellUC = (ICellUC)CellsContainer.Children[cell_iter];
                 IDashboardCellConfig dashboardCellConfig = cellUC.GetDashboardCellConfig();
-                DashboardCellPosition cellPosition = dashboardCellConfig.GetCellPosition();
+                DashboardCellPosition cellPosition = dashboardCellConfig.CellPosition_;
                 // manipulate cell position to avoid cell position conflicts by pushing the cell position down by one row
                 if (cellPositions.Exists(x => x.RowIndex_ == cellPosition.RowIndex_ && x.ColIndex_ == cellPosition.ColIndex_))
                 {
@@ -95,7 +99,7 @@ namespace WPFScadaDashboard.DashboardUserControls
                     int maxRowIndex = (from pos in cellPositions select pos.RowIndex_).Max();
                     //modify the rowIndex to avoid duplicates
                     cellPosition.RowIndex_ = maxRowIndex + 1;
-                    cellUC.GetDashboardCellConfig().SetCellPosition(cellPosition);
+                    cellUC.GetDashboardCellConfig().CellPosition_ = cellPosition;
                 }
                 cellPositions.Add(cellPosition);
             }
@@ -162,6 +166,16 @@ namespace WPFScadaDashboard.DashboardUserControls
             SyncRowColDefinitionsWithCells();
         }
 
+        public List<IDashboardCellConfig> GetDashboardCellConfigs()
+        {
+            List<IDashboardCellConfig> dashboardCellConfigs = new List<IDashboardCellConfig>();
+            for (int i = 0; i < CellsContainer.Children.Count; i++)
+            {
+                dashboardCellConfigs.Add(((ICellUC)CellsContainer.Children[i]).GetDashboardCellConfig());
+            }
+            return dashboardCellConfigs;
+        }
+
         private void Changed(object sender, DashBoardEventArgs e)
         {
             if (sender is ICellUC fc)
@@ -182,14 +196,58 @@ namespace WPFScadaDashboard.DashboardUserControls
 
         }
 
+        private DashboardConfigBundle GetDashBoardConfigBundle()
+        {
+            DashboardConfigBundle configBundle = new DashboardConfigBundle() { DashboardConfig_ = DashboardConfig_, DashboardCellConfigs_ = GetDashboardCellConfigs() };
+            return configBundle;
+        }
+
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-
+            // get the filename
+            if (MessageBox.Show("Save this Dashboard?", "Save", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                string filename = DashBoardFileName_;
+                if (filename != null)
+                {
+                    DashboardConfigBundle configBundle = GetDashBoardConfigBundle();
+                    string jsonText = JsonConvert.SerializeObject(configBundle, Formatting.Indented);
+                    File.WriteAllText(filename, jsonText);
+                    dc.AddItemsToConsole("Saved the updated Dashboard!!!");
+                }
+                else
+                {
+                    // open save as window
+                    SaveAs_Click(this, null);
+                }
+            }
         }
 
         private void SaveAs_Click(object sender, RoutedEventArgs e)
         {
-
+            string filename = DashBoardFileName_;
+            if (filename == null)
+            {
+                filename = String.Format("dashboard_template_{0}.json", DateTime.Now.ToString("dd.MM.yyyy_HH.mm.ss"));
+            }
+            DashboardConfigBundle configBundle = GetDashBoardConfigBundle();
+            string jsonText = JsonConvert.SerializeObject(configBundle, Formatting.Indented);
+            SaveFileDialog savefileDialog = new SaveFileDialog
+            {
+                // set a default file name
+                FileName = filename,
+                // set filters - this can be done in properties as well
+                Filter = "JSON Files (*.json)|*.json|All files (*.*)|*.*"
+            };
+            if (savefileDialog.ShowDialog() == true)
+            {
+                File.WriteAllText(savefileDialog.FileName, jsonText);
+                dc.AddItemsToConsole("Saved the updated template file!!!");
+                if (savefileDialog.FileName != null)
+                {
+                    DashBoardFileName_ = savefileDialog.FileName;
+                }
+            }
         }
 
         private void NewWindow_Click(object sender, RoutedEventArgs e)

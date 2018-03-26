@@ -8,6 +8,7 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
 {
     public class DashboardScadaTimeSeriesPoint : IDashboardTimeSeriesPoint
     {
+        private const string pointType = "ScadaTimeSeriesPoint";
         private const string AbsoluteMode = "absolute";
         private const string VariableMode = "variable";
 
@@ -40,32 +41,6 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
             return ScadaPoint_;
         }
 
-        // Implementing Interface
-        public DateTime GetStartTime()
-        {
-            if (StartTimeMode_ == AbsoluteMode)
-            {
-                return StartTimeAbsolute_;
-            }
-            else
-            {
-                return DateTime.Now.AddHours(StartTimeVariable_.HoursOffset_).AddMinutes(StartTimeVariable_.MinsOffset_).AddSeconds(StartTimeVariable_.SecsOffset_);
-            }
-        }
-
-        // Implementing Interface
-        public DateTime GetEndTime()
-        {
-            if (EndTimeMode_ == AbsoluteMode)
-            {
-                return EndTimeAbsolute_;
-            }
-            else
-            {
-                return DateTime.Now.AddHours(EndTimeVariable_.HoursOffset_).AddMinutes(EndTimeVariable_.MinsOffset_).AddSeconds(EndTimeVariable_.SecsOffset_);
-            }
-        }
-
         public void SetFetchPeriodMins(int mins)
         {
             FetchPeriodSecs_ = mins * 60;
@@ -79,6 +54,35 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
         public void SetFetchPeriodDays(int days)
         {
             FetchPeriodSecs_ = days * 24 * 60 * 60;
+        }
+
+        public DateTime GetStartTime()
+        {
+            if (StartTimeMode_ == AbsoluteMode)
+            {
+                return StartTimeAbsolute_;
+            }
+            else
+            {
+                return DateTime.Now.AddHours(StartTimeVariable_.HoursOffset_).AddMinutes(StartTimeVariable_.MinsOffset_).AddSeconds(StartTimeVariable_.SecsOffset_);
+            }
+        }
+
+        public DateTime GetEndTime()
+        {
+            if (EndTimeMode_ == AbsoluteMode)
+            {
+                return EndTimeAbsolute_;
+            }
+            else
+            {
+                return DateTime.Now.AddHours(EndTimeVariable_.HoursOffset_).AddMinutes(EndTimeVariable_.MinsOffset_).AddSeconds(EndTimeVariable_.SecsOffset_);
+            }
+        }
+
+        public string GetPointType()
+        {
+            return pointType;
         }
     }
 }

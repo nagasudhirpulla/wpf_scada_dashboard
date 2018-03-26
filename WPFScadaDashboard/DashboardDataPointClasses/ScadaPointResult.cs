@@ -32,12 +32,6 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
             DataQuality_ = DataQuality;
             ResultTime_ = ResultTime;
             Units_ = Units;
-        }
-
-        // Implementing Interface
-        public double GetVal()
-        {
-            return Val_;
-        }
+        }        
     }
 }

@@ -155,7 +155,7 @@ namespace WPFScadaDashboard.DashboardUserControls
         {
             get
             {
-                if (LinePlotCellConfig_.GetHeightMode() == LinePlotCellConfig.VariableHeightMode)
+                if (LinePlotCellConfig_.HeightMode_ == LinePlotCellConfig.VariableHeightMode)
                 {
                     return "";
                 }
@@ -167,7 +167,7 @@ namespace WPFScadaDashboard.DashboardUserControls
         {
             get
             {
-                if (LinePlotCellConfig_.GetWidthMode() == LinePlotCellConfig.VariableWidthMode)
+                if (LinePlotCellConfig_.WidthMode_ == LinePlotCellConfig.VariableWidthMode)
                 {
                     return "";
                 }
@@ -179,9 +179,9 @@ namespace WPFScadaDashboard.DashboardUserControls
 
         public double CellMinWidth { get { return LinePlotCellConfig_.MinWidth_; } set { LinePlotCellConfig_.MinWidth_ = value; } }
 
-        public string CellHorizontalAlignment { get { return LinePlotCellConfig_.HorizontalAlignment_; } set { LinePlotCellConfig_.SetHorizontalAlignment(value); } }
+        public string CellHorizontalAlignment { get { return LinePlotCellConfig_.HorizontalAlignment_; } set { LinePlotCellConfig_.HorizontalAlignment_ = value; } }
 
-        public string CellVerticalAlignment { get { return LinePlotCellConfig_.VerticalAlignment_; } set { LinePlotCellConfig_.SetVerticalAlignment(value); } }
+        public string CellVerticalAlignment { get { return LinePlotCellConfig_.VerticalAlignment_; } set { LinePlotCellConfig_.VerticalAlignment_ = value; } }
 
         public void FetchAndPlotData()
         {

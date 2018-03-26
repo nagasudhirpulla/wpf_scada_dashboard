@@ -15,7 +15,7 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
         // Extended Id of the point
         public string ExtendedId_ { get; set; } = null;
 
-        public const string PointType_ = "Scada";
+        public string PointType_ { get; set; } = "Scada";
 
         public ScadaDataPoint(string Id)
         {
@@ -34,18 +34,6 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
             Id_ = Id;
             Name_ = Name;
             ExtendedId_ = ExtendedId;
-        }
-
-        // Implementing Interface
-        public string GetName()
-        {
-            return Name_;
-        }
-
-        // Implementing Interface
-        public string GetId()
-        {
-            return Id_;
         }
 
         // Implementing Interface

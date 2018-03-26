@@ -10,11 +10,10 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
     {
         // This is a generic dashboard DataPoint Class which other specific data point types are going to implement
 
-        string GetName();
-
-        string GetId();
-
+        string Name_ { get; set; }
+        string Id_ { get; set; }
+        
         // Specifies the point type for serialization purposes
-        string GetPointType();        
+        string GetPointType();
     }
 }

@@ -8,6 +8,8 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
 {
     public interface IDashboardTimeSeriesPoint
     {
+        string GetPointType();
+
         DateTime GetStartTime();
 
         DateTime GetEndTime();

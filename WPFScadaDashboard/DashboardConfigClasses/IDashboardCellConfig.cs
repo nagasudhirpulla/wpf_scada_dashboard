@@ -10,34 +10,25 @@ namespace WPFScadaDashboard.DashboardConfigClasses
     public interface IDashboardCellConfig
     {
         // Name of the Cell
-        string GetName();
-        void SetName(String name);
+        string Name_ { get; set; }
 
-        // Position of the Cell
-        DashboardCellPosition GetCellPosition();
-        void SetCellPosition(DashboardCellPosition dashboardCellPosition);
-
-        // Get Type of DataViz like linePlot, MapPlot etc. This might be useful for deserialization and serialization
-        string GetVizType();
+        // Type of DataViz like linePlot, MapPlot etc. This might be useful for deserialization and serialization
+        string VizType_ { get; set; }
 
         List<IDataPoint> GetCellDataPoints();
 
-        double GetCellWidth();
-        void SetCellWidth(double width);
+        DashboardCellPosition CellPosition_ { get; set; }
 
-        double GetCellHeight();
-        void SetCellHeight(double height);
+        double CellWidth_ { get; set; }
 
-        string GetWidthMode();
-        void SetWidthMode(string mode);
+        double CellHeight_ { get; set; }
 
-        string GetHeightMode();
-        void SetHeightMode(string mode);
+        string WidthMode_ { get; set; }
 
-        string GetHorizontalAlignment();
-        void SetHorizontalAlignment(string alignmentString);
+        string HeightMode_ { get; set; }
 
-        string GetVerticalAlignment();
-        void SetVerticalAlignment(string alignmentString);
+        string HorizontalAlignment_ { get; set; }
+
+        string VerticalAlignment_ { get; set; }
     }
 }

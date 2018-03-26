@@ -4,6 +4,7 @@ using LiveCharts.Geared;
 using LiveCharts.Wpf;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,14 +26,76 @@ namespace WPFScadaDashboard.DashboardUserControls
     /// <summary>
     /// Interaction logic for LinePlotCellUC.xaml
     /// </summary>
-    public partial class LinePlotCellUC : UserControl, ICellUC
+    public partial class LinePlotCellUC : UserControl, ICellUC, INotifyPropertyChanged
     {
+        // Declare the event
+        public event PropertyChangedEventHandler PropertyChanged;
+        // Create the OnPropertyChanged method to raise the event
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
         public LinePlotCellConfig LinePlotCellConfig_;
         public SeriesCollection SeriesCollection { get; set; }
         public Func<double, string> YFormatter { get; set; }
         public Func<double, string> XFormatter { get; set; }
         public DateTime StartDateTime_ { get; set; }
         public double MeasPeriodSecs_ { get; set; } = 1;
+
+        public string ZoomHeader
+        {
+            get
+            {
+                if (MyChart.Zoom == ZoomingOptions.Xy)
+                {
+                    return "Zoom (XY)";
+                }
+                else if (MyChart.Zoom == ZoomingOptions.Y)
+                {
+                    return "Zoom (Y)";
+                }
+                else if (MyChart.Zoom == ZoomingOptions.X)
+                {
+                    return "Zoom (X)";
+                }
+                else
+                {
+                    return "Zoom (Off)";
+                }
+            }
+        }
+
+        public string PanHeader
+        {
+            get
+            {
+                if (MyChart.Pan == PanningOptions.Xy)
+                {
+                    return "Pan (XY)";
+                }
+                else if (MyChart.Pan == PanningOptions.Y)
+                {
+                    return "Pan (Y)";
+                }
+                else if (MyChart.Pan == PanningOptions.X)
+                {
+                    return "Pan (X)";
+                }
+                else
+                {
+                    return "Pan (Off)";
+                }
+            }
+        }
+
+        // Send Messages to Dashboard using this event handler
+        public event EventHandler<DashBoardEventArgs> Changed;
+
+        protected virtual void OnChanged(DashBoardEventArgs e)
+        {
+            Changed?.Invoke(this, e);
+        }
 
         private void DoInitialWireUp()
         {
@@ -197,7 +260,90 @@ namespace WPFScadaDashboard.DashboardUserControls
             MyChart.AxisX[0].MaxValue = double.NaN;
             MyChart.AxisY[0].MinValue = double.NaN;
             MyChart.AxisY[0].MaxValue = double.NaN;
-            //addLinesToConsole("Reset Axis done...");
+            AddLinesToConsole("Reset Axis done...");
+        }
+
+        private void Zoom_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem mItem = sender as MenuItem;
+            mItem.IsChecked = true;
+            foreach (MenuItem item in (mItem.Parent as MenuItem).Items)
+            {
+                if (item.Tag != mItem.Tag)
+                {
+                    item.IsChecked = false;
+                }
+            }
+            switch (mItem.Tag.ToString())
+            {
+                case "ZXY":
+                    MyChart.Zoom = ZoomingOptions.Xy;
+                    AddLinesToConsole("Zoom mode set to XY");
+                    break;
+                case "ZX":
+                    MyChart.Zoom = ZoomingOptions.X;
+                    AddLinesToConsole("Zoom mode set to X");
+                    break;
+                case "ZY":
+                    MyChart.Zoom = ZoomingOptions.Y;
+                    AddLinesToConsole("Zoom mode set to Y");
+                    break;
+                case "ZOff":
+                    MyChart.Zoom = ZoomingOptions.None;
+                    AddLinesToConsole("Zoom mode set to Off");
+                    break;
+            }
+            OnPropertyChanged("ZoomHeader");
+        }
+
+        private void AddLinesToConsole(string v)
+        {
+            // todo send events
+            OnChanged(new DashBoardEventArgs(DashboardUC.ConsoleMessageTypeStr, v, LinePlotCellConfig_.Name_));
+        }
+
+        private void Pan_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem mItem = sender as MenuItem;
+            mItem.IsChecked = true;
+            foreach (MenuItem item in (mItem.Parent as MenuItem).Items)
+            {
+                if (item.Tag != mItem.Tag)
+                {
+                    item.IsChecked = false;
+                }
+            }
+            switch (mItem.Tag.ToString())
+            {
+                case "PXY":
+                    MyChart.Pan = PanningOptions.Xy;
+                    AddLinesToConsole("Pan mode set to XY");
+                    break;
+                case "PX":
+                    MyChart.Pan = PanningOptions.X;
+                    AddLinesToConsole("Pan mode set to X");
+                    break;
+                case "PY":
+                    MyChart.Pan = PanningOptions.Y;
+                    AddLinesToConsole("Pan mode set to Y");
+                    break;
+                case "POff":
+                    MyChart.Pan = PanningOptions.None;
+                    AddLinesToConsole("Pan mode set to None");
+                    break;
+            }
+            OnPropertyChanged("PanHeader");
+        }
+
+        private void FetchBtn_Click(object sender, RoutedEventArgs e)
+        {
+            FetchAndPlotData();
+            AddLinesToConsole("Data fetched");
+        }
+
+        private void Reset_Click(object sender, RoutedEventArgs e)
+        {
+            ResetAxes();
         }
     }
 }

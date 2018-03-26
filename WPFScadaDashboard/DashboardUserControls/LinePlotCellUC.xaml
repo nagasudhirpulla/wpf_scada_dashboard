@@ -16,6 +16,24 @@
             </Grid.RowDefinitions>
             <TextBlock Text="{Binding CellTitle}"></TextBlock>
             <lvc:CartesianChart Series="{Binding SeriesCollection}" Grid.Row="1" Name="MyChart" Zoom="Xy" Pan="Xy" DisableAnimations="True" Hoverable="True" Background="#171717">
+                <lvc:CartesianChart.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="{Binding ZoomHeader}">
+                            <MenuItem Header="ZoomXY" Tag="ZXY" Click="Zoom_Click" IsCheckable="True" IsChecked="True"/>
+                            <MenuItem Header="ZoomX" Tag="ZX" Click="Zoom_Click" IsCheckable="True"/>
+                            <MenuItem Header="ZoomY" Tag="ZY" Click="Zoom_Click" IsCheckable="True"/>
+                            <MenuItem Header="ZoomOff" Tag="ZOff" Click="Zoom_Click" IsCheckable="True"/>
+                        </MenuItem>
+                        <MenuItem Header="{Binding PanHeader}">
+                            <MenuItem Header="PaXY" Tag="PXY" Click="Pan_Click" IsCheckable="True" IsChecked="True"/>
+                            <MenuItem Header="PanX" Tag="PX" Click="Pan_Click" IsCheckable="True"/>
+                            <MenuItem Header="PanY" Tag="PY" Click="Pan_Click" IsCheckable="True"/>
+                            <MenuItem Header="PanOff" Tag="POff" Click="Pan_Click" IsCheckable="True"/>
+                        </MenuItem>
+                        <MenuItem Header="ResetAxis" Click="Reset_Click"></MenuItem>
+                        <MenuItem Header="FetchData" Click="FetchBtn_Click"></MenuItem>
+                    </ContextMenu>
+                </lvc:CartesianChart.ContextMenu>
                 <lvc:CartesianChart.ChartLegend>
                     <lvc:DefaultLegend Foreground="White"/>
                 </lvc:CartesianChart.ChartLegend>

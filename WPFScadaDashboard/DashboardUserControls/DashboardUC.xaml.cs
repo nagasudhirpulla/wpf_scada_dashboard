@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,8 @@ namespace WPFScadaDashboard.DashboardUserControls
     /// </summary>
     public partial class DashboardUC : UserControl
     {
+        public static string ConsoleMessageTypeStr = "console";
+
         ConsoleContent dc = new ConsoleContent();
         public DashboardConfig DashboardConfig_ { get; set; } = new DashboardConfig();
 
@@ -114,7 +117,7 @@ namespace WPFScadaDashboard.DashboardUserControls
                 }
 
             }
-            else if(rowDeficit < 0)
+            else if (rowDeficit < 0)
             {
                 // delete excess rows
                 for (int i = 0; i < -rowDeficit; i++)
@@ -153,9 +156,25 @@ namespace WPFScadaDashboard.DashboardUserControls
             {
                 // Add a line plot User Control to the Cell Container
                 LinePlotCellUC linePlotCellUC = new LinePlotCellUC((LinePlotCellConfig)dashboardCellConfig);
+                linePlotCellUC.Changed += new EventHandler<DashBoardEventArgs>(Changed);
                 CellsContainer.Children.Add(linePlotCellUC);
             }
             SyncRowColDefinitionsWithCells();
+        }
+
+        private void Changed(object sender, DashBoardEventArgs e)
+        {
+            if (sender is ICellUC fc)
+            {
+                if (e != null)
+                {
+                    if (e.MessageType_ == ConsoleMessageTypeStr)
+                    {
+                        // Create a console entry
+                        dc.AddItemsToConsole($"({e.SenderName_}) {e.MessageInfo_}");
+                    }
+                }
+            }
         }
     }
 }

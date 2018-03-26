@@ -100,6 +100,7 @@
       <DependentUpon>ChartToolTipUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="DashboardUserControls\ConsoleContent.cs" />
+    <Compile Include="DashboardUserControls\DashBoardEventArgs.cs" />
     <Compile Include="DashboardUserControls\DashboardUC.xaml.cs">
       <DependentUpon>DashboardUC.xaml</DependentUpon>
     </Compile>

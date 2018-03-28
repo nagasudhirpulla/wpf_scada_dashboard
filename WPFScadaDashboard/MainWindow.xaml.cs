@@ -1,18 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using WPFScadaDashboard.DashboardConfigClasses;
 using WPFScadaDashboard.DashboardDataPointClasses;
 using WPFScadaDashboard.DashboardUserControls;
@@ -44,6 +33,8 @@ namespace WPFScadaDashboard
             //this.Title = DashboardUC_.DashboardConfig_.DashboardName_;
             DashboardUC_.PropertyChanged += DashboardUC__PropertyChanged;
             //AddSeedCells();
+            String fileNameStr = (String)((App)Application.Current).Properties["FilePathArgName"];
+            DashboardUC_.OpenFileName(fileNameStr);
         }
 
         private void DashboardUC__PropertyChanged(object sender, PropertyChangedEventArgs e)

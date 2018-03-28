@@ -12,8 +12,6 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
 
         string Name_ { get; set; }
         string Id_ { get; set; }
-        
-        // Specifies the point type for serialization purposes
-        string GetPointType();
+        string PointType_ { get; set; }
     }
 }

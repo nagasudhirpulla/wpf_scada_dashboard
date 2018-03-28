@@ -9,6 +9,8 @@ namespace WPFScadaDashboard.DataFetchers
 {
     public interface IFetcherBase
     {
+        string FetcherType_ { get; set; }
+
         IPointResult FetchCurrentPointData(IDataPoint point);
 
         List<IPointResult> FetchHistoricalPointData(IDashboardTimeSeriesPoint dashboardTimeSeriesPoint);

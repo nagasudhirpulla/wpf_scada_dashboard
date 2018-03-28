@@ -8,6 +8,7 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
 {
     public class ScadaPointResult : IPointResult
     {
+        private const string resultType = "ScadaResult";
         public double Val_ { get; set; }
 
         // Data Quality of the result
@@ -18,6 +19,8 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
 
         // Result units
         public string Units_ { get; set; }
+
+        public string ResultType_ { get { return resultType; } set { } }
 
         public ScadaPointResult(double val, string DataQuality, DateTime ResultTime)
         {
@@ -32,6 +35,6 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
             DataQuality_ = DataQuality;
             ResultTime_ = ResultTime;
             Units_ = Units;
-        }        
+        }
     }
 }

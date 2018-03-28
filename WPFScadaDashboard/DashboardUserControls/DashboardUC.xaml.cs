@@ -267,7 +267,8 @@ namespace WPFScadaDashboard.DashboardUserControls
                 if (filename != null)
                 {
                     DashboardConfigBundle configBundle = GetDashBoardConfigBundle();
-                    string jsonText = JsonConvert.SerializeObject(configBundle, Formatting.Indented);
+                    JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore };
+                    string jsonText = JsonConvert.SerializeObject(configBundle, Formatting.Indented, jsonSerializerSettings);
                     File.WriteAllText(filename, jsonText);
                     dc.AddItemsToConsole("Saved the updated Dashboard!!!");
                 }

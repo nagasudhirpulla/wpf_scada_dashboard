@@ -8,7 +8,7 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
 {
     public class DashboardScadaTimeSeriesPoint : IDashboardTimeSeriesPoint
     {
-        private const string timeSeriesType = "ScadaTimeSeriesPoint";
+        public const string timeSeriesType = "ScadaTimeSeriesPoint";
         private const string AbsoluteMode = "absolute";
         private const string VariableMode = "variable";
 
@@ -28,12 +28,20 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
 
         // Periodicity of history fetch
         public int FetchPeriodSecs_ { get; set; } = 60;
-        
+
         public DashboardScadaTimeSeriesPoint(ScadaDataPoint ScadaPoint, DateTime StartTime, DateTime EndTime)
         {
             StartTimeAbsolute_ = StartTime;
             EndTimeAbsolute_ = EndTime;
             ScadaPoint_ = ScadaPoint;
+        }
+
+        // created just for the sake of the deserialization
+        public DashboardScadaTimeSeriesPoint()
+        {
+            StartTimeAbsolute_ = DateTime.Now;
+            EndTimeAbsolute_ = DateTime.Now;
+            ScadaPoint_ = new ScadaDataPoint(null);
         }
 
         public IDataPoint GetDataPoint()
@@ -78,6 +86,6 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
             {
                 return DateTime.Now.AddHours(EndTimeVariable_.HoursOffset_).AddMinutes(EndTimeVariable_.MinsOffset_).AddSeconds(EndTimeVariable_.SecsOffset_);
             }
-        }        
+        }
     }
 }

@@ -8,7 +8,7 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
 {
     public class ScadaPointResult : IPointResult
     {
-        private const string resultType = "ScadaResult";
+        public const string resultType = "ScadaResult";
         public double Val_ { get; set; }
 
         // Data Quality of the result

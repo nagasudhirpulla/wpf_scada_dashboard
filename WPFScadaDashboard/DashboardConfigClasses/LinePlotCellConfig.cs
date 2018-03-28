@@ -1,17 +1,19 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WPFScadaDashboard.DashboardDataPointClasses;
+using WPFScadaDashboard.JSONConverters;
 
 namespace WPFScadaDashboard.DashboardConfigClasses
 {
     public class LinePlotCellConfig : IDashboardCellConfig
     {
-        private const string CellType = "Time_Series_Line_Plot";
+        public const string cellType = "Time_Series_Line_Plot";
         // Implemening Interface
-        public string VizType_ { get { return CellType; } set { } }
+        public string VizType_ { get { return cellType; } set { } }
         public const string AbsoluteWidthMode = "absolute";
         public const string AbsoluteHeightMode = "absolute";
         public const string VariableWidthMode = "variable";
@@ -72,10 +74,10 @@ namespace WPFScadaDashboard.DashboardConfigClasses
             {
                 if (value != AlignmentModeStretch && value != AlignmentModeLeft && value != AlignmentModeRight && value != AlignmentModeCenter)
                 {
-                    HorizontalAlignment_ = AlignmentModeStretch;
+                    horizontalAlignment = AlignmentModeStretch;
                     return;
                 }
-                HorizontalAlignment_ = value;
+                horizontalAlignment = value;
             }
         }
 
@@ -86,10 +88,10 @@ namespace WPFScadaDashboard.DashboardConfigClasses
             {
                 if (value != AlignmentModeStretch && value != AlignmentModeTop && value != AlignmentModeBottom && value != AlignmentModeCenter)
                 {
-                    VerticalAlignment_ = AlignmentModeStretch;
+                    verticalAlignment = AlignmentModeStretch;
                     return;
                 }
-                VerticalAlignment_ = value;
+                verticalAlignment = value;
 
             }
         }
@@ -102,6 +104,7 @@ namespace WPFScadaDashboard.DashboardConfigClasses
         public DashboardCellPosition CellPosition_ { get; set; } = new DashboardCellPosition();
 
         // Data Points of the plots that are used for fetching data for line plots
+        [JsonConverter(typeof(DashboardTimeSeriesPointConverter))]
         public List<IDashboardTimeSeriesPoint> TimeSeriesPoints_ { get; set; } = new List<IDashboardTimeSeriesPoint>();
 
         // constructor

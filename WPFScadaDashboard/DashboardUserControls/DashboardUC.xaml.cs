@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -22,13 +23,31 @@ namespace WPFScadaDashboard.DashboardUserControls
     /// <summary>
     /// Interaction logic for DashboardUC.xaml
     /// </summary>
-    public partial class DashboardUC : UserControl
+    public partial class DashboardUC : UserControl, INotifyPropertyChanged
     {
+        // Declare the event
+        public event PropertyChangedEventHandler PropertyChanged;
+        // Create the OnPropertyChanged method to raise the event
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
         public static string ConsoleMessageTypeStr = "console";
 
         public string DashBoardFileName_ { get; set; } = null;
         ConsoleContent dc = new ConsoleContent();
-        public DashboardConfig DashboardConfig_ { get; set; } = new DashboardConfig();
+
+        private DashboardConfig dashboardConfig = new DashboardConfig();
+        public DashboardConfig DashboardConfig_
+        {
+            get { return dashboardConfig; }
+            set
+            {
+                dashboardConfig = value;
+                OnPropertyChanged("DashboardConfig_");
+            }
+        }
 
         private void DoInitialWireUp()
         {
@@ -104,8 +123,13 @@ namespace WPFScadaDashboard.DashboardUserControls
                 cellPositions.Add(cellPosition);
             }
 
-            int maxRows = (from pos in cellPositions select pos.RowIndex_).Max() + 1;
-            int maxCols = (from pos in cellPositions select pos.ColIndex_).Max() + 1;
+            int maxRows = 0;
+            int maxCols = 0;
+            if (cellPositions.Count > 0)
+            {
+                maxRows = (from pos in cellPositions select pos.RowIndex_).Max() + 1;
+                maxCols = (from pos in cellPositions select pos.ColIndex_).Max() + 1;
+            }
 
             // Add adequate number of row and column definitions
             // Find rows deficit
@@ -150,7 +174,7 @@ namespace WPFScadaDashboard.DashboardUserControls
             // todo do addition or deletion of col definitions
         }
 
-        public void AddDashBoardCells(IDashboardCellConfig dashboardCellConfig)
+        public void AddDashBoardCell(IDashboardCellConfig dashboardCellConfig)
         {
             if (dashboardCellConfig == null)
             {
@@ -163,6 +187,20 @@ namespace WPFScadaDashboard.DashboardUserControls
                 linePlotCellUC.Changed += new EventHandler<DashBoardEventArgs>(Changed);
                 CellsContainer.Children.Add(linePlotCellUC);
             }
+            SyncRowColDefinitionsWithCells();
+        }
+
+        public void AddDashBoardCells(List<IDashboardCellConfig> dashboardCellConfigs)
+        {
+            for (int i = 0; i < dashboardCellConfigs.Count; i++)
+            {
+                AddDashBoardCell(dashboardCellConfigs.ElementAt(i));
+            }
+        }
+
+        public void ClearDashboardCells()
+        {
+            CellsContainer.Children.Clear();
             SyncRowColDefinitionsWithCells();
         }
 
@@ -193,7 +231,34 @@ namespace WPFScadaDashboard.DashboardUserControls
 
         private void Open_Click(object sender, RoutedEventArgs e)
         {
+            // MessageBox.Show("You clicked 'Open...'");
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            // openFileDialog.Multiselect = true;
+            openFileDialog.Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*";
+            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyComputer);
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string filename = openFileDialog.FileNames[0];
+                OpenFileName(filename);
+                if (filename != null)
+                {
+                    DashBoardFileName_ = filename;
+                }
+            }
+        }
 
+        private void OpenFileName(string str)
+        {
+            if (str != null)
+            {
+                DashboardConfigBundle configBundle = JsonConvert.DeserializeObject<DashboardConfigBundle>(File.ReadAllText(str));
+                //dc.AddItemsToConsole(JsonConvert.SerializeObject(configBundle, Formatting.Indented));
+                DashboardConfig_ = configBundle.DashboardConfig_;
+                List<IDashboardCellConfig> dashboardCellConfigs = configBundle.DashboardCellConfigs_;
+                ClearDashboardCells();
+                AddDashBoardCells(dashboardCellConfigs);
+                dc.AddItemsToConsole($"Dashboard \"{DashboardConfig_.DashboardName_}\" loaded");
+            }
         }
 
         private DashboardConfigBundle GetDashBoardConfigBundle()

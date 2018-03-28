@@ -10,7 +10,7 @@ namespace WPFScadaDashboard.DataFetchers
 {
     class ScadaFetcher : IFetcherBase
     {
-        private const string fetcherType = "ScadaFetcher";
+        public const string fetcherType = "ScadaFetcher";
         public string FetcherType_ { get { return fetcherType; } set { } }
 
         // Implementing the interface

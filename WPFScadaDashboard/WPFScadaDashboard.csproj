@@ -90,9 +90,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="JSONConverters\DashboardCellConfigConverter.cs" />
     <Compile Include="DashboardConfigClasses\DashboardConfig.cs" />
     <Compile Include="DashboardConfigClasses\DashboardCellPosition.cs" />
     <Compile Include="DashboardConfigClasses\DashboardConfigBundle.cs" />
+    <Compile Include="JSONConverters\DashboardTimeSeriesPointConverter.cs" />
     <Compile Include="DashboardConfigClasses\IDashboardCellConfig.cs" />
     <Compile Include="DashboardConfigClasses\LinePlotCellConfig.cs" />
     <Compile Include="DashboardDataPointClasses\IDataPoint.cs" />

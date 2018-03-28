@@ -8,7 +8,7 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
 {
     public class ScadaDataPoint : IDataPoint
     {
-        private const string pointType = "Scada";
+        public const string pointType = "Scada";
         public string Id_ { get; set; }
 
         public string Name_ { get; set; }

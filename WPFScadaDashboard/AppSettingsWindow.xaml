@@ -1,0 +1,27 @@
+﻿<Window x:Class="WPFScadaDashboard.AppSettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFScadaDashboard"
+        mc:Ignorable="d"
+        xmlns:p="clr-namespace:WPFScadaDashboard.Properties"
+        Title="Settings" Height="300" Width="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Column="0" MinHeight="100">
+            <TextBlock>Scada Random Fetch</TextBlock>
+        </StackPanel>
+        <StackPanel Grid.Column="1" MinHeight="100">
+            <CheckBox IsChecked="{Binding IsScadaRandomFetch}"></CheckBox>
+        </StackPanel>
+        <Button Content="OK" Grid.Row="1" Grid.ColumnSpan="2" Click="OK_Pressed_Handler" HorizontalAlignment="Center" Padding="25,0"></Button>
+    </Grid>
+</Window>

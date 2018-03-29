@@ -86,6 +86,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Settings.cs" />
+    <Page Include="AppSettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DashboardUserControls\ChartToolTipUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -107,6 +112,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AppSettingsHelper.cs" />
+    <Compile Include="AppSettingsWindow.xaml.cs">
+      <DependentUpon>AppSettingsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="JSONConverters\DashboardCellConfigConverter.cs" />
     <Compile Include="DashboardConfigClasses\DashboardConfig.cs" />
     <Compile Include="DashboardConfigClasses\DashboardCellPosition.cs" />

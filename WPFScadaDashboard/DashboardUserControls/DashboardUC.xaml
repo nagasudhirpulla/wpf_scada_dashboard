@@ -15,6 +15,7 @@
                     <MenuItem Header="Save Dashboard" Click="Save_Click"/>
                     <MenuItem Header="Save Dashboard As" Click="SaveAs_Click"/>
                     <Separator />
+                    <MenuItem Header="Settings" Click="Settings_Click"/>
                 </MenuItem>
                 <MenuItem Header="_Edit" />
                 <MenuItem Header="_View"/>

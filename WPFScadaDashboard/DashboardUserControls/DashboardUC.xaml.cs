@@ -322,6 +322,15 @@ namespace WPFScadaDashboard.DashboardUserControls
             // todo fetch all cells data
 
         }
+
+        private void Settings_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new AppSettingsWindow();
+            if (dialog.ShowDialog() == true)
+            {
+                // do something
+            }
+        }
     }
 }
 

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -35,6 +36,9 @@ namespace WPFScadaDashboard.DashboardUserControls
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
+
+        // ***Declare a System.Threading.CancellationTokenSource.
+        CancellationTokenSource cts;
 
         public LinePlotCellConfig LinePlotCellConfig_;
         public SeriesCollection SeriesCollection { get; set; }
@@ -183,8 +187,14 @@ namespace WPFScadaDashboard.DashboardUserControls
 
         public string CellVerticalAlignment { get { return LinePlotCellConfig_.VerticalAlignment_; } set { LinePlotCellConfig_.VerticalAlignment_ = value; } }
 
-        public void FetchAndPlotData()
+        public async Task FetchAndPlotData()
         {
+            // stop running fetch tasks
+            if (cts != null)
+            {
+                cts.Cancel();
+            }
+
             // clear the current series of the plot
             SeriesCollection.Clear();
             double minXVal = 0;
@@ -204,19 +214,33 @@ namespace WPFScadaDashboard.DashboardUserControls
                     DashboardScadaTimeSeriesPoint scadaTimeseriesPnt = (DashboardScadaTimeSeriesPoint)pnt;
 
                     // fetch the results from the data fetcher
-                    List<ScadaPointResult> results;
-                    if (AppSettingsHelper.GetSetting<bool>("scada_fetch_random", false))
+                    List<ScadaPointResult> results = new List<ScadaPointResult>();
+
+                    // ***Instantiate the CancellationTokenSource.
+                    cts = new CancellationTokenSource();
+                    try
                     {
-                        results = scadaFetcher.FetchHistoricalPointDataTest(scadaTimeseriesPnt);
+                        // ***Send a token to carry the message if cancellation is requested.
+                        results = await scadaFetcher.FetchHistoricalPointDataAsync(scadaTimeseriesPnt, cts.Token);
+
                     }
-                    else
+                    // *** If cancellation is requested, an OperationCanceledException results.
+                    catch (OperationCanceledException)
                     {
-                        results = scadaFetcher.FetchHistoricalPointData(scadaTimeseriesPnt);
-                        if (results == null)
-                        {
-                            // handle the null results by printing in the console
-                            results = new List<ScadaPointResult>();
-                        }
+                        AddLinesToConsole("Existing Fetch task cancelled");
+                    }
+                    catch (Exception e)
+                    {
+                        AddLinesToConsole($"Error in running fetch task: {e.Message}");
+                    }
+                    // ***Set the CancellationTokenSource to null when the download is complete.
+                    cts = null;
+
+                    if (results == null)
+                    {
+                        // handle the null results by printing in the console
+                        AddLinesToConsole("No values returned after fetching");
+                        results = new List<ScadaPointResult>();
                     }
 
                     // Get Plot Values from ScadaResults
@@ -241,22 +265,25 @@ namespace WPFScadaDashboard.DashboardUserControls
                     SeriesCollection.Add(new GLineSeries() { Title = scadaTimeseriesPnt.ScadaPoint_.Name_, Values = new GearedValues<double>(plotVals), PointGeometry = null, Fill = Brushes.Transparent, StrokeThickness = 1, LineSmoothness = 0 });
 
                     // update min max Y Vals, max X val
-                    double tempVal = plotVals.Count;
-                    if (double.IsNaN(maxXVal) || maxXVal < tempVal)
+                    if (plotVals.Count > 0)
                     {
-                        maxXVal = tempVal;
-                    }
+                        double tempVal = plotVals.Count;
+                        if (double.IsNaN(maxXVal) || maxXVal < tempVal)
+                        {
+                            maxXVal = tempVal;
+                        }
 
-                    tempVal = plotVals.Max();
-                    if (double.IsNaN(maxYVal) || maxYVal < tempVal)
-                    {
-                        maxYVal = tempVal;
-                    }
+                        tempVal = plotVals.Max();
+                        if (double.IsNaN(maxYVal) || maxYVal < tempVal)
+                        {
+                            maxYVal = tempVal;
+                        }
 
-                    tempVal = plotVals.Min();
-                    if (double.IsNaN(minYVal) || minYVal > tempVal)
-                    {
-                        minYVal = tempVal;
+                        tempVal = plotVals.Min();
+                        if (double.IsNaN(minYVal) || minYVal > tempVal)
+                        {
+                            minYVal = tempVal;
+                        }
                     }
                 }
             }
@@ -348,9 +375,9 @@ namespace WPFScadaDashboard.DashboardUserControls
             OnPropertyChanged("PanHeader");
         }
 
-        private void FetchBtn_Click(object sender, RoutedEventArgs e)
+        private async void FetchBtn_Click(object sender, RoutedEventArgs e)
         {
-            FetchAndPlotData();
+            await FetchAndPlotData();
             AddLinesToConsole("Data fetched");
         }
 

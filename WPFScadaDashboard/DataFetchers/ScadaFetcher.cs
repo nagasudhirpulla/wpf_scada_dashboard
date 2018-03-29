@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WPFScadaDashboard.DashboardDataPointClasses;
 using InStep.eDNA.EzDNAApiNet;
+using System.Threading;
 
 namespace WPFScadaDashboard.DataFetchers
 {
@@ -111,6 +112,22 @@ namespace WPFScadaDashboard.DataFetchers
             for (int i = 0; i < numPeriods; i++)
             {
                 historyResults.Add(new ScadaPointResult(rand.Next(0, 100), "Good", dashboardScadaTimeSeriesPoint.GetStartTime().AddSeconds(dashboardScadaTimeSeriesPoint.FetchPeriodSecs_ * i)));
+            }
+            return historyResults;
+        }
+
+        public async Task<List<ScadaPointResult>> FetchHistoricalPointDataAsync(DashboardScadaTimeSeriesPoint dashboardScadaTimeSeriesPoint, CancellationToken ct)
+        {
+            await Task.Delay(3000);
+            List<ScadaPointResult> historyResults = new List<ScadaPointResult>();
+            if (AppSettingsHelper.GetSetting<bool>("scada_fetch_random", false))
+            {
+                // If random scada data fetch was selected
+                historyResults = FetchHistoricalPointDataTest(dashboardScadaTimeSeriesPoint);
+            }
+            else
+            {
+                historyResults = FetchHistoricalPointData(dashboardScadaTimeSeriesPoint);
             }
             return historyResults;
         }

@@ -318,7 +318,8 @@ namespace WPFScadaDashboard.DashboardUserControls
         }
 
         private void FetchBtn_Click(object sender, RoutedEventArgs e)
-        {
+        {            
+            // todo fetch all cells data
 
         }
     }

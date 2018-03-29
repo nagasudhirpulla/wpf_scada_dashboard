@@ -204,7 +204,20 @@ namespace WPFScadaDashboard.DashboardUserControls
                     DashboardScadaTimeSeriesPoint scadaTimeseriesPnt = (DashboardScadaTimeSeriesPoint)pnt;
 
                     // fetch the results from the data fetcher
-                    List<ScadaPointResult> results = scadaFetcher.FetchHistoricalPointDataTest(scadaTimeseriesPnt);
+                    List<ScadaPointResult> results;
+                    if (AppSettingsHelper.GetSetting<bool>("scada_fetch_random", false))
+                    {
+                        results = scadaFetcher.FetchHistoricalPointDataTest(scadaTimeseriesPnt);
+                    }
+                    else
+                    {
+                        results = scadaFetcher.FetchHistoricalPointData(scadaTimeseriesPnt);
+                        if (results == null)
+                        {
+                            // handle the null results by printing in the console
+                            results = new List<ScadaPointResult>();
+                        }
+                    }
 
                     // Get Plot Values from ScadaResults
                     List<double> plotVals = new List<double>();

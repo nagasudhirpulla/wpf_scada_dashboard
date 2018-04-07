@@ -118,11 +118,14 @@ namespace WPFScadaDashboard.DataFetchers
 
         public async Task<List<ScadaPointResult>> FetchHistoricalPointDataAsync(DashboardScadaTimeSeriesPoint dashboardScadaTimeSeriesPoint, CancellationToken ct)
         {
-            await Task.Delay(3000);
             List<ScadaPointResult> historyResults = new List<ScadaPointResult>();
             if (AppSettingsHelper.GetSetting<bool>("scada_fetch_random", false))
             {
                 // If random scada data fetch was selected
+                historyResults = await Task.Run<List<ScadaPointResult>>(() =>
+                {
+                    return FetchHistoricalPointDataTest(dashboardScadaTimeSeriesPoint);
+                });
                 historyResults = FetchHistoricalPointDataTest(dashboardScadaTimeSeriesPoint);
             }
             else

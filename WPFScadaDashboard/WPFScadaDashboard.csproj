@@ -86,8 +86,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DashboardUserControls\CellPosChangeReqArgs.cs" />
+    <Compile Include="DashboardUserControls\CellPosChangeWindow.xaml.cs">
+      <DependentUpon>CellPosChangeWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs" />
     <Page Include="AppSettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DashboardUserControls\CellPosChangeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

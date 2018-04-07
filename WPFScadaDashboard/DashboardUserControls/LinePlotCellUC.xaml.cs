@@ -37,10 +37,18 @@ namespace WPFScadaDashboard.DashboardUserControls
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
+        public void UpdateCellPosition()
+        {
+            OnPropertyChanged("RowIndex");
+            OnPropertyChanged("ColumnIndex");
+            OnPropertyChanged("RowSpan");
+            OnPropertyChanged("ColumnSpan");
+        }
+
         // ***Declare a System.Threading.CancellationTokenSource.
         CancellationTokenSource cts;
 
-        public LinePlotCellConfig LinePlotCellConfig_;
+        public LinePlotCellConfig LinePlotCellConfig_ { get; set; }
         public SeriesCollection SeriesCollection { get; set; }
         public Func<double, string> YFormatter { get; set; }
         public Func<double, string> XFormatter { get; set; }
@@ -94,14 +102,14 @@ namespace WPFScadaDashboard.DashboardUserControls
         }
 
         // Send Messages to Dashboard using this event handler
-        public event EventHandler<DashBoardEventArgs> Changed;
+        public event EventHandler<EventArgs> Changed;
 
-        protected virtual void OnChanged(DashBoardEventArgs e)
+        protected virtual void OnChanged(EventArgs e)
         {
             Changed?.Invoke(this, e);
         }
 
-        private void DoInitialWireUp()
+        private async void DoInitialWireUp()
         {
             InitializeComponent();
 
@@ -123,7 +131,8 @@ namespace WPFScadaDashboard.DashboardUserControls
             // MyChart.DataTooltip = new ChartToolTipUC();
 
             DataContext = this;
-            FetchAndPlotData();
+            await FetchAndPlotData();
+            ResetAxes();
         }
 
         // constructor
@@ -192,15 +201,15 @@ namespace WPFScadaDashboard.DashboardUserControls
             // stop running fetch tasks
             if (cts != null)
             {
-                cts.Cancel();
+                //cts.Cancel();
+                return;
             }
+
+            // ***Instantiate the CancellationTokenSource.
+            cts = new CancellationTokenSource();
 
             // clear the current series of the plot
             SeriesCollection.Clear();
-            double minXVal = 0;
-            double maxXVal = double.NaN;
-            double minYVal = double.NaN;
-            double maxYVal = double.NaN;
 
             // get each point data and bind it to the Series Collection
             // iterate through each timeseries point in the config
@@ -216,8 +225,6 @@ namespace WPFScadaDashboard.DashboardUserControls
                     // fetch the results from the data fetcher
                     List<ScadaPointResult> results = new List<ScadaPointResult>();
 
-                    // ***Instantiate the CancellationTokenSource.
-                    cts = new CancellationTokenSource();
                     try
                     {
                         // ***Send a token to carry the message if cancellation is requested.
@@ -233,8 +240,7 @@ namespace WPFScadaDashboard.DashboardUserControls
                     {
                         AddLinesToConsole($"Error in running fetch task: {e.Message}");
                     }
-                    // ***Set the CancellationTokenSource to null when the download is complete.
-                    cts = null;
+
 
                     if (results == null)
                     {
@@ -263,44 +269,83 @@ namespace WPFScadaDashboard.DashboardUserControls
 
                     // Add the Data Point fetch results to the Plot lines Collection
                     SeriesCollection.Add(new GLineSeries() { Title = scadaTimeseriesPnt.ScadaPoint_.Name_, Values = new GearedValues<double>(plotVals), PointGeometry = null, Fill = Brushes.Transparent, StrokeThickness = 1, LineSmoothness = 0 });
-
-                    // update min max Y Vals, max X val
-                    if (plotVals.Count > 0)
-                    {
-                        double tempVal = plotVals.Count;
-                        if (double.IsNaN(maxXVal) || maxXVal < tempVal)
-                        {
-                            maxXVal = tempVal;
-                        }
-
-                        tempVal = plotVals.Max();
-                        if (double.IsNaN(maxYVal) || maxYVal < tempVal)
-                        {
-                            maxYVal = tempVal;
-                        }
-
-                        tempVal = plotVals.Min();
-                        if (double.IsNaN(minYVal) || minYVal > tempVal)
-                        {
-                            minYVal = tempVal;
-                        }
-                    }
                 }
             }
-            // Set Axes limits
-            MyChart.AxisX[0].MinValue = minXVal;
-            MyChart.AxisX[0].MaxValue = maxXVal;
-            MyChart.AxisY[0].MinValue = minYVal;
-            MyChart.AxisY[0].MaxValue = maxYVal;
+
+            // ***Set the CancellationTokenSource to null when the download is complete.
+            cts = null;
         }
 
-        private void ResetAxes()
+        public void ResetAxes()
         {
-            MyChart.AxisX[0].MinValue = double.NaN;
-            MyChart.AxisX[0].MaxValue = double.NaN;
-            MyChart.AxisY[0].MinValue = double.NaN;
-            MyChart.AxisY[0].MaxValue = double.NaN;
-            AddLinesToConsole("Reset Axis done...");
+            // If no line series are present, then use Double.NaN for resetting the axis
+            if (SeriesCollection == null || SeriesCollection.Count == 0)
+            {
+                MyChart.AxisX[0].MinValue = double.NaN;
+                MyChart.AxisX[0].MaxValue = double.NaN;
+                MyChart.AxisY[0].MinValue = double.NaN;
+                MyChart.AxisY[0].MaxValue = double.NaN;
+            }
+            else
+            {
+                // get the first sample of all the lineseries, add +-10 for Y max/min and , lineSeries length for X axis max/min
+                double maxYVal = double.NaN;
+                double minYVal = double.NaN;
+                double numXSamples = 100;
+                // find the number of samples present
+                numXSamples = SeriesCollection.ElementAt(0).Values.Count;
+                for (int i = 0; i < SeriesCollection.Count; i++)
+                {
+                    //double maxSeriesVal = ((LiveCharts.Geared.GearedValues<float>)SeriesCollection.ElementAt(i).Values).Max();
+                    //double minSeriesVal = ((LiveCharts.Geared.GearedValues<float>)SeriesCollection.ElementAt(i).Values).Min();
+                    LiveCharts.Geared.GearedValues<double> SeriesValues = ((LiveCharts.Geared.GearedValues<double>)SeriesCollection.ElementAt(i).Values);
+                    if (SeriesValues.Count < 1)
+                    {
+                        continue;
+                    }
+                    double maxSeriesVal = SeriesValues.Max();
+                    if (double.IsNaN(maxSeriesVal))
+                    {
+                        maxSeriesVal = SeriesValues.First();
+                    }
+
+                    double minSeriesVal = SeriesValues.Min();
+                    if (double.IsNaN(minSeriesVal))
+                    {
+                        minSeriesVal = SeriesValues.First();
+                    }
+
+                    if (double.IsNaN(minYVal))
+                    {
+                        minYVal = minSeriesVal;
+                    }
+
+                    if (double.IsNaN(maxYVal))
+                    {
+                        maxYVal = maxSeriesVal;
+                    }
+
+                    if (!double.IsNaN(minSeriesVal) && minYVal > minSeriesVal)
+                    {
+                        minYVal = minSeriesVal;
+                    }
+                    if (!double.IsNaN(maxSeriesVal) && maxYVal < maxSeriesVal)
+                    {
+                        maxYVal = maxSeriesVal;
+                    }
+                }
+                double valDiff = 0;
+                if (!double.IsNaN(maxYVal) && !double.IsNaN(minYVal))
+                {
+                    valDiff = maxYVal - minYVal;
+                }
+                //MyChart.AxisX[0].SetRange(-numXSamples * 0.1, numXSamples * 1.1);
+                //MyChart.AxisY[0].SetRange(minYVal - valDiff * 0.1, maxYVal + valDiff * 0.1);
+                MyChart.AxisX[0].MinValue = -numXSamples * 0.1;
+                MyChart.AxisX[0].MaxValue = numXSamples * 1.1;
+                MyChart.AxisY[0].MinValue = minYVal - valDiff * 0.1;
+                MyChart.AxisY[0].MaxValue = maxYVal + valDiff * 0.1;
+            }
         }
 
         private void Zoom_Click(object sender, RoutedEventArgs e)
@@ -338,7 +383,6 @@ namespace WPFScadaDashboard.DashboardUserControls
 
         private void AddLinesToConsole(string v)
         {
-            // todo send events
             OnChanged(new DashBoardEventArgs(DashboardUC.ConsoleMessageTypeStr, v, LinePlotCellConfig_.Name_));
         }
 
@@ -378,12 +422,20 @@ namespace WPFScadaDashboard.DashboardUserControls
         private async void FetchBtn_Click(object sender, RoutedEventArgs e)
         {
             await FetchAndPlotData();
+            ResetAxes();
             AddLinesToConsole("Data fetched");
         }
 
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
             ResetAxes();
+            AddLinesToConsole("Reset axes done");
+        }
+
+        private void ConfigPosition_Click(object sender, RoutedEventArgs e)
+        {
+            // todo create a cell position config window
+            OnChanged(new CellPosChangeReqArgs());
         }
     }
 }

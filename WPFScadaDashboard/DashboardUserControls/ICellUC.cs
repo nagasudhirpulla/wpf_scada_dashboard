@@ -10,5 +10,6 @@ namespace WPFScadaDashboard.DashboardUserControls
     interface ICellUC
     {
         IDashboardCellConfig GetDashboardCellConfig();
+        void UpdateCellPosition();
     }
 }

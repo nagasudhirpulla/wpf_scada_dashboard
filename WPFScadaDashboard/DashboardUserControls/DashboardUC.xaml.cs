@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using WPFScadaDashboard.DashboardConfigClasses;
@@ -175,7 +176,7 @@ namespace WPFScadaDashboard.DashboardUserControls
             {
                 // Add a line plot User Control to the Cell Container
                 LinePlotCellUC linePlotCellUC = new LinePlotCellUC((LinePlotCellConfig)dashboardCellConfig);
-                linePlotCellUC.Changed += new EventHandler<DashBoardEventArgs>(Changed);
+                linePlotCellUC.Changed += new EventHandler<EventArgs>(Changed);
                 CellsContainer.Children.Add(linePlotCellUC);
             }
             SyncRowColDefinitionsWithCells();
@@ -205,16 +206,34 @@ namespace WPFScadaDashboard.DashboardUserControls
             return dashboardCellConfigs;
         }
 
-        private void Changed(object sender, DashBoardEventArgs e)
+        private void Changed(object sender, EventArgs eArgs)
         {
             if (sender is ICellUC fc)
             {
-                if (e != null)
+                if (eArgs is DashBoardEventArgs e)
                 {
-                    if (e.MessageType_ == ConsoleMessageTypeStr)
+                    if (e != null)
                     {
-                        // Create a console entry
-                        dc.AddItemsToConsole($"({e.SenderName_}) {e.MessageStr_}");
+                        if (e.MessageType_ == ConsoleMessageTypeStr)
+                        {
+                            // Create a console entry
+                            dc.AddItemsToConsole($"({e.SenderName_}) {e.MessageStr_}");
+                        }
+                    }
+                }
+                else if (eArgs is CellPosChangeReqArgs cellPosChangeArgs)
+                {
+                    if (cellPosChangeArgs != null)
+                    {
+                        // todo create a position change window for the particular cell
+                        CellPosChangeWindow cellPosChangeWindow = new CellPosChangeWindow(fc.GetDashboardCellConfig().CellPosition_);
+                        if (cellPosChangeWindow.ShowDialog() == true)
+                        {
+                            // change the cell position
+                            fc.GetDashboardCellConfig().CellPosition_ = cellPosChangeWindow.posConfigVM.cellPosition;
+                            SyncRowColDefinitionsWithCells();
+                            fc.UpdateCellPosition();
+                        }
                     }
                 }
             }
@@ -318,7 +337,7 @@ namespace WPFScadaDashboard.DashboardUserControls
         }
 
         private void FetchBtn_Click(object sender, RoutedEventArgs e)
-        {            
+        {
             // todo fetch all cells data
 
         }

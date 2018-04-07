@@ -18,6 +18,7 @@
             <lvc:CartesianChart Series="{Binding SeriesCollection}" Grid.Row="1" Name="MyChart" Zoom="Xy" Pan="Xy" DisableAnimations="True" Hoverable="True" Background="#171717">
                 <lvc:CartesianChart.ContextMenu>
                     <ContextMenu>
+                        <MenuItem Header="ConfigurePosition" Click="ConfigPosition_Click"></MenuItem>
                         <MenuItem Header="{Binding ZoomHeader}">
                             <MenuItem Header="ZoomXY" Tag="ZXY" Click="Zoom_Click" IsCheckable="True" IsChecked="True"/>
                             <MenuItem Header="ZoomX" Tag="ZX" Click="Zoom_Click" IsCheckable="True"/>

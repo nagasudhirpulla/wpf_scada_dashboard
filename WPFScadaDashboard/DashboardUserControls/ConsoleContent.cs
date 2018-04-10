@@ -23,5 +23,10 @@ namespace WPFScadaDashboard.DashboardUserControls
         {
             consoleOutput_.Add(DateTime.Now.ToString("HH:mm:ss") + " " + str);
         }
+
+        public void ClearConsole()
+        {
+            consoleOutput_.Clear();
+        }
     }
 }

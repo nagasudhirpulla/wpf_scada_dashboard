@@ -17,7 +17,11 @@
                     <Separator />
                     <MenuItem Header="Settings" Click="Settings_Click"/>
                 </MenuItem>
-                <MenuItem Header="_Edit" />
+                <MenuItem Header="Cells">
+                    <MenuItem Header="Add Cell">
+                        <MenuItem Header="TimeSeries Cell" Click="AddTimeSeriesPlotCell_Click"></MenuItem>
+                    </MenuItem>
+                </MenuItem>
                 <MenuItem Header="_View"/>
                 <MenuItem Header="_Window" >
                     <MenuItem Header="NewWindow" Click="NewWindow_Click"/>
@@ -33,12 +37,18 @@
             <Grid x:Name="DashboardContainer">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"></RowDefinition>
-                    <RowDefinition Height="100"></RowDefinition>
+                    <RowDefinition Height="{Binding DashboardConfig_.ConsoleHeight_}"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Grid x:Name="CellsContainer" Grid.Row="0" Width="Auto">
 
                 </Grid>
                 <ScrollViewer Name="Scroller" Margin="0" Background="Black" Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <ScrollViewer.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Clear Console" Click="ClearConsole_Click"></MenuItem>
+                            <MenuItem Header="Change Height" Click="ChangeConsoleHeight_Click"></MenuItem>
+                        </ContextMenu>
+                    </ScrollViewer.ContextMenu>
                     <StackPanel>
                         <ItemsControl Name="consoleItems">
                             <ItemsControl.ItemTemplate>
@@ -50,7 +60,7 @@
                     </StackPanel>
                 </ScrollViewer>
             </Grid>
-        </ScrollViewer>        
-        
+        </ScrollViewer>
+
     </DockPanel>
 </UserControl>

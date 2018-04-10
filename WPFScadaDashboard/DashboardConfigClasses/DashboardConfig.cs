@@ -11,6 +11,8 @@ namespace WPFScadaDashboard.DashboardConfigClasses
         // Name of the dashboard
         public string DashboardName_ { get; set; } = "Dashboard_Name";
 
+        public int ConsoleHeight_ { get; set; } = 80;
+
         public DashboardConfig(string dashboardName_)
         {
             DashboardName_ = dashboardName_;

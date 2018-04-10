@@ -39,10 +39,17 @@ namespace WPFScadaDashboard.DashboardUserControls
 
         public void UpdateCellPosition()
         {
+            //todo update width, height and respective modes also
             OnPropertyChanged("RowIndex");
             OnPropertyChanged("ColumnIndex");
             OnPropertyChanged("RowSpan");
             OnPropertyChanged("ColumnSpan");
+        }
+
+        public void DeleteCell()
+        {
+            // Send message to dashboard to delete this cell
+            OnChanged(new DashBoardEventArgs(DashboardUC.DeleteCellMessageTypeStr, LinePlotCellConfig_.Name_));
         }
 
         // ***Declare a System.Threading.CancellationTokenSource.
@@ -436,6 +443,12 @@ namespace WPFScadaDashboard.DashboardUserControls
         {
             // todo create a cell position config window
             OnChanged(new CellPosChangeReqArgs());
+        }
+
+        private void DeleteBtn_Click(object sender, RoutedEventArgs e)
+        {
+            // https://www.flaticon.com/free-icon/rubbish-bin-delete-button_60761#term=delete&page=1&position=9
+            DeleteCell();
         }
     }
 }

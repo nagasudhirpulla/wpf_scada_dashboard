@@ -90,6 +90,9 @@
     <Compile Include="DashboardUserControls\CellPosChangeWindow.xaml.cs">
       <DependentUpon>CellPosChangeWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DashboardUserControls\ConsoleConfigWindow.xaml.cs">
+      <DependentUpon>ConsoleConfigWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs" />
     <Page Include="AppSettingsWindow.xaml">
       <SubType>Designer</SubType>
@@ -100,6 +103,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DashboardUserControls\ChartToolTipUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DashboardUserControls\ConsoleConfigWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -194,6 +201,11 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\delete_small.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

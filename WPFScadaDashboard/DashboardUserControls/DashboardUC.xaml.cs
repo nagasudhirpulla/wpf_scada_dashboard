@@ -25,7 +25,8 @@ namespace WPFScadaDashboard.DashboardUserControls
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public static string ConsoleMessageTypeStr = "console";
+        public const string ConsoleMessageTypeStr = "console";
+        public const string DeleteCellMessageTypeStr = "delete_cell";
 
         public string DashBoardFileName_ { get; set; } = null;
         ConsoleContent dc = new ConsoleContent();
@@ -148,7 +149,7 @@ namespace WPFScadaDashboard.DashboardUserControls
 
             if (colDeficit > 0)
             {
-                // add deficit rows
+                // add deficit columns
                 for (int i = 0; i < colDeficit; i++)
                 {
                     CellsContainer.ColumnDefinitions.Add(GetNewColDefinition());
@@ -157,13 +158,12 @@ namespace WPFScadaDashboard.DashboardUserControls
             }
             else if (colDeficit < 0)
             {
-                // delete excess rows
+                // delete excess columns
                 for (int i = 0; i < -colDeficit; i++)
                 {
                     CellsContainer.ColumnDefinitions.RemoveAt(0);
                 }
             }
-            // todo do addition or deletion of col definitions
         }
 
         public void AddDashBoardCell(IDashboardCellConfig dashboardCellConfig)
@@ -188,6 +188,21 @@ namespace WPFScadaDashboard.DashboardUserControls
             {
                 AddDashBoardCell(dashboardCellConfigs.ElementAt(i));
             }
+        }
+
+        public void DeleteDashboardCellAt(int cellIndex)
+        {
+            if (cellIndex >= 0 && cellIndex < CellsContainer.Children.Count)
+            {
+                CellsContainer.Children.RemoveAt(cellIndex);
+            }
+            SyncRowColDefinitionsWithCells();
+        }
+
+        public void DeleteDashboardCell(UIElement cellUC)
+        {
+            CellsContainer.Children.Remove(cellUC);
+            SyncRowColDefinitionsWithCells();
         }
 
         public void ClearDashboardCells()
@@ -218,6 +233,17 @@ namespace WPFScadaDashboard.DashboardUserControls
                         {
                             // Create a console entry
                             dc.AddItemsToConsole($"({e.SenderName_}) {e.MessageStr_}");
+                        }
+                        else if (e.MessageType_ == DeleteCellMessageTypeStr)
+                        {
+                            // get the filename
+                            if (MessageBox.Show("Are you sure to delete this cell?", "Delete Cell", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                            {
+                                string cellName = fc.GetDashboardCellConfig().Name_;
+                                // Delete the particular UI Element or Dashbaord Cell
+                                DeleteDashboardCell((UIElement)fc);
+                                dc.AddItemsToConsole($"{cellName} is deleted");
+                            }
                         }
                     }
                 }
@@ -349,6 +375,34 @@ namespace WPFScadaDashboard.DashboardUserControls
             {
                 // do something
             }
+        }
+
+        private void AddTimeSeriesPlotCell_Click(object sender, RoutedEventArgs e)
+        {
+            LinePlotCellConfig linePlotCellConfig = new LinePlotCellConfig();
+            AddDashBoardCell(linePlotCellConfig);
+        }
+
+        private void ClearConsole_Click(object sender, RoutedEventArgs e)
+        {
+            ClearConsole();
+        }
+
+        private void ClearConsole()
+        {
+            dc.ClearConsole();
+        }
+
+        private void ChangeConsoleHeight_Click(object sender, RoutedEventArgs e)
+        {
+            ConsoleConfigWindow consoleConfigWindow = new ConsoleConfigWindow(DashboardConfig_.ConsoleHeight_);
+            if (consoleConfigWindow.ShowDialog() == true)
+            {
+                // change the cell position
+                DashboardConfig_.ConsoleHeight_ = consoleConfigWindow.ConsoleConfigVM_.ConsoleHeight_;
+                OnPropertyChanged("DashboardConfig_");
+            }
+
         }
     }
 }

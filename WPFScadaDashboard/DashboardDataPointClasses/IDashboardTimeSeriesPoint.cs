@@ -11,9 +11,12 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
         string TimeSeriesType_ { get; set; }
 
         DateTime GetStartTime();
+        DateTime StartTime { get; }
 
         DateTime GetEndTime();
+        DateTime EndTime { get; }
 
         IDataPoint GetDataPoint();
+        IDataPoint DataPoint { get; set; }
     }
 }

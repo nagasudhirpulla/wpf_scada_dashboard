@@ -93,6 +93,9 @@
     <Compile Include="DashboardUserControls\ConsoleConfigWindow.xaml.cs">
       <DependentUpon>ConsoleConfigWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DashboardUserControls\DataPointsConfigWindow.xaml.cs">
+      <DependentUpon>DataPointsConfigWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs" />
     <Page Include="AppSettingsWindow.xaml">
       <SubType>Designer</SubType>
@@ -115,6 +118,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DashboardUserControls\LinePlotCellUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DashboardUserControls\DataPointsConfigWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

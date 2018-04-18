@@ -49,6 +49,21 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
             return ScadaPoint_;
         }
 
+        public IDataPoint DataPoint {
+            get
+            {
+                return ScadaPoint_;
+            }
+            set
+            {
+                if (value is ScadaDataPoint scadaDataPoint)
+                {
+                    //stub
+                    ScadaPoint_ = scadaDataPoint;
+                }
+            }
+        }
+
         public void SetFetchPeriodMins(int mins)
         {
             FetchPeriodSecs_ = mins * 60;
@@ -76,6 +91,8 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
             }
         }
 
+        public DateTime StartTime { get { return GetStartTime(); } }
+
         public DateTime GetEndTime()
         {
             if (EndTimeMode_ == AbsoluteMode)
@@ -87,5 +104,7 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
                 return DateTime.Now.AddHours(EndTimeVariable_.HoursOffset_).AddMinutes(EndTimeVariable_.MinsOffset_).AddSeconds(EndTimeVariable_.SecsOffset_);
             }
         }
+
+        public DateTime EndTime { get { return GetEndTime(); } }
     }
 }

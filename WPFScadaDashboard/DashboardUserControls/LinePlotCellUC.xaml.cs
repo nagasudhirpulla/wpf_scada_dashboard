@@ -45,11 +45,11 @@ namespace WPFScadaDashboard.DashboardUserControls
             OnPropertyChanged("RowSpan");
             OnPropertyChanged("ColumnSpan");
             OnPropertyChanged("CellWidth");
-            OnPropertyChanged("CellHeight");            
-            OnPropertyChanged("CellMinWidth");            
-            OnPropertyChanged("CellMinHeight");            
-            OnPropertyChanged("CellHorizontalAlignment");            
-            OnPropertyChanged("CellVerticalAlignment");            
+            OnPropertyChanged("CellHeight");
+            OnPropertyChanged("CellMinWidth");
+            OnPropertyChanged("CellMinHeight");
+            OnPropertyChanged("CellHorizontalAlignment");
+            OnPropertyChanged("CellVerticalAlignment");
         }
 
         public void DeleteCell()
@@ -459,8 +459,12 @@ namespace WPFScadaDashboard.DashboardUserControls
 
         private void ConfigDataPoints_Click(object sender, RoutedEventArgs e)
         {
-            // todo create configure data points window and update changes after add/edit/remove points
-            
+            // todo create configure data points window to get the result and update changes after add/edit/remove points
+            DataPointsConfigWindow dataPointsConfigWindow = new DataPointsConfigWindow(LinePlotCellConfig_);
+            if (dataPointsConfigWindow.ShowDialog() == true)
+            {
+
+            }
         }
     }
 }

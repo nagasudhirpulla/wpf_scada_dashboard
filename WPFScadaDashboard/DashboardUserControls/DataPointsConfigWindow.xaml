@@ -1,0 +1,46 @@
+﻿<Window x:Class="WPFScadaDashboard.DashboardUserControls.DataPointsConfigWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFScadaDashboard"
+        mc:Ignorable="d"
+        Title="Configure Data Points" Height="450" Width="800">
+    <Window.Resources>
+        <Style x:Key="TextBoxBorderStyle" 
+               TargetType="{x:Type TextBox}">
+            <Setter Property="BorderBrush" Value="Gray" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>        
+    </Window.Resources>
+    <ScrollViewer Name="Scroller" Margin="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Grid Name="DataPointsConfigForm">
+            <Grid.ColumnDefinitions></Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Data Points"></TextBlock>
+            <ListBox Grid.Row="1" Name="lbTimeSeriesPoints" HorizontalContentAlignment="Stretch">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox IsReadOnly="True" Margin="2,0" Text="{Binding StartTime, StringFormat=dd-MM-yyyy_HH:mm, Mode=OneWay}"/>
+                            <TextBox IsReadOnly="True" Margin="2,0" Text="{Binding EndTime, StringFormat=dd-MM-yyyy_HH:mm, Mode=OneWay}" Grid.Column="1"/>
+                            <TextBox IsReadOnly="True" Margin="2,0" Text="{Binding DataPoint.Id_, Mode=OneWay}" Grid.Column="2"/>
+                            <Button Margin="2,0" Content="Edit" Grid.Column="3"></Button>
+                            <Button Margin="2,0" Name="lbDeleteBtn" Click="LbDeleteBtn_Click" Content="Delete" Grid.Column="4"></Button>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+    </ScrollViewer>
+</Window>

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFScadaDashboard.DashboardUserControls"
         mc:Ignorable="d"
-        Title="CellPosChangeWindow" Height="500" Width="500">
+        Title="Configure Cell Position" Height="500" Width="500">
     <ScrollViewer Name="Scroller" Margin="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
         <Grid Name="CellPosChangeForm" Margin="10, 10, 10, 10">
             <Grid.RowDefinitions>

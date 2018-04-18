@@ -22,10 +22,10 @@ namespace WPFScadaDashboard.DashboardUserControls
     public partial class CellPosChangeWindow : Window
     {
         public PosConfigVM posConfigVM;
-        public CellPosChangeWindow(DashboardCellPosition cellPosition)
+        public CellPosChangeWindow(IDashboardCellConfig cellConfig)
         {
             InitializeComponent();            
-            posConfigVM = new PosConfigVM(cellPosition);
+            posConfigVM = new PosConfigVM(cellConfig);
             CellPosChangeForm.DataContext = posConfigVM;
         }
 
@@ -69,16 +69,16 @@ namespace WPFScadaDashboard.DashboardUserControls
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public string RowIndex { get { return cellPosition.RowIndex_.ToString(); } set { cellPosition.RowIndex_ = int.Parse(value); } }
-        public string ColumnIndex { get { return cellPosition.ColIndex_.ToString(); } set { cellPosition.ColIndex_ = int.Parse(value); } }
-        public string RowSpan { get { return cellPosition.RowSpan_.ToString(); } set { cellPosition.RowSpan_ = int.Parse(value); } }
-        public string ColumnSpan { get { return cellPosition.ColSpan_.ToString(); } set { cellPosition.ColSpan_ = int.Parse(value); } }
+        public string RowIndex { get { return cellConfig.CellPosition_.RowIndex_.ToString(); } set { cellConfig.CellPosition_.RowIndex_ = int.Parse(value); } }
+        public string ColumnIndex { get { return cellConfig.CellPosition_.ColIndex_.ToString(); } set { cellConfig.CellPosition_.ColIndex_ = int.Parse(value); } }
+        public string RowSpan { get { return cellConfig.CellPosition_.RowSpan_.ToString(); } set { cellConfig.CellPosition_.RowSpan_ = int.Parse(value); } }
+        public string ColumnSpan { get { return cellConfig.CellPosition_.ColSpan_.ToString(); } set { cellConfig.CellPosition_.ColSpan_ = int.Parse(value); } }
 
-        public DashboardCellPosition cellPosition;
+        public IDashboardCellConfig cellConfig;
 
-        public PosConfigVM(DashboardCellPosition cellPosition)
+        public PosConfigVM(IDashboardCellConfig cellPosition)
         {
-            this.cellPosition = cellPosition;
+            this.cellConfig = cellPosition;
             NotifyPropertyChanged("RowIndex");
             NotifyPropertyChanged("ColumnIndex");
             NotifyPropertyChanged("RowSpan");

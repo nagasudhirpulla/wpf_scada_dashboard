@@ -252,11 +252,11 @@ namespace WPFScadaDashboard.DashboardUserControls
                     if (cellPosChangeArgs != null)
                     {
                         // todo create a position change window for the particular cell
-                        CellPosChangeWindow cellPosChangeWindow = new CellPosChangeWindow(fc.GetDashboardCellConfig().CellPosition_);
+                        CellPosChangeWindow cellPosChangeWindow = new CellPosChangeWindow(fc.GetDashboardCellConfig());
                         if (cellPosChangeWindow.ShowDialog() == true)
                         {
                             // change the cell position
-                            fc.GetDashboardCellConfig().CellPosition_ = cellPosChangeWindow.posConfigVM.cellPosition;
+                            fc.GetDashboardCellConfig().CellPosition_ = cellPosChangeWindow.posConfigVM.cellConfig.CellPosition_;
                             SyncRowColDefinitionsWithCells();
                             fc.UpdateCellPosition();
                         }

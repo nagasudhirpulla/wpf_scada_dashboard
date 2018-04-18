@@ -25,10 +25,10 @@
             <TextBlock Text="Column Span"></TextBlock>
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="1">
-            <TextBox Name="RowIndexInput" Text="{Binding RowIndex, Mode=TwoWay}"></TextBox>
-            <TextBox Name="ColumnIndexInput" Text="{Binding ColumnIndex, Mode=TwoWay}"></TextBox>
-            <TextBox Name="RowSpanInput" Text="{Binding RowSpan, Mode=TwoWay}"></TextBox>
-            <TextBox Name="ColumnSpanInput" Text="{Binding ColumnSpan, Mode=TwoWay}"></TextBox>
+            <TextBox Name="RowIndexInput" PreviewTextInput="OnPreviewTextInput" Text="{Binding RowIndex, Mode=TwoWay}"></TextBox>
+            <TextBox Name="ColumnIndexInput" PreviewTextInput="OnPreviewTextInput" Text="{Binding ColumnIndex, Mode=TwoWay}"></TextBox>
+            <TextBox Name="RowSpanInput" PreviewTextInput="OnPreviewTextInput" Text="{Binding RowSpan, Mode=TwoWay}"></TextBox>
+            <TextBox Name="ColumnSpanInput" PreviewTextInput="OnPreviewTextInput" Text="{Binding ColumnSpan, Mode=TwoWay}"></TextBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center">
             <Button Name="UpdateBtn" Content="Update" Click="UpdateBtn_Click"></Button>

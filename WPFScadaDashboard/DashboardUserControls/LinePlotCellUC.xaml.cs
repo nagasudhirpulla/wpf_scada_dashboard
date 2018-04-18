@@ -456,6 +456,12 @@ namespace WPFScadaDashboard.DashboardUserControls
             // https://www.flaticon.com/free-icon/rubbish-bin-delete-button_60761#term=delete&page=1&position=9
             DeleteCell();
         }
+
+        private void ConfigDataPoints_Click(object sender, RoutedEventArgs e)
+        {
+            // todo create configure data points window and update changes after add/edit/remove points
+            
+        }
     }
 }
 

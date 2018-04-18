@@ -257,6 +257,14 @@ namespace WPFScadaDashboard.DashboardUserControls
                         {
                             // change the cell position
                             fc.GetDashboardCellConfig().CellPosition_ = cellPosChangeWindow.posConfigVM.cellConfig.CellPosition_;
+                            fc.GetDashboardCellConfig().CellHeight_ = cellPosChangeWindow.posConfigVM.cellConfig.CellHeight_;
+                            fc.GetDashboardCellConfig().CellWidth_ = cellPosChangeWindow.posConfigVM.cellConfig.CellWidth_;
+                            fc.GetDashboardCellConfig().HeightMode_ = cellPosChangeWindow.posConfigVM.cellConfig.HeightMode_;
+                            fc.GetDashboardCellConfig().WidthMode_ = cellPosChangeWindow.posConfigVM.cellConfig.WidthMode_;
+                            fc.GetDashboardCellConfig().MinHeight_ = cellPosChangeWindow.posConfigVM.cellConfig.MinHeight_;
+                            fc.GetDashboardCellConfig().MinWidth_ = cellPosChangeWindow.posConfigVM.cellConfig.MinWidth_;
+                            fc.GetDashboardCellConfig().HorizontalAlignment_ = cellPosChangeWindow.posConfigVM.cellConfig.HorizontalAlignment_;
+                            fc.GetDashboardCellConfig().VerticalAlignment_ = cellPosChangeWindow.posConfigVM.cellConfig.VerticalAlignment_;
                             SyncRowColDefinitionsWithCells();
                             fc.UpdateCellPosition();
                         }

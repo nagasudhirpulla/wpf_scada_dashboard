@@ -44,6 +44,12 @@ namespace WPFScadaDashboard.DashboardUserControls
             OnPropertyChanged("ColumnIndex");
             OnPropertyChanged("RowSpan");
             OnPropertyChanged("ColumnSpan");
+            OnPropertyChanged("CellWidth");
+            OnPropertyChanged("CellHeight");            
+            OnPropertyChanged("CellMinWidth");            
+            OnPropertyChanged("CellMinHeight");            
+            OnPropertyChanged("CellHorizontalAlignment");            
+            OnPropertyChanged("CellVerticalAlignment");            
         }
 
         public void DeleteCell()

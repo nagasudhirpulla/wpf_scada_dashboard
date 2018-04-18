@@ -23,6 +23,10 @@ namespace WPFScadaDashboard.DashboardConfigClasses
 
         double CellHeight_ { get; set; }
 
+        double MinWidth_ { get; set; }
+
+        double MinHeight_ { get; set; }
+
         string WidthMode_ { get; set; }
 
         string HeightMode_ { get; set; }

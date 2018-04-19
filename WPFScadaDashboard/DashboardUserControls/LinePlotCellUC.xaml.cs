@@ -457,13 +457,14 @@ namespace WPFScadaDashboard.DashboardUserControls
             DeleteCell();
         }
 
-        private void ConfigDataPoints_Click(object sender, RoutedEventArgs e)
+        private async void ConfigDataPoints_Click(object sender, RoutedEventArgs e)
         {
             // todo create configure data points window to get the result and update changes after add/edit/remove points
             DataPointsConfigWindow dataPointsConfigWindow = new DataPointsConfigWindow(LinePlotCellConfig_);
             if (dataPointsConfigWindow.ShowDialog() == true)
             {
-
+                LinePlotCellConfig_.TimeSeriesPoints_ = new List<IDashboardTimeSeriesPoint>(dataPointsConfigWindow.dataPointsVM.dashboardTimeSeriesPoints);
+                await FetchAndPlotData();                
             }
         }
     }

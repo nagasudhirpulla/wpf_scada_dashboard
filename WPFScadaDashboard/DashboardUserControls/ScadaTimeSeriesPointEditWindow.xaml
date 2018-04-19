@@ -1,0 +1,32 @@
+﻿<Window x:Class="WPFScadaDashboard.DashboardUserControls.ScadaTimeSeriesPointEditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFScadaDashboard.DashboardUserControls"
+        mc:Ignorable="d"
+        Title="Scada Timeseries Point Edit Window" Height="450" Width="800">
+    <ScrollViewer Name="Scroller" Margin="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Grid Name="ScadaPointEditForm">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Edit Scada Timeseries Data Point" Grid.ColumnSpan="2" HorizontalAlignment="Center"></TextBlock>
+            <TextBlock Grid.Row="1">Point Id</TextBlock>
+            <TextBox Text="{Binding ScadaTimeSeriesPoint.ScadaPoint_.Id_, Mode=TwoWay}" Grid.Row="1" Grid.Column="1" Name="PointIdInp"></TextBox>
+            <TextBlock Grid.Row="2">Name</TextBlock>
+            <TextBox Text="{Binding ScadaTimeSeriesPoint.ScadaPoint_.Name_, Mode=TwoWay}" Grid.Row="2" Grid.Column="1" Name="PointNameInp"></TextBox>
+            <TextBlock Grid.Row="3">Extended Id</TextBlock>
+            <TextBox Text="{Binding ScadaTimeSeriesPoint.ScadaPoint_.ExtendedId_, Mode=TwoWay}" Grid.Row="3" Grid.Column="1" Name="PointExtIdInp"></TextBox>
+            <Button Content="Update" Grid.Row="4" Grid.Column="0" Click="UpdateBtn_Click"></Button>
+        </Grid>
+    </ScrollViewer>
+</Window>

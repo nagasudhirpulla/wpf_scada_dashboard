@@ -11,12 +11,15 @@
                TargetType="{x:Type TextBox}">
             <Setter Property="BorderBrush" Value="Gray" />
             <Setter Property="BorderThickness" Value="1" />
-        </Style>        
+        </Style>
     </Window.Resources>
     <ScrollViewer Name="Scroller" Margin="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
         <Grid Name="DataPointsConfigForm">
             <Grid.ColumnDefinitions></Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
@@ -31,16 +34,31 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <TextBox IsReadOnly="True" Margin="2,0" Text="{Binding StartTime, StringFormat=dd-MM-yyyy_HH:mm, Mode=OneWay}"/>
                             <TextBox IsReadOnly="True" Margin="2,0" Text="{Binding EndTime, StringFormat=dd-MM-yyyy_HH:mm, Mode=OneWay}" Grid.Column="1"/>
                             <TextBox IsReadOnly="True" Margin="2,0" Text="{Binding DataPoint.Id_, Mode=OneWay}" Grid.Column="2"/>
-                            <Button Margin="2,0" Content="Edit" Grid.Column="3"></Button>
-                            <Button Margin="2,0" Name="lbDeleteBtn" Click="LbDeleteBtn_Click" Content="Delete" Grid.Column="4"></Button>
+                            <TextBox IsReadOnly="True" Margin="2,0" Text="{Binding DataPoint.Name_, Mode=OneWay}" Grid.Column="3"/>
+                            <Button Margin="2,0" Name="lbEditBtn" Click ="LbEditBtn_Click" Content="Edit" Grid.Column="4"></Button>
+                            <Button Margin="2,0" Name="lbDeleteBtn" Click="LbDeleteBtn_Click" Content="Delete" Grid.Column="5"></Button>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+            <StackPanel Grid.Row="2"  Orientation="Horizontal">
+                <ComboBox Name="TimeSeriesPointTypesComboBox" SelectedIndex="0" ItemsSource="{Binding PointTypes}" Margin="5">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Button Click="AddBtn_Click" Content="Add Point"></Button>
+            </StackPanel>
+            <Button Grid.Row="3" HorizontalAlignment="Center" Content="Update" Click="UpdateBtn_Click"></Button>
         </Grid>
     </ScrollViewer>
 </Window>

@@ -32,7 +32,7 @@ namespace WPFScadaDashboard
             MainContainer.Content = DashboardUC_;
             //this.Title = DashboardUC_.DashboardConfig_.DashboardName_;
             DashboardUC_.PropertyChanged += DashboardUC__PropertyChanged;
-            //AddSeedCells();
+            AddSeedCells();
             String fileNameStr = (String)((App)Application.Current).Properties["FilePathArgName"];
             DashboardUC_.OpenFileName(fileNameStr);
         }
@@ -51,17 +51,19 @@ namespace WPFScadaDashboard
             {
                 Name_ = "First Cell Name",
                 CellPosition_ = new DashboardCellPosition(0, 0, 1, 2),
-                TimeSeriesPoints_ = new List<IDashboardTimeSeriesPoint> { new DashboardScadaTimeSeriesPoint(new ScadaDataPoint("123"), DateTime.Now.AddHours(-10), DateTime.Now) }
+                TimeSeriesPoints_ = new List<IDashboardTimeSeriesPoint> { new DashboardScadaTimeSeriesPoint(new ScadaDataPoint("746"), DateTime.Now.AddHours(-10), DateTime.Now), new DashboardScadaTimeSeriesPoint(new ScadaDataPoint("106"), DateTime.Now.AddHours(-10), DateTime.Now) }
             };
             LinePlotCellConfig linePlotCellConfig2 = new LinePlotCellConfig
             {
                 Name_ = "Second Cell Name",
-                CellPosition_ = new DashboardCellPosition(1, 0)
+                CellPosition_ = new DashboardCellPosition(1, 0),
+                TimeSeriesPoints_ = new List<IDashboardTimeSeriesPoint> { new DashboardScadaTimeSeriesPoint(new ScadaDataPoint("123"), DateTime.Now.AddHours(-10), DateTime.Now), new DashboardScadaTimeSeriesPoint(new ScadaDataPoint("852"), DateTime.Now.AddHours(-10), DateTime.Now), new DashboardScadaTimeSeriesPoint(new ScadaDataPoint("946"), DateTime.Now.AddHours(-10), DateTime.Now) }
             };
             LinePlotCellConfig linePlotCellConfig3 = new LinePlotCellConfig
             {
                 Name_ = "Third Cell Name",
-                CellPosition_ = new DashboardCellPosition(1, 1)
+                CellPosition_ = new DashboardCellPosition(1, 1),
+                TimeSeriesPoints_ = new List<IDashboardTimeSeriesPoint> { new DashboardScadaTimeSeriesPoint(new ScadaDataPoint("123"), DateTime.Now.AddHours(-10), DateTime.Now), new DashboardScadaTimeSeriesPoint(new ScadaDataPoint("852"), DateTime.Now.AddHours(-10), DateTime.Now), new DashboardScadaTimeSeriesPoint(new ScadaDataPoint("946"), DateTime.Now.AddHours(-10), DateTime.Now) }
             };
             DashboardUC_.AddDashBoardCell(linePlotCellConfig);
             DashboardUC_.AddDashBoardCell(linePlotCellConfig2);

@@ -45,46 +45,11 @@ namespace WPFScadaDashboard.DashboardUserControls
             }
         }
 
-        private bool AreAllValidNumericChars(string str)
-        {
-            foreach (char c in str)
-            {
-                if (!Char.IsNumber(c)) return false;
-            }
-
-            return true;
-        }
-
         // https://stackoverflow.com/questions/5511/numeric-data-entry-in-wpf
         private void OnPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = !AreAllValidNumericChars(e.Text);
+            e.Handled = !Helpers.NumericTextValidation.AreAllValidNumericChars(e.Text);
             base.OnPreviewTextInput(e);
-        }
-
-        // https://social.msdn.microsoft.com/Forums/vstudio/en-US/b1a0c663-5665-433d-bcad-76fabe90b406/select-listboxitem-on-buttonclick-in-listboxitem?forum=wpf
-        private DependencyObject FindParentTreeItem(DependencyObject CurrentControl, Type ParentType)
-        {
-            bool notfound = true;
-            while (notfound)
-            {
-                DependencyObject parent = VisualTreeHelper.GetParent(CurrentControl);
-                string ParentTypeName = ParentType.Name;
-                //Compare current type name with what we want
-                if (parent == null)
-                {
-                    System.Diagnostics.Debugger.Break();
-                    notfound = false;
-                    continue;
-                }
-                if (parent.GetType().Name == ParentTypeName)
-                {
-                    return parent;
-                }
-                //we haven't found it so walk up the tree.
-                CurrentControl = parent;
-            }
-            return null;
         }
 
         private void LbDeleteBtn_Click(object sender, RoutedEventArgs e)
@@ -99,7 +64,7 @@ namespace WPFScadaDashboard.DashboardUserControls
                 //a button on list view has been clicked
                 Button button = sender as Button;
                 //walk up the tree to find the ListboxItem
-                DependencyObject tvi = FindParentTreeItem(button, typeof(ListBoxItem));
+                DependencyObject tvi = Helpers.ListUtility.FindParentTreeItem(button, typeof(ListBoxItem));
                 //if not null cast the Dependancy object to type of Listbox item.
                 if (tvi != null)
                 {
@@ -107,6 +72,60 @@ namespace WPFScadaDashboard.DashboardUserControls
                     // Delete the object from Observable Collection
                     IDashboardTimeSeriesPoint timeSeriesPoint = (IDashboardTimeSeriesPoint)lbi.DataContext;
                     dataPointsVM.dashboardTimeSeriesPoints.Remove(timeSeriesPoint);
+                }
+            }
+        }
+
+        private void LbEditBtn_Click(object sender, RoutedEventArgs e)
+        {
+            //a button on list view has been clicked
+            Button button = sender as Button;
+            //walk up the tree to find the ListboxItem
+            DependencyObject tvi = Helpers.ListUtility.FindParentTreeItem(button, typeof(ListBoxItem));
+            //if not null cast the Dependancy object to type of Listbox item.
+            if (tvi != null)
+            {
+                ListBoxItem lbi = tvi as ListBoxItem;
+                IDashboardTimeSeriesPoint timeSeriesPoint = (IDashboardTimeSeriesPoint)lbi.DataContext;
+                // Open edit window for this point
+                if (timeSeriesPoint is DashboardScadaTimeSeriesPoint scadaTimeSeriesPoint)
+                {
+                    ScadaTimeSeriesPointEditWindow scadaTimeSeriesPointEditWindow = new ScadaTimeSeriesPointEditWindow(scadaTimeSeriesPoint);
+                    scadaTimeSeriesPointEditWindow.ShowDialog();
+                    if (scadaTimeSeriesPointEditWindow.DialogResult == true)
+                    {
+                        // update the point
+                        int pointIndex = dataPointsVM.dashboardTimeSeriesPoints.IndexOf(timeSeriesPoint);
+                        if (pointIndex >= 0)
+                        {
+                            dataPointsVM.dashboardTimeSeriesPoints[pointIndex] = scadaTimeSeriesPointEditWindow.scadaTimeSeriesPointVM.ScadaTimeSeriesPoint;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void AddBtn_Click(object sender, RoutedEventArgs e)
+        {
+            // show relavent edit window
+            if (TimeSeriesPointTypesComboBox.SelectedIndex > -1 && TimeSeriesPointTypesComboBox.SelectedIndex <= dataPointsVM.PointTypes.Count && dataPointsVM.PointTypes[TimeSeriesPointTypesComboBox.SelectedIndex] == DashboardScadaTimeSeriesPoint.timeSeriesType)
+            {
+                // show scada point edit window with relavent initialisation
+                DateTime startTime = DateTime.Now;
+                DateTime endTime = startTime;
+                ScadaDataPoint pnt = new ScadaDataPoint("");
+                if (dataPointsVM.dashboardTimeSeriesPoints.Count > 0)
+                {
+                    startTime = dataPointsVM.dashboardTimeSeriesPoints.ElementAt(0).StartTime;
+                    endTime = dataPointsVM.dashboardTimeSeriesPoints.ElementAt(0).EndTime;
+                }
+                DashboardScadaTimeSeriesPoint scadaTimeSeriesPoint = new DashboardScadaTimeSeriesPoint(pnt, startTime, endTime);
+                ScadaTimeSeriesPointEditWindow scadaTimeSeriesPointEditWindow = new ScadaTimeSeriesPointEditWindow(scadaTimeSeriesPoint);
+                scadaTimeSeriesPointEditWindow.ShowDialog();
+                if (scadaTimeSeriesPointEditWindow.DialogResult == true)
+                {
+                    // update the point
+                    dataPointsVM.dashboardTimeSeriesPoints.Add(scadaTimeSeriesPointEditWindow.scadaTimeSeriesPointVM.ScadaTimeSeriesPoint);
                 }
             }
         }
@@ -123,11 +142,11 @@ namespace WPFScadaDashboard.DashboardUserControls
 
         public ObservableCollection<IDashboardTimeSeriesPoint> dashboardTimeSeriesPoints;
 
+        public List<string> PointTypes { get; set; } = new List<string> { DashboardScadaTimeSeriesPoint.timeSeriesType };
+
         public DataPointsConfigVM(LinePlotCellConfig dashboardCellConfig)
         {
             this.dashboardTimeSeriesPoints = new ObservableCollection<IDashboardTimeSeriesPoint>(dashboardCellConfig.TimeSeriesPoints_);
         }
-
-
     }
 }

@@ -8,11 +8,19 @@
         Title="Scada Timeseries Point Edit Window" Height="450" Width="800">
     <ScrollViewer Name="Scroller" Margin="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
         <Grid Name="ScadaPointEditForm">
+            <Grid.Resources>
+                <local:IsAbsoluteDateVisibleConverter x:Key="IsAbsoluteDateVisibleConverter"/>
+                <local:IsVariableDateVisibleConverter x:Key="IsVariableDateVisibleConverter"/>
+            </Grid.Resources>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
@@ -26,7 +34,121 @@
             <TextBox Text="{Binding ScadaTimeSeriesPoint.ScadaPoint_.Name_, Mode=TwoWay}" Grid.Row="2" Grid.Column="1" Name="PointNameInp"></TextBox>
             <TextBlock Grid.Row="3">Extended Id</TextBlock>
             <TextBox Text="{Binding ScadaTimeSeriesPoint.ScadaPoint_.ExtendedId_, Mode=TwoWay}" Grid.Row="3" Grid.Column="1" Name="PointExtIdInp"></TextBox>
-            <Button Content="Update" Grid.Row="4" Grid.Column="0" Click="UpdateBtn_Click"></Button>
+            <StackPanel Grid.Row="5">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Start Time Mode" Margin="5"></TextBlock>
+                    <ComboBox Name="StartDateModesComboBox" SelectedIndex="{Binding StartDateMode, Mode=TwoWay}" ItemsSource="{Binding DateLimitsModes}" Margin="5">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Visibility="{Binding StartDateModeStr, Converter={StaticResource IsAbsoluteDateVisibleConverter}}">
+                    <DatePicker Name="StartDatePicker" Margin="5" SelectedDate="{Binding StartDate, Mode=TwoWay}"></DatePicker>
+                    <ComboBox Name="StartTimeHoursComboBox" SelectedIndex="{Binding StartTimeHoursIndex, Mode=TwoWay}" ItemsSource="{Binding HourStrings}" Margin="5" MinWidth="45">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <ComboBox Name="StartTimeMinsComboBox" SelectedIndex="{Binding StartTimeMinsIndex, Mode=TwoWay}" ItemsSource="{Binding MinuteStrings}" Margin="5" MinWidth="45">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <ComboBox Name="StartTimeSecsComboBox" SelectedIndex="{Binding StartTimeSecsIndex, Mode=TwoWay}" ItemsSource="{Binding MinuteStrings}" Margin="5" MinWidth="45">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>                    
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Visibility="{Binding StartDateModeStr, Converter={StaticResource IsVariableDateVisibleConverter}}">
+                    <TextBox Name="StartTimeVarHrsInput" PreviewTextInput="OnPreviewTextInput" Text="{Binding StartHoursVariable, Mode=TwoWay}" Margin="5" MinWidth="40"></TextBox>
+                    <TextBlock Text="Hrs |" Margin="5"></TextBlock>
+                    <TextBox Name="StartTimeVarMinsInput" PreviewTextInput="OnPreviewTextInput" Text="{Binding StartMinsVariable, Mode=TwoWay}" Margin="5" MinWidth="40"></TextBox>
+                    <TextBlock Text="Mins |" Margin="5"></TextBlock>
+                    <TextBox Name="StartTimeVarSecsInput" PreviewTextInput="OnPreviewTextInput" Text="{Binding StartSecsVariable, Mode=TwoWay}" Margin="5" MinWidth="40"></TextBox>
+                    <TextBlock Text="Secs |" Margin="5"></TextBlock>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Grid.Row="5" Grid.Column="1">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="End Time Mode" Margin="5"></TextBlock>
+                    <ComboBox Name="EndDateModesComboBox" SelectedIndex="{Binding EndDateMode, Mode=TwoWay}" ItemsSource="{Binding DateLimitsModes}" Margin="5">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Visibility="{Binding EndDateModeStr, Converter={StaticResource IsAbsoluteDateVisibleConverter}}">
+                    <DatePicker Name="EndDatePicker" Margin="5" SelectedDate="{Binding EndDate, Mode=TwoWay}"></DatePicker>
+                    <ComboBox Name="EndTimeHoursComboBox" SelectedIndex="{Binding EndTimeHoursIndex, Mode=TwoWay}" ItemsSource="{Binding HourStrings}" Margin="5" MinWidth="45">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <ComboBox Name="EndTimeMinsComboBox" SelectedIndex="{Binding EndTimeMinsIndex, Mode=TwoWay}" ItemsSource="{Binding MinuteStrings}" Margin="5" MinWidth="45">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <ComboBox Name="EndTimeSecsComboBox" SelectedIndex="{Binding EndTimeSecsIndex, Mode=TwoWay}" ItemsSource="{Binding MinuteStrings}" Margin="5" MinWidth="45">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Visibility="{Binding EndDateModeStr, Converter={StaticResource IsVariableDateVisibleConverter}}">
+                    <TextBox Name="EndTimeVarHrsInput" PreviewTextInput="OnPreviewTextInput" Text="{Binding EndHoursVariable, Mode=TwoWay}" Margin="5" MinWidth="40"></TextBox>
+                    <TextBlock Text="Hrs |" Margin="5"></TextBlock>
+                    <TextBox Name="EndTimeVarMinsInput" PreviewTextInput="OnPreviewTextInput" Text="{Binding EndMinsVariable, Mode=TwoWay}" Margin="5" MinWidth="40"></TextBox>
+                    <TextBlock Text="Mins |" Margin="5"></TextBlock>
+                    <TextBox Name="EndTimeVarSecsInput" PreviewTextInput="OnPreviewTextInput" Text="{Binding EndSecsVariable, Mode=TwoWay}" Margin="5" MinWidth="40"></TextBox>
+                    <TextBlock Text="Secs |" Margin="5"></TextBlock>
+                </StackPanel>
+            </StackPanel>
+            <TextBlock Grid.Row = "4" Grid.Column = "0" Text = "Data Rate" Margin = "5"  
+         HorizontalAlignment = "Left" VerticalAlignment = "Center" Width = "100" />
+            <StackPanel Grid.Row = "4" Grid.Column = "1" Orientation="Horizontal">
+                <TextBox PreviewTextInput="OnPreviewTextInput" Name="FetchWindowHrsInput" Text="{Binding FetchWindowHrs, Mode=TwoWay}" Margin="5" MinWidth="40"></TextBox>
+                <TextBlock Text="Hrs |" Margin="5"></TextBlock>
+                <TextBox PreviewTextInput="OnPreviewTextInput" Name="FetchWindowMinsInput" Text="{Binding FetchWindowMins, Mode=TwoWay}" Margin="5" MinWidth="40"></TextBox>
+                <TextBlock Text="Mins |" Margin="5"></TextBlock>
+                <TextBox PreviewTextInput="OnPreviewTextInput" Name="FetchWindowSecsInput" Text="{Binding FetchWindowSecs, Mode=TwoWay}" Margin="5" MinWidth="40"></TextBox>
+                <TextBlock Text="Secs |" Margin="5"></TextBlock>
+            </StackPanel>
+            <Button Content="Update" Grid.Row="6" Grid.Column="0" Click="UpdateBtn_Click"></Button>
         </Grid>
     </ScrollViewer>
 </Window>

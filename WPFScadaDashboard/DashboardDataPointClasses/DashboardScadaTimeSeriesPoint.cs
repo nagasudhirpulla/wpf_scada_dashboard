@@ -9,16 +9,17 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
     public class DashboardScadaTimeSeriesPoint : IDashboardTimeSeriesPoint
     {
         public const string timeSeriesType = "ScadaTimeSeriesPoint";
-        private const string AbsoluteMode = "absolute";
-        private const string VariableMode = "variable";
+        public const string AbsoluteMode = "absolute";
+        public const string VariableMode = "variable";
 
         public string TimeSeriesType_ { get { return timeSeriesType; } set { } }
         public DateTime StartTimeAbsolute_ { get; set; }
         public DateTime EndTimeAbsolute_ { get; set; }
         public string StartTimeMode_ { get; set; } = AbsoluteMode;
         public string EndTimeMode_ { get; set; } = AbsoluteMode;
-        public VariableTime StartTimeVariable_ { get; set; }
-        public VariableTime EndTimeVariable_ { get; set; }
+        public VariableTime StartTimeVariable_ { get; set; } = new VariableTime();
+        public VariableTime EndTimeVariable_ { get; set; } = new VariableTime();
+        public VariableTime FetchTime_ { get; set; } = new VariableTime(0, 0, 60);
 
         // The Scada Point of the TimeSeries Data Configuration
         public ScadaDataPoint ScadaPoint_ { get; set; }
@@ -27,7 +28,7 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
         public string HistoryFetchStrategy_ { get; set; } = "snap";
 
         // Periodicity of history fetch
-        public int FetchPeriodSecs_ { get; set; } = 60;
+        public int FetchPeriodSecs_ { get { return 3600 * FetchTime_.HoursOffset_ + 60 * FetchTime_.MinsOffset_ + FetchTime_.SecsOffset_; } }
 
         public DashboardScadaTimeSeriesPoint(ScadaDataPoint ScadaPoint, DateTime StartTime, DateTime EndTime)
         {
@@ -36,12 +37,19 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
             ScadaPoint_ = ScadaPoint;
         }
 
+        public DashboardScadaTimeSeriesPoint(DashboardScadaTimeSeriesPoint pnt)
+        {
+            StartTimeAbsolute_ = pnt.StartTimeAbsolute_;
+            EndTimeAbsolute_ = pnt.EndTimeAbsolute_;
+            ScadaPoint_ = new ScadaDataPoint(pnt.ScadaPoint_);
+        }
+
         // created just for the sake of the deserialization
         public DashboardScadaTimeSeriesPoint()
         {
             StartTimeAbsolute_ = DateTime.Now;
             EndTimeAbsolute_ = DateTime.Now;
-            ScadaPoint_ = new ScadaDataPoint(null);
+            ScadaPoint_ = new ScadaDataPoint("");
         }
 
         public IDataPoint GetDataPoint()
@@ -49,7 +57,8 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
             return ScadaPoint_;
         }
 
-        public IDataPoint DataPoint {
+        public IDataPoint DataPoint
+        {
             get
             {
                 return ScadaPoint_;
@@ -64,21 +73,6 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
             }
         }
 
-        public void SetFetchPeriodMins(int mins)
-        {
-            FetchPeriodSecs_ = mins * 60;
-        }
-
-        public void SetFetchPeriodHours(int hours)
-        {
-            FetchPeriodSecs_ = hours * 60 * 60;
-        }
-
-        public void SetFetchPeriodDays(int days)
-        {
-            FetchPeriodSecs_ = days * 24 * 60 * 60;
-        }
-
         public DateTime GetStartTime()
         {
             if (StartTimeMode_ == AbsoluteMode)
@@ -87,7 +81,7 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
             }
             else
             {
-                return DateTime.Now.AddHours(StartTimeVariable_.HoursOffset_).AddMinutes(StartTimeVariable_.MinsOffset_).AddSeconds(StartTimeVariable_.SecsOffset_);
+                return DateTime.Now.AddHours(-1 * StartTimeVariable_.HoursOffset_).AddMinutes(-1 * StartTimeVariable_.MinsOffset_).AddSeconds(-1 * StartTimeVariable_.SecsOffset_);
             }
         }
 
@@ -101,7 +95,7 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
             }
             else
             {
-                return DateTime.Now.AddHours(EndTimeVariable_.HoursOffset_).AddMinutes(EndTimeVariable_.MinsOffset_).AddSeconds(EndTimeVariable_.SecsOffset_);
+                return DateTime.Now.AddHours(-1 * EndTimeVariable_.HoursOffset_).AddMinutes(-1 * EndTimeVariable_.MinsOffset_).AddSeconds(-1 * EndTimeVariable_.SecsOffset_);
             }
         }
 

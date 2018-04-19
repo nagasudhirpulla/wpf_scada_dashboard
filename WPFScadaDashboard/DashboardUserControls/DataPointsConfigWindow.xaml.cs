@@ -90,7 +90,7 @@ namespace WPFScadaDashboard.DashboardUserControls
                 // Open edit window for this point
                 if (timeSeriesPoint is DashboardScadaTimeSeriesPoint scadaTimeSeriesPoint)
                 {
-                    ScadaTimeSeriesPointEditWindow scadaTimeSeriesPointEditWindow = new ScadaTimeSeriesPointEditWindow(scadaTimeSeriesPoint);
+                    ScadaTimeSeriesPointEditWindow scadaTimeSeriesPointEditWindow = new ScadaTimeSeriesPointEditWindow(new DashboardScadaTimeSeriesPoint(scadaTimeSeriesPoint));
                     scadaTimeSeriesPointEditWindow.ShowDialog();
                     if (scadaTimeSeriesPointEditWindow.DialogResult == true)
                     {
@@ -99,6 +99,8 @@ namespace WPFScadaDashboard.DashboardUserControls
                         if (pointIndex >= 0)
                         {
                             dataPointsVM.dashboardTimeSeriesPoints[pointIndex] = scadaTimeSeriesPointEditWindow.scadaTimeSeriesPointVM.ScadaTimeSeriesPoint;
+                            ICollectionView view = CollectionViewSource.GetDefaultView(dataPointsVM.dashboardTimeSeriesPoints);
+                            view.Refresh();
                         }
                     }
                 }

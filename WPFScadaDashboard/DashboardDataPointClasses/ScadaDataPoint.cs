@@ -36,5 +36,12 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
             Name_ = Name;
             ExtendedId_ = ExtendedId;
         }
+
+        public ScadaDataPoint(ScadaDataPoint pnt)
+        {
+            Id_ = pnt.Id_;
+            Name_ = pnt.Name_;
+            ExtendedId_ = pnt.ExtendedId_;
+        }
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using WPFScadaDashboard.DashboardDataPointClasses;
 
 namespace WPFScadaDashboard.Helpers
 {
@@ -33,6 +34,26 @@ namespace WPFScadaDashboard.Helpers
                 CurrentControl = parent;
             }
             return null;
+        }
+
+        public static DateTime GetDateTime(DateTime timeAbsolute_, VariableTime timeVariable_, string timeMode_, string dateMode_, int dateOffset_)
+        {
+            if (timeMode_ == DashboardScadaTimeSeriesPoint.AbsoluteMode)
+            {
+                if (dateMode_ == DashboardScadaTimeSeriesPoint.VariableMode)
+                {
+                    // stub
+                    // return variable date but with time of the StartTimeAbsolute_ component
+                    DateTime date = DateTime.Now.AddDays(-1 * dateOffset_);
+                    return new DateTime(date.Year, date.Month, date.Day, timeAbsolute_.Hour, timeAbsolute_.Minute, timeAbsolute_.Second);
+                }
+                return timeAbsolute_;
+
+            }
+            else
+            {
+                return DateTime.Now.AddHours(-1 * timeVariable_.HoursOffset_).AddMinutes(-1 * timeVariable_.MinsOffset_).AddSeconds(-1 * timeVariable_.SecsOffset_);
+            }
         }
     }
 }

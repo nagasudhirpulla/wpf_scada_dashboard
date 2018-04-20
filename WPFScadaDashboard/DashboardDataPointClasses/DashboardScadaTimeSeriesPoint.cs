@@ -15,7 +15,11 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
         public string TimeSeriesType_ { get { return timeSeriesType; } set { } }
         public DateTime StartTimeAbsolute_ { get; set; }
         public DateTime EndTimeAbsolute_ { get; set; }
+        public string StartDateMode_ { get; set; } = AbsoluteMode;
+        public int StartDateOffset_ { get; set; } = 0;
         public string StartTimeMode_ { get; set; } = AbsoluteMode;
+        public string EndDateMode_ { get; set; } = AbsoluteMode;
+        public int EndDateOffset_ { get; set; } = 0;
         public string EndTimeMode_ { get; set; } = AbsoluteMode;
         public VariableTime StartTimeVariable_ { get; set; } = new VariableTime();
         public VariableTime EndTimeVariable_ { get; set; } = new VariableTime();
@@ -40,7 +44,16 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
         public DashboardScadaTimeSeriesPoint(DashboardScadaTimeSeriesPoint pnt)
         {
             StartTimeAbsolute_ = pnt.StartTimeAbsolute_;
+            StartTimeVariable_ = pnt.StartTimeVariable_;
+            StartTimeMode_ = pnt.StartTimeMode_;
+            StartDateMode_ = pnt.StartDateMode_;
+            StartDateOffset_ = pnt.StartDateOffset_;
             EndTimeAbsolute_ = pnt.EndTimeAbsolute_;
+            EndTimeVariable_ = pnt.EndTimeVariable_;
+            EndTimeMode_ = pnt.EndTimeMode_;
+            EndDateMode_ = pnt.EndDateMode_;
+            EndDateOffset_ = pnt.EndDateOffset_;
+            FetchTime_ = pnt.FetchTime_;
             ScadaPoint_ = new ScadaDataPoint(pnt.ScadaPoint_);
         }
 
@@ -67,7 +80,6 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
             {
                 if (value is ScadaDataPoint scadaDataPoint)
                 {
-                    //stub
                     ScadaPoint_ = scadaDataPoint;
                 }
             }
@@ -75,28 +87,14 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
 
         public DateTime GetStartTime()
         {
-            if (StartTimeMode_ == AbsoluteMode)
-            {
-                return StartTimeAbsolute_;
-            }
-            else
-            {
-                return DateTime.Now.AddHours(-1 * StartTimeVariable_.HoursOffset_).AddMinutes(-1 * StartTimeVariable_.MinsOffset_).AddSeconds(-1 * StartTimeVariable_.SecsOffset_);
-            }
+            return Helpers.ListUtility.GetDateTime(StartTimeAbsolute_, StartTimeVariable_, StartTimeMode_, StartDateMode_, StartDateOffset_);            
         }
 
         public DateTime StartTime { get { return GetStartTime(); } }
 
         public DateTime GetEndTime()
         {
-            if (EndTimeMode_ == AbsoluteMode)
-            {
-                return EndTimeAbsolute_;
-            }
-            else
-            {
-                return DateTime.Now.AddHours(-1 * EndTimeVariable_.HoursOffset_).AddMinutes(-1 * EndTimeVariable_.MinsOffset_).AddSeconds(-1 * EndTimeVariable_.SecsOffset_);
-            }
+            return Helpers.ListUtility.GetDateTime(EndTimeAbsolute_, EndTimeVariable_, EndTimeMode_, EndDateMode_, EndDateOffset_);            
         }
 
         public DateTime EndTime { get { return GetEndTime(); } }

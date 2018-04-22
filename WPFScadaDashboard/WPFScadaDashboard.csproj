@@ -86,6 +86,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DashboardConfigClasses\AutoFetchConfig.cs" />
     <Compile Include="DashboardUserControls\CellPosChangeReqArgs.cs" />
     <Compile Include="DashboardUserControls\CellPosChangeWindow.xaml.cs">
       <DependentUpon>CellPosChangeWindow.xaml</DependentUpon>
@@ -95,6 +96,9 @@
     </Compile>
     <Compile Include="DashboardUserControls\DataPointsConfigWindow.xaml.cs">
       <DependentUpon>DataPointsConfigWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DashboardUserControls\FetchConfigWindow.xaml.cs">
+      <DependentUpon>FetchConfigWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="DashboardUserControls\ScadaTimeSeriesPointEditWindow.xaml.cs">
       <DependentUpon>ScadaTimeSeriesPointEditWindow.xaml</DependentUpon>
@@ -119,6 +123,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DashboardUserControls\DashboardUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DashboardUserControls\FetchConfigWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

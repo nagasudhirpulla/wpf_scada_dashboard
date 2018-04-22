@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 using WPFScadaDashboard.DashboardConfigClasses;
 
 namespace WPFScadaDashboard.DashboardUserControls
@@ -31,6 +32,10 @@ namespace WPFScadaDashboard.DashboardUserControls
         public string DashBoardFileName_ { get; set; } = null;
         ConsoleContent dc = new ConsoleContent();
 
+        public AutoFetchConfig AutoFetchConfig_ = new AutoFetchConfig();
+
+        private DispatcherTimer FetchTimer_;
+
         private DashboardConfig dashboardConfig = new DashboardConfig();
         public DashboardConfig DashboardConfig_
         {
@@ -48,6 +53,9 @@ namespace WPFScadaDashboard.DashboardUserControls
             consoleItems.ItemsSource = dc.ConsoleOutput;
             dc.AddItemsToConsole("Hello User!");
             DataContext = this;
+            FetchTimer_ = new DispatcherTimer();
+            UpdateFetcherInterval();
+            FetchTimer_.Tick += Fetch_Timer_Tick;
         }
 
         public DashboardUC()
@@ -251,7 +259,6 @@ namespace WPFScadaDashboard.DashboardUserControls
                 {
                     if (cellPosChangeArgs != null)
                     {
-                        // todo create a position change window for the particular cell
                         CellPosChangeWindow cellPosChangeWindow = new CellPosChangeWindow(fc.GetDashboardCellConfig());
                         if (cellPosChangeWindow.ShowDialog() == true)
                         {
@@ -372,8 +379,48 @@ namespace WPFScadaDashboard.DashboardUserControls
 
         private void FetchBtn_Click(object sender, RoutedEventArgs e)
         {
-            // todo fetch all cells data
+            RefreshAllCells();
+        }
 
+        private void FetchStopBtn_Click(object sender, RoutedEventArgs e)
+        {
+            StopFetching();
+            dc.AddItemsToConsole("Stopped Fetching");
+        }
+
+        private void StopFetching()
+        {
+            // stop the fetch timer if active
+            if (FetchTimer_.IsEnabled)
+            {
+                FetchTimer_.Stop();
+            }
+        }
+
+        public void UpdateFetcherInterval()
+        {
+            FetchTimer_.Interval = TimeSpan.FromSeconds(AutoFetchConfig_.TimePeriod_.HoursOffset_ * 60 * 60 + AutoFetchConfig_.TimePeriod_.MinsOffset_ * 60 + AutoFetchConfig_.TimePeriod_.SecsOffset_);
+            // todo change this in app config also
+        }
+
+        private void AutoFetchStart_Click(object sender, RoutedEventArgs e)
+        {
+            StopFetching();
+            FetchTimer_.Start();
+        }
+
+        private void RefreshAllCells()
+        {
+            // Fetch all cells data
+            for (int i = 0; i < CellsContainer.Children.Count; i++)
+            {
+                // trigger the fetch data action in all cells
+                //DashboardCellPosition cellPosition = ((ICellUC)(CellsContainer.Children[i])).GetDashboardCellConfig().CellPosition_;
+                if (CellsContainer.Children[i] is ICellUC cellUC)
+                {
+                    cellUC.RefreshCell();
+                }
+            }
         }
 
         private void Settings_Click(object sender, RoutedEventArgs e)
@@ -383,6 +430,25 @@ namespace WPFScadaDashboard.DashboardUserControls
             {
                 // do something
             }
+        }
+
+        public void AutoFetchConfigBtn_Click(object sender, RoutedEventArgs e)
+        {
+            FetchConfigWindow fetchConfigWindow = new FetchConfigWindow();
+            fetchConfigWindow.ShowDialog();
+            if (fetchConfigWindow.DialogResult == true)
+            {
+                AutoFetchConfig_ = fetchConfigWindow.fetchConfigVM.AutoFetchConfig;
+                // change the fetcher timer interval
+                UpdateFetcherInterval();
+                dc.AddItemsToConsole("Auto Fetch config changes saved...");
+            }
+        }
+
+        
+        private void Fetch_Timer_Tick(object sender, EventArgs e)
+        {
+            RefreshAllCells();
         }
 
         private void AddTimeSeriesPlotCell_Click(object sender, RoutedEventArgs e)
@@ -411,7 +477,7 @@ namespace WPFScadaDashboard.DashboardUserControls
                 OnPropertyChanged("DashboardConfig_");
             }
 
-        }
+        }        
     }
 }
 

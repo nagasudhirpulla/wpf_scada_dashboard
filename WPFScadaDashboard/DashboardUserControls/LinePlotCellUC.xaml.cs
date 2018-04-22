@@ -467,6 +467,11 @@ namespace WPFScadaDashboard.DashboardUserControls
                 await FetchAndPlotData();                
             }
         }
+
+        public async void RefreshCell()
+        {
+            await FetchAndPlotData();
+        }
     }
 }
 

@@ -1,0 +1,31 @@
+﻿<Window x:Class="WPFScadaDashboard.DashboardUserControls.FetchConfigWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFScadaDashboard.DashboardUserControls"
+        mc:Ignorable="d"
+        Title="FetchConfigWindow" Height="450" Width="800">
+    <Grid Name="AutoFetchConfigForm">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Auto Fetch Period"></TextBlock>
+        <StackPanel Grid.Row = "1" Orientation="Horizontal">
+            <TextBox Name="FetchWindowHrsInput" Text="{Binding FetchWindowHrs, Mode=TwoWay}" Margin="5" MinWidth="40"></TextBox>
+            <TextBlock Text="Hrs |" Margin="5"></TextBlock>
+            <TextBox Name="FetchWindowMinsInput" Text="{Binding FetchWindowMins, Mode=TwoWay}" Margin="5" MinWidth="40"></TextBox>
+            <TextBlock Text="Mins |" Margin="5"></TextBlock>
+            <TextBox Name="FetchWindowSecsInput" Text="{Binding FetchWindowSecs, Mode=TwoWay}" Margin="5" MinWidth="40"></TextBox>
+            <TextBlock Text="Secs |" Margin="5"></TextBlock>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Margin="5" Orientation="Horizontal" HorizontalAlignment="Center" >
+            <Button Content="Update Changes" Click="UpdateChanges_Click" Margin="5"></Button>
+        </StackPanel>
+    </Grid>
+</Window>

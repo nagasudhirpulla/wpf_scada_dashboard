@@ -12,5 +12,6 @@ namespace WPFScadaDashboard.DashboardUserControls
         IDashboardCellConfig GetDashboardCellConfig();
         void UpdateCellPosition();
         void DeleteCell();
+        void RefreshCell();
     }
 }

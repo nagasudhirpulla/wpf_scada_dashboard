@@ -37,7 +37,7 @@
             <StackPanel Grid.Row="5">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Start Time Mode" Margin="5"></TextBlock>
-                    <ComboBox Name="StartDateModesComboBox" SelectedIndex="{Binding StartDateMode, Mode=TwoWay}" ItemsSource="{Binding DateLimitsModes}" Margin="5">
+                    <ComboBox Name="StartTimeModesComboBox" SelectedIndex="{Binding StartTimeMode, Mode=TwoWay}" ItemsSource="{Binding DateLimitsModes}" Margin="5">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -47,7 +47,16 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Visibility="{Binding StartDateModeStr, Converter={StaticResource IsAbsoluteDateVisibleConverter}}">
+                <StackPanel Orientation="Horizontal" Visibility="{Binding StartTimeModeStr, Converter={StaticResource IsAbsoluteDateVisibleConverter}}">
+                    <ComboBox Name="StartDateModesComboBox" SelectedIndex="{Binding StartDateMode, Mode=TwoWay}" ItemsSource="{Binding DateLimitsModes}" Margin="5" MinWidth="45">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                     <DatePicker Name="StartDatePicker" Margin="5" SelectedDate="{Binding StartDate, Mode=TwoWay}"></DatePicker>
                     <ComboBox Name="StartTimeHoursComboBox" SelectedIndex="{Binding StartTimeHoursIndex, Mode=TwoWay}" ItemsSource="{Binding HourStrings}" Margin="5" MinWidth="45">
                         <ComboBox.ItemTemplate>
@@ -75,9 +84,9 @@
                                 </StackPanel>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
-                    </ComboBox>                    
+                    </ComboBox>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Visibility="{Binding StartDateModeStr, Converter={StaticResource IsVariableDateVisibleConverter}}">
+                <StackPanel Orientation="Horizontal" Visibility="{Binding StartTimeModeStr, Converter={StaticResource IsVariableDateVisibleConverter}}">
                     <TextBox Name="StartTimeVarHrsInput" PreviewTextInput="OnPreviewTextInput" Text="{Binding StartHoursVariable, Mode=TwoWay}" Margin="5" MinWidth="40"></TextBox>
                     <TextBlock Text="Hrs |" Margin="5"></TextBlock>
                     <TextBox Name="StartTimeVarMinsInput" PreviewTextInput="OnPreviewTextInput" Text="{Binding StartMinsVariable, Mode=TwoWay}" Margin="5" MinWidth="40"></TextBox>

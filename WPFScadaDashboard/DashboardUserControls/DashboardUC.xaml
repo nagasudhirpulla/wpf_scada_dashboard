@@ -58,7 +58,7 @@
                         <ItemsControl Name="consoleItems">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBox IsReadOnly="True" Text="{Binding Path=.}" Background="Transparent" BorderThickness="1" Foreground="White" FontFamily="Consolas"/>
+                                    <TextBox IsReadOnly="True" Text="{Binding Path=.}" Background="Transparent" BorderThickness="1" Foreground="#AAAAAA" FontFamily="Consolas" BorderBrush="#555555"/>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>

@@ -351,13 +351,20 @@ namespace WPFScadaDashboard.DashboardUserControls
                 if (!double.IsNaN(maxYVal) && !double.IsNaN(minYVal))
                 {
                     valDiff = maxYVal - minYVal;
+                    //MyChart.AxisX[0].SetRange(-numXSamples * 0.1, numXSamples * 1.1);
+                    //MyChart.AxisY[0].SetRange(minYVal - valDiff * 0.1, maxYVal + valDiff * 0.1);
+                    MyChart.AxisX[0].MinValue = -numXSamples * 0.1;
+                    MyChart.AxisX[0].MaxValue = numXSamples * 1.1;
+                    MyChart.AxisY[0].MinValue = minYVal - valDiff * 0.1;
+                    MyChart.AxisY[0].MaxValue = maxYVal + valDiff * 0.1;
                 }
-                //MyChart.AxisX[0].SetRange(-numXSamples * 0.1, numXSamples * 1.1);
-                //MyChart.AxisY[0].SetRange(minYVal - valDiff * 0.1, maxYVal + valDiff * 0.1);
-                MyChart.AxisX[0].MinValue = -numXSamples * 0.1;
-                MyChart.AxisX[0].MaxValue = numXSamples * 1.1;
-                MyChart.AxisY[0].MinValue = minYVal - valDiff * 0.1;
-                MyChart.AxisY[0].MaxValue = maxYVal + valDiff * 0.1;
+                else
+                {
+                    MyChart.AxisX[0].MinValue = double.NaN;
+                    MyChart.AxisX[0].MaxValue = double.NaN;
+                    MyChart.AxisY[0].MinValue = double.NaN;
+                    MyChart.AxisY[0].MaxValue = double.NaN;
+                }
             }
         }
 
@@ -464,7 +471,7 @@ namespace WPFScadaDashboard.DashboardUserControls
             if (dataPointsConfigWindow.ShowDialog() == true)
             {
                 LinePlotCellConfig_.TimeSeriesPoints_ = new List<IDashboardTimeSeriesPoint>(dataPointsConfigWindow.dataPointsVM.dashboardTimeSeriesPoints);
-                await FetchAndPlotData();                
+                await FetchAndPlotData();
             }
         }
 

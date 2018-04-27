@@ -71,6 +71,21 @@ namespace WPFScadaDashboard.DashboardUserControls
         public List<string> DateTimeModes { get; set; } = new List<string> { DashboardScadaTimeSeriesPoint.AbsoluteMode, DashboardScadaTimeSeriesPoint.VariableMode };
         public List<string> DateModes { get; set; } = new List<string> { DashboardScadaTimeSeriesPoint.AbsoluteDateMode, DashboardScadaTimeSeriesPoint.VariableDateMode };
 
+        public List<string> FetchStrategies { get; set; } = new List<string> { DashboardScadaTimeSeriesPoint.FetchStrategySnap, DashboardScadaTimeSeriesPoint.FetchStrategyAverage, DashboardScadaTimeSeriesPoint.FetchStrategyMax, DashboardScadaTimeSeriesPoint.FetchStrategyMin, DashboardScadaTimeSeriesPoint.FetchStrategyRaw };
+        public int FetchStrategyIndex { get { return FetchStrategies.IndexOf(ScadaTimeSeriesPoint.HistoryFetchStrategy_); } set { ScadaTimeSeriesPoint.HistoryFetchStrategy_ = FetchStrategies.ElementAt(value); NotifyPropertyChanged("FetchStrategyStr"); } }
+        public string FetchStrategyStr
+        {
+            get { return ScadaTimeSeriesPoint.HistoryFetchStrategy_; }
+            set
+            {
+                int modeInt = FetchStrategies.IndexOf(value);
+                if (modeInt != -1)
+                {
+                    ScadaTimeSeriesPoint.HistoryFetchStrategy_ = value;
+                }
+            }
+        }
+
         public int StartTimeMode { get { return DateTimeModes.IndexOf(ScadaTimeSeriesPoint.StartTimeMode_); } set { ScadaTimeSeriesPoint.StartTimeMode_ = DateTimeModes.ElementAt(value); NotifyPropertyChanged("StartTimeModeStr"); } }
         public string StartTimeModeStr
         {
@@ -85,7 +100,7 @@ namespace WPFScadaDashboard.DashboardUserControls
             }
         }
 
-        public int StartDateMode { get { return DateModes.IndexOf(ScadaTimeSeriesPoint.StartDateMode_); } set { ScadaTimeSeriesPoint.StartDateMode_ = DateTimeModes.ElementAt(value); NotifyPropertyChanged("StartDateModeStr"); } }
+        public int StartDateMode { get { return DateModes.IndexOf(ScadaTimeSeriesPoint.StartDateMode_); } set { ScadaTimeSeriesPoint.StartDateMode_ = DateModes.ElementAt(value); NotifyPropertyChanged("StartDateModeStr"); } }
         public string StartDateModeStr
         {
             get { return ScadaTimeSeriesPoint.StartDateMode_; }
@@ -195,8 +210,8 @@ namespace WPFScadaDashboard.DashboardUserControls
             }
         }
 
-        public int EndDateMode { get { return DateTimeModes.IndexOf(ScadaTimeSeriesPoint.EndTimeMode_); } set { ScadaTimeSeriesPoint.EndTimeMode_ = DateTimeModes.ElementAt(value); NotifyPropertyChanged("EndDateModeStr"); } }
-        public string EndDateModeStr
+        public int EndTimeMode { get { return DateTimeModes.IndexOf(ScadaTimeSeriesPoint.EndTimeMode_); } set { ScadaTimeSeriesPoint.EndTimeMode_ = DateTimeModes.ElementAt(value); NotifyPropertyChanged("EndTimeModeStr"); } }
+        public string EndTimeModeStr
         {
             get { return ScadaTimeSeriesPoint.EndTimeMode_; }
             set
@@ -208,6 +223,33 @@ namespace WPFScadaDashboard.DashboardUserControls
                 }
             }
         }
+        public int EndDateMode { get { return DateModes.IndexOf(ScadaTimeSeriesPoint.EndDateMode_); } set { ScadaTimeSeriesPoint.EndDateMode_ = DateModes.ElementAt(value); NotifyPropertyChanged("EndDateModeStr"); } }
+        public string EndDateModeStr
+        {
+            get { return ScadaTimeSeriesPoint.EndDateMode_; }
+            set
+            {
+                int modeInt = DateModes.IndexOf(value);
+                if (modeInt != -1)
+                {
+                    ScadaTimeSeriesPoint.EndDateMode_ = value;
+                }
+            }
+        }
+
+        public string EndDateOffset
+        {
+            get { return ScadaTimeSeriesPoint.EndDateOffset_.ToString(); }
+            set
+            {
+                int DateOffIntRes = ScadaTimeSeriesPoint.EndDateOffset_;
+                if (int.TryParse(value, out DateOffIntRes))
+                {
+                    ScadaTimeSeriesPoint.EndDateOffset_ = DateOffIntRes;
+                }
+            }
+        }
+
         public DateTime EndDate { get { return ScadaTimeSeriesPoint.EndTimeAbsolute_; } set { ScadaTimeSeriesPoint.EndTimeAbsolute_ = new DateTime(value.Year, value.Month, value.Day, ScadaTimeSeriesPoint.EndTimeAbsolute_.Hour, ScadaTimeSeriesPoint.EndTimeAbsolute_.Minute, ScadaTimeSeriesPoint.EndTimeAbsolute_.Second); } }
         public int EndTimeHoursIndex { get { return ScadaTimeSeriesPoint.EndTimeAbsolute_.Hour; } set { ScadaTimeSeriesPoint.EndTimeAbsolute_ = new DateTime(ScadaTimeSeriesPoint.EndTimeAbsolute_.Year, ScadaTimeSeriesPoint.EndTimeAbsolute_.Month, ScadaTimeSeriesPoint.EndTimeAbsolute_.Day, value, ScadaTimeSeriesPoint.EndTimeAbsolute_.Minute, ScadaTimeSeriesPoint.EndTimeAbsolute_.Second); } }
         public int EndTimeMinsIndex { get { return ScadaTimeSeriesPoint.EndTimeAbsolute_.Minute; } set { ScadaTimeSeriesPoint.EndTimeAbsolute_ = new DateTime(ScadaTimeSeriesPoint.EndTimeAbsolute_.Year, ScadaTimeSeriesPoint.EndTimeAbsolute_.Month, ScadaTimeSeriesPoint.EndTimeAbsolute_.Day, ScadaTimeSeriesPoint.EndTimeAbsolute_.Hour, value, ScadaTimeSeriesPoint.EndTimeAbsolute_.Second); } }
@@ -259,7 +301,7 @@ namespace WPFScadaDashboard.DashboardUserControls
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             string modeString = (string)value;
-            if (modeString == "variable")
+            if (modeString == DashboardScadaTimeSeriesPoint.VariableMode)
             {
                 return Visibility.Visible;
             }
@@ -274,9 +316,65 @@ namespace WPFScadaDashboard.DashboardUserControls
             Visibility visibility = (Visibility)value;
 
             if (visibility == Visibility.Visible)
-                return "variable";
+                return DashboardScadaTimeSeriesPoint.VariableMode;
             else
-                return "absolute";
+                return DashboardScadaTimeSeriesPoint.AbsoluteMode;
+        }
+    }
+
+    public class IsAbsoluteDateTimeVisibleConverter : IValueConverter
+    {
+        public IsAbsoluteDateTimeVisibleConverter() { }
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            string modeString = (string)value;
+            if (modeString == DashboardScadaTimeSeriesPoint.AbsoluteMode)
+            {
+                return Visibility.Visible;
+            }
+            else
+            {
+                return Visibility.Collapsed;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            Visibility visibility = (Visibility)value;
+
+            if (visibility == Visibility.Visible)
+                return DashboardScadaTimeSeriesPoint.AbsoluteMode;
+            else
+                return DashboardScadaTimeSeriesPoint.VariableMode;
+        }
+    }
+
+    public class IsVariableDateVisibleConverter : IValueConverter
+    {
+        public IsVariableDateVisibleConverter() { }
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            string modeString = (string)value;
+            if (modeString == DashboardScadaTimeSeriesPoint.VariableDateMode)
+            {
+                return Visibility.Visible;
+            }
+            else
+            {
+                return Visibility.Collapsed;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            Visibility visibility = (Visibility)value;
+
+            if (visibility == Visibility.Visible)
+                return DashboardScadaTimeSeriesPoint.VariableDateMode;
+            else
+                return DashboardScadaTimeSeriesPoint.AbsoluteDateMode;
         }
     }
 
@@ -287,7 +385,7 @@ namespace WPFScadaDashboard.DashboardUserControls
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             string modeString = (string)value;
-            if (modeString == "absolute")
+            if (modeString == DashboardScadaTimeSeriesPoint.AbsoluteDateMode)
             {
                 return Visibility.Visible;
             }
@@ -302,9 +400,9 @@ namespace WPFScadaDashboard.DashboardUserControls
             Visibility visibility = (Visibility)value;
 
             if (visibility == Visibility.Visible)
-                return "absolute";
+                return DashboardScadaTimeSeriesPoint.AbsoluteDateMode;
             else
-                return "variable";
+                return DashboardScadaTimeSeriesPoint.VariableDateMode;
         }
     }
 }

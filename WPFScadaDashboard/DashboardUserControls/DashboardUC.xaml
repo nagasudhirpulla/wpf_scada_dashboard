@@ -23,6 +23,8 @@
                     <MenuItem Header="Save Dashboard" Click="Save_Click"/>
                     <MenuItem Header="Save Dashboard As" Command="SaveAs" InputGestureText="Ctrl+S"/>
                     <Separator />
+                    <MenuItem Header="Rename Dashboard" Click="Rename_Dashboard_Click"/>
+                    <Separator />
                     <MenuItem Header="Settings" Click="Settings_Click"/>
                 </MenuItem>
                 <MenuItem Header="Cells">

@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using WPFScadaDashboard.DashboardConfigClasses;
+using WPFScadaDashboard.Dialogs;
 
 namespace WPFScadaDashboard.DashboardUserControls
 {
@@ -58,6 +59,8 @@ namespace WPFScadaDashboard.DashboardUserControls
             UpdateFetcherInterval();
             FetchTimer_.Tick += Fetch_Timer_Tick;
         }
+
+        public void AddLinesToConsole(string str) { dc.AddItemsToConsole(str); }
 
         public DashboardUC()
         {
@@ -489,6 +492,18 @@ namespace WPFScadaDashboard.DashboardUserControls
                 OnPropertyChanged("DashboardConfig_");
             }
 
+        }
+
+        private void Rename_Dashboard_Click(object sender, RoutedEventArgs e)
+        {
+            // https://stackoverflow.com/questions/2796470/wpf-create-a-dialog-prompt
+            var dialog = new SimpleStringInputDialog("Dashboard Title", "Enter the Dashboard Title", DashboardConfig_.DashboardName_);
+            if (dialog.ShowDialog() == true)
+            {
+                DashboardConfig_.DashboardName_ = dialog.ResponseText;
+                OnPropertyChanged("WindowTitleString");
+                AddLinesToConsole($"DashBoard Title changed to {DashboardConfig_.DashboardName_}");
+            }
         }
     }
 }

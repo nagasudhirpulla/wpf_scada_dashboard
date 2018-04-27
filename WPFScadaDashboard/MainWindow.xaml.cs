@@ -5,6 +5,7 @@ using System.Windows;
 using WPFScadaDashboard.DashboardConfigClasses;
 using WPFScadaDashboard.DashboardDataPointClasses;
 using WPFScadaDashboard.DashboardUserControls;
+using WPFScadaDashboard.Dialogs;
 
 namespace WPFScadaDashboard
 {

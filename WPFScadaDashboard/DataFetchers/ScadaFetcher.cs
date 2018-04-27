@@ -71,15 +71,15 @@ namespace WPFScadaDashboard.DataFetchers
                 string status = "";
                 TimeSpan period = TimeSpan.FromSeconds(dashboardScadaTimeSeriesPoint.FetchPeriodSecs_);
                 //history request initiation
-                if (type == "raw")
+                if (type == DashboardScadaTimeSeriesPoint.FetchStrategyRaw)
                 { nret = History.DnaGetHistRaw(pnt, startTime, endTime, out s); }
-                else if (type == "snap")
+                else if (type == DashboardScadaTimeSeriesPoint.FetchStrategySnap)
                 { nret = History.DnaGetHistSnap(pnt, startTime, endTime, period, out s); }
-                else if (type == "average")
+                else if (type == DashboardScadaTimeSeriesPoint.FetchStrategyAverage)
                 { nret = History.DnaGetHistAvg(pnt, startTime, endTime, period, out s); }
-                else if (type == "min")
+                else if (type == DashboardScadaTimeSeriesPoint.FetchStrategyMin)
                 { nret = History.DnaGetHistMin(pnt, startTime, endTime, period, out s); }
-                else if (type == "max")
+                else if (type == DashboardScadaTimeSeriesPoint.FetchStrategyMax)
                 { nret = History.DnaGetHistMax(pnt, startTime, endTime, period, out s); }
 
                 // Get history values

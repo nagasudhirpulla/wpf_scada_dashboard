@@ -13,6 +13,12 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
         public const string VariableMode = "variable";
         public const string AbsoluteDateMode = "absolute_date";
         public const string VariableDateMode = "variable_date";
+        public const string FetchStrategySnap = "snap";
+        public const string FetchStrategyAverage = "average";
+        public const string FetchStrategyMax = "max";
+        public const string FetchStrategyMin = "min";
+        public const string FetchStrategyRaw = "raw";
+
 
         public string TimeSeriesType_ { get { return timeSeriesType; } set { } }
         public DateTime StartTimeAbsolute_ { get; set; }
@@ -31,7 +37,7 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
         public ScadaDataPoint ScadaPoint_ { get; set; }
 
         // History fetch Startegy
-        public string HistoryFetchStrategy_ { get; set; } = "snap";
+        public string HistoryFetchStrategy_ { get; set; } = FetchStrategySnap;
 
         // Periodicity of history fetch
         public int FetchPeriodSecs_ { get { return 3600 * FetchTime_.HoursOffset_ + 60 * FetchTime_.MinsOffset_ + FetchTime_.SecsOffset_; } }
@@ -56,6 +62,7 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
             EndDateMode_ = pnt.EndDateMode_;
             EndDateOffset_ = pnt.EndDateOffset_;
             FetchTime_ = pnt.FetchTime_;
+            HistoryFetchStrategy_ = pnt.HistoryFetchStrategy_;
             ScadaPoint_ = new ScadaDataPoint(pnt.ScadaPoint_);
         }
 

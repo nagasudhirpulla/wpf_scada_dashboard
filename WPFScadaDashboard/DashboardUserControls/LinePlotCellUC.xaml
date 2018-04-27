@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="500" Grid.Column="{Binding ColumnIndex}" Grid.Row="{Binding RowIndex}" Grid.RowSpan="{Binding RowSpan}" Grid.ColumnSpan="{Binding ColumnSpan}" Width="{Binding CellWidth}" Height="{Binding CellHeight}" MinHeight="{Binding CellMinHeight}" MinWidth="{Binding CellMinWidth}" VerticalAlignment="{Binding CellVerticalAlignment}" HorizontalAlignment="{Binding CellHorizontalAlignment}">
     <UserControl.Resources>
-        <Image x:Key="DeleteIcon" Source="pack://application:,,,/Icons/delete_small.png" Width="12" Height="12"/>
+        <Image x:Key="DeleteIcon" Source="pack://application:,,,/Icons/delete_small.png" Width="8" Height="8" Margin="1"/>
     </UserControl.Resources>
     <Border BorderBrush="Black" BorderThickness="1">
         <Grid x:Name="CellContainer">
@@ -25,7 +25,7 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{Binding CellTitle}" VerticalAlignment="Center"></TextBlock>
+                <TextBlock Text="{Binding CellTitle}" PreviewMouseDown="CellTitle_PreviewMouseDown"  VerticalAlignment="Center"></TextBlock>
                 <Button Click="DeleteBtn_Click" Content="{StaticResource DeleteIcon}" Grid.Column="1"></Button>
             </Grid>
             <lvc:CartesianChart Series="{Binding SeriesCollection}" Grid.Row="1" Name="MyChart" Zoom="Xy" Pan="Xy" DisableAnimations="True" Hoverable="True" Background="#171717">

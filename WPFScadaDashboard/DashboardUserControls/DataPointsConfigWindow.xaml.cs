@@ -100,7 +100,7 @@ namespace WPFScadaDashboard.DashboardUserControls
                         {
                             dataPointsVM.dashboardTimeSeriesPoints[pointIndex] = scadaTimeSeriesPointEditWindow.scadaTimeSeriesPointVM.ScadaTimeSeriesPoint;
                             ICollectionView view = CollectionViewSource.GetDefaultView(dataPointsVM.dashboardTimeSeriesPoints);
-                            view.Refresh();
+                            view.Refresh();                            
                         }
                     }
                 }

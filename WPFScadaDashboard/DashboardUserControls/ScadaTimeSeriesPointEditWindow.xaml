@@ -10,7 +10,7 @@
         <Grid Name="ScadaPointEditForm">
             <Grid.Resources>
                 <local:IsAbsoluteDateVisibleConverter x:Key="IsAbsoluteDateVisibleConverter"/>
-                <local:IsVariableDateVisibleConverter x:Key="IsVariableDateVisibleConverter"/>
+                <local:IsVariableDateTimeVisibleConverter x:Key="IsVariableDateVisibleConverter"/>
             </Grid.Resources>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -58,6 +58,7 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                     <DatePicker Name="StartDatePicker" Margin="5" SelectedDate="{Binding StartDate, Mode=TwoWay}"></DatePicker>
+                    <TextBox Name="StartDateOffsetInp" Text="{Binding StartDateOffset, Mode=TwoWay}" Margin="5" PreviewTextInput="OnPreviewTextInput" AcceptsReturn="False"></TextBox>
                     <ComboBox Name="StartTimeHoursComboBox" SelectedIndex="{Binding StartTimeHoursIndex, Mode=TwoWay}" ItemsSource="{Binding HourStrings}" Margin="5" MinWidth="45">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>

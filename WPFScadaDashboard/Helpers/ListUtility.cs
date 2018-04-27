@@ -40,7 +40,7 @@ namespace WPFScadaDashboard.Helpers
         {
             if (timeMode_ == DashboardScadaTimeSeriesPoint.AbsoluteMode)
             {
-                if (dateMode_ == DashboardScadaTimeSeriesPoint.VariableMode)
+                if (dateMode_ == DashboardScadaTimeSeriesPoint.VariableDateMode)
                 {
                     // stub
                     // return variable date but with time of the StartTimeAbsolute_ component

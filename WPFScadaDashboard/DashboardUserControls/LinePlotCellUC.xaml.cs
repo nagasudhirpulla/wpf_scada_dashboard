@@ -21,6 +21,7 @@ using System.Windows.Shapes;
 using WPFScadaDashboard.DashboardConfigClasses;
 using WPFScadaDashboard.DashboardDataPointClasses;
 using WPFScadaDashboard.DataFetchers;
+using WPFScadaDashboard.Dialogs;
 
 namespace WPFScadaDashboard.DashboardUserControls
 {
@@ -167,7 +168,7 @@ namespace WPFScadaDashboard.DashboardUserControls
             return LinePlotCellConfig_;
         }
 
-        public string CellTitle { get { return LinePlotCellConfig_.Name_; } set { LinePlotCellConfig_.Name_ = value; } }
+        public string CellTitle { get { return LinePlotCellConfig_.Name_; } set { LinePlotCellConfig_.Name_ = value; OnPropertyChanged("CellTitle"); } }
 
         public int RowIndex { get { return LinePlotCellConfig_.CellPosition_.RowIndex_; } }
 
@@ -478,6 +479,19 @@ namespace WPFScadaDashboard.DashboardUserControls
         public async void RefreshCell()
         {
             await FetchAndPlotData();
+            ResetAxes();
+        }
+
+        private void CellTitle_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            // https://stackoverflow.com/questions/2796470/wpf-create-a-dialog-prompt
+            var dialog = new SimpleStringInputDialog("Cell Title", "Enter the Cell Title", CellTitle);
+            if (dialog.ShowDialog() == true)
+            {
+                CellTitle = dialog.ResponseText;
+                AddLinesToConsole($"Cell title changed to {CellTitle}");
+                //MessageBox.Show("You said: " + dialog.ResponseText);
+            }
         }
     }
 }

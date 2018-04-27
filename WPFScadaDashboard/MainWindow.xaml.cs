@@ -32,7 +32,7 @@ namespace WPFScadaDashboard
             MainContainer.Content = DashboardUC_;
             //this.Title = DashboardUC_.DashboardConfig_.DashboardName_;
             DashboardUC_.PropertyChanged += DashboardUC__PropertyChanged;
-            AddSeedCells();
+            //AddSeedCells();
             String fileNameStr = (String)((App)Application.Current).Properties["FilePathArgName"];
             DashboardUC_.OpenFileName(fileNameStr);
         }

@@ -68,15 +68,16 @@ namespace WPFScadaDashboard.DashboardUserControls
         public List<string> HourStrings { get; set; } = new List<string> { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" };
         public List<string> MinuteStrings { get; set; } = new List<string> { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59" };
 
-        public List<string> DateLimitsModes { get; set; } = new List<string> { DashboardScadaTimeSeriesPoint.AbsoluteMode, DashboardScadaTimeSeriesPoint.VariableMode };
+        public List<string> DateTimeModes { get; set; } = new List<string> { DashboardScadaTimeSeriesPoint.AbsoluteMode, DashboardScadaTimeSeriesPoint.VariableMode };
+        public List<string> DateModes { get; set; } = new List<string> { DashboardScadaTimeSeriesPoint.AbsoluteDateMode, DashboardScadaTimeSeriesPoint.VariableDateMode };
 
-        public int StartTimeMode { get { return DateLimitsModes.IndexOf(ScadaTimeSeriesPoint.StartTimeMode_); } set { ScadaTimeSeriesPoint.StartTimeMode_ = DateLimitsModes.ElementAt(value); NotifyPropertyChanged("StartTimeModeStr"); } }
+        public int StartTimeMode { get { return DateTimeModes.IndexOf(ScadaTimeSeriesPoint.StartTimeMode_); } set { ScadaTimeSeriesPoint.StartTimeMode_ = DateTimeModes.ElementAt(value); NotifyPropertyChanged("StartTimeModeStr"); } }
         public string StartTimeModeStr
         {
             get { return ScadaTimeSeriesPoint.StartTimeMode_; }
             set
             {
-                int modeInt = DateLimitsModes.IndexOf(value);
+                int modeInt = DateTimeModes.IndexOf(value);
                 if (modeInt != -1)
                 {
                     ScadaTimeSeriesPoint.StartTimeMode_ = value;
@@ -84,16 +85,29 @@ namespace WPFScadaDashboard.DashboardUserControls
             }
         }
 
-        public int StartDateMode { get { return DateLimitsModes.IndexOf(ScadaTimeSeriesPoint.StartDateMode_); } set { ScadaTimeSeriesPoint.StartDateMode_ = DateLimitsModes.ElementAt(value); NotifyPropertyChanged("StartDateModeStr"); } }
+        public int StartDateMode { get { return DateModes.IndexOf(ScadaTimeSeriesPoint.StartDateMode_); } set { ScadaTimeSeriesPoint.StartDateMode_ = DateTimeModes.ElementAt(value); NotifyPropertyChanged("StartDateModeStr"); } }
         public string StartDateModeStr
         {
             get { return ScadaTimeSeriesPoint.StartDateMode_; }
             set
             {
-                int modeInt = DateLimitsModes.IndexOf(value);
+                int modeInt = DateModes.IndexOf(value);
                 if (modeInt != -1)
                 {
                     ScadaTimeSeriesPoint.StartDateMode_ = value;
+                }
+            }
+        }
+
+        public string StartDateOffset
+        {
+            get { return ScadaTimeSeriesPoint.StartDateOffset_.ToString(); }
+            set
+            {
+                int DateOffIntRes = ScadaTimeSeriesPoint.StartDateOffset_;
+                if (int.TryParse(value, out DateOffIntRes))
+                {
+                    ScadaTimeSeriesPoint.StartDateOffset_ = DateOffIntRes;
                 }
             }
         }
@@ -181,13 +195,13 @@ namespace WPFScadaDashboard.DashboardUserControls
             }
         }
 
-        public int EndDateMode { get { return DateLimitsModes.IndexOf(ScadaTimeSeriesPoint.EndTimeMode_); } set { ScadaTimeSeriesPoint.EndTimeMode_ = DateLimitsModes.ElementAt(value); NotifyPropertyChanged("EndDateModeStr"); } }
+        public int EndDateMode { get { return DateTimeModes.IndexOf(ScadaTimeSeriesPoint.EndTimeMode_); } set { ScadaTimeSeriesPoint.EndTimeMode_ = DateTimeModes.ElementAt(value); NotifyPropertyChanged("EndDateModeStr"); } }
         public string EndDateModeStr
         {
             get { return ScadaTimeSeriesPoint.EndTimeMode_; }
             set
             {
-                int modeInt = DateLimitsModes.IndexOf(value);
+                int modeInt = DateTimeModes.IndexOf(value);
                 if (modeInt != -1)
                 {
                     ScadaTimeSeriesPoint.EndTimeMode_ = value;
@@ -238,9 +252,9 @@ namespace WPFScadaDashboard.DashboardUserControls
         }
     }
 
-    public class IsVariableDateVisibleConverter : IValueConverter
+    public class IsVariableDateTimeVisibleConverter : IValueConverter
     {
-        public IsVariableDateVisibleConverter() { }
+        public IsVariableDateTimeVisibleConverter() { }
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {

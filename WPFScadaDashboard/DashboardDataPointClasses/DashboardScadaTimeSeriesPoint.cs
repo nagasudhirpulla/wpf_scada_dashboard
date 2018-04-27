@@ -11,14 +11,16 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
         public const string timeSeriesType = "ScadaTimeSeriesPoint";
         public const string AbsoluteMode = "absolute";
         public const string VariableMode = "variable";
+        public const string AbsoluteDateMode = "absolute_date";
+        public const string VariableDateMode = "variable_date";
 
         public string TimeSeriesType_ { get { return timeSeriesType; } set { } }
         public DateTime StartTimeAbsolute_ { get; set; }
         public DateTime EndTimeAbsolute_ { get; set; }
-        public string StartDateMode_ { get; set; } = AbsoluteMode;
+        public string StartDateMode_ { get; set; } = AbsoluteDateMode;
         public int StartDateOffset_ { get; set; } = 0;
         public string StartTimeMode_ { get; set; } = AbsoluteMode;
-        public string EndDateMode_ { get; set; } = AbsoluteMode;
+        public string EndDateMode_ { get; set; } = AbsoluteDateMode;
         public int EndDateOffset_ { get; set; } = 0;
         public string EndTimeMode_ { get; set; } = AbsoluteMode;
         public VariableTime StartTimeVariable_ { get; set; } = new VariableTime();
@@ -87,14 +89,14 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
 
         public DateTime GetStartTime()
         {
-            return Helpers.ListUtility.GetDateTime(StartTimeAbsolute_, StartTimeVariable_, StartTimeMode_, StartDateMode_, StartDateOffset_);            
+            return Helpers.ListUtility.GetDateTime(StartTimeAbsolute_, StartTimeVariable_, StartTimeMode_, StartDateMode_, StartDateOffset_);
         }
 
         public DateTime StartTime { get { return GetStartTime(); } }
 
         public DateTime GetEndTime()
         {
-            return Helpers.ListUtility.GetDateTime(EndTimeAbsolute_, EndTimeVariable_, EndTimeMode_, EndDateMode_, EndDateOffset_);            
+            return Helpers.ListUtility.GetDateTime(EndTimeAbsolute_, EndTimeVariable_, EndTimeMode_, EndDateMode_, EndDateOffset_);
         }
 
         public DateTime EndTime { get { return GetEndTime(); } }

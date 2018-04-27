@@ -6,14 +6,22 @@
              xmlns:local="clr-namespace:WPFScadaDashboard.DashboardUserControls"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="800">
+    <UserControl.CommandBindings>
+        <CommandBinding Command="Open" Executed="OpenCommandBinding_Executed"></CommandBinding>
+        <CommandBinding Command="SaveAs" Executed="SaveAsCommandBinding_Executed"></CommandBinding>
+    </UserControl.CommandBindings>
+    <UserControl.InputBindings>
+        <KeyBinding Key="O" Modifiers="Control" Command="Open"></KeyBinding>
+        <KeyBinding Key="S" Modifiers="Control" Command="SaveAs"></KeyBinding>
+    </UserControl.InputBindings>
     <DockPanel>
         <StackPanel DockPanel.Dock="Top" Orientation="Vertical">
             <Menu IsMainMenu="True">
                 <MenuItem Header="_File">
-                    <MenuItem Header="Open Dashboard" Click="Open_Click"/>
+                    <MenuItem Header="Open Dashboard" Command="Open" InputGestureText="Ctrl+O"/>
                     <Separator />
                     <MenuItem Header="Save Dashboard" Click="Save_Click"/>
-                    <MenuItem Header="Save Dashboard As" Click="SaveAs_Click"/>
+                    <MenuItem Header="Save Dashboard As" Command="SaveAs" InputGestureText="Ctrl+S"/>
                     <Separator />
                     <MenuItem Header="Settings" Click="Settings_Click"/>
                 </MenuItem>

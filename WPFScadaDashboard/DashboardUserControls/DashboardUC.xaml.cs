@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Threading;
 using WPFScadaDashboard.DashboardConfigClasses;
 
@@ -280,12 +281,17 @@ namespace WPFScadaDashboard.DashboardUserControls
             }
         }
 
-        private void Open_Click(object sender, RoutedEventArgs e)
+        private void OpenCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            OpenDashBoard();
+        }
+
+        private void OpenDashBoard()
         {
             // MessageBox.Show("You clicked 'Open...'");
             OpenFileDialog openFileDialog = new OpenFileDialog();
             // openFileDialog.Multiselect = true;
-            openFileDialog.Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*";
+            openFileDialog.Filter = "dash files (*.dash)|*.dash|All files (*.*)|*.*";
             openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyComputer);
             if (openFileDialog.ShowDialog() == true)
             {
@@ -335,17 +341,23 @@ namespace WPFScadaDashboard.DashboardUserControls
                 else
                 {
                     // open save as window
-                    SaveAs_Click(this, null);
+                    SaveDashBoardAs();
                 }
             }
         }
 
-        private void SaveAs_Click(object sender, RoutedEventArgs e)
+        private void SaveAsCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            // https://stackoverflow.com/questions/4682915/defining-menuitem-shortcuts
+            SaveDashBoardAs();
+        }
+
+        private void SaveDashBoardAs()
         {
             string filename = DashBoardFileName_;
             if (filename == null)
             {
-                filename = String.Format("dashboard_template_{0}.json", DateTime.Now.ToString("dd.MM.yyyy_HH.mm.ss"));
+                filename = $"dashboard_template_{DateTime.Now.ToString("dd.MM.yyyy_HH.mm.ss")}.dash";
             }
             DashboardConfigBundle configBundle = GetDashBoardConfigBundle();
             string jsonText = JsonConvert.SerializeObject(configBundle, Formatting.Indented);
@@ -354,7 +366,7 @@ namespace WPFScadaDashboard.DashboardUserControls
                 // set a default file name
                 FileName = filename,
                 // set filters - this can be done in properties as well
-                Filter = "JSON Files (*.json)|*.json|All files (*.*)|*.*"
+                Filter = "dash Files (*.dash)|*.dash|All files (*.*)|*.*"
             };
             if (savefileDialog.ShowDialog() == true)
             {
@@ -445,7 +457,7 @@ namespace WPFScadaDashboard.DashboardUserControls
             }
         }
 
-        
+
         private void Fetch_Timer_Tick(object sender, EventArgs e)
         {
             RefreshAllCells();
@@ -477,7 +489,7 @@ namespace WPFScadaDashboard.DashboardUserControls
                 OnPropertyChanged("DashboardConfig_");
             }
 
-        }        
+        }
     }
 }
 

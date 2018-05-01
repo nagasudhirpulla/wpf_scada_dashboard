@@ -292,6 +292,19 @@ namespace WPFScadaDashboard.DashboardUserControls
                 }
             }
         }
+
+        public string StrokeThickness
+        {
+            get { return ScadaTimeSeriesPoint.StrokeThickness_.ToString(); }
+            set
+            {
+                int intVal = ScadaTimeSeriesPoint.StrokeThickness_;
+                if (int.TryParse(value, out intVal))
+                {
+                    ScadaTimeSeriesPoint.StrokeThickness_ = intVal;
+                }
+            }
+        }
     }
 
     public class IsVariableDateTimeVisibleConverter : IValueConverter

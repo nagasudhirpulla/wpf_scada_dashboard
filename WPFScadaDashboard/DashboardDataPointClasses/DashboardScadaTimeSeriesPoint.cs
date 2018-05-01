@@ -33,6 +33,7 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
         public VariableTime EndTimeVariable_ { get; set; } = new VariableTime();
         public VariableTime FetchTime_ { get; set; } = new VariableTime(0, 0, 60);
         public string ColorString_ { get; set; } = "";
+        public int StrokeThickness_ { get; set; } = 1;
 
         // The Scada Point of the TimeSeries Data Configuration
         public ScadaDataPoint ScadaPoint_ { get; set; }
@@ -65,6 +66,7 @@ namespace WPFScadaDashboard.DashboardDataPointClasses
             FetchTime_ = pnt.FetchTime_;
             HistoryFetchStrategy_ = pnt.HistoryFetchStrategy_;
             ColorString_ = pnt.ColorString_;
+            StrokeThickness_ = pnt.StrokeThickness_;
             ScadaPoint_ = new ScadaDataPoint(pnt.ScadaPoint_);
         }
 

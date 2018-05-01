@@ -280,9 +280,26 @@ namespace WPFScadaDashboard.DashboardUserControls
                             StartDateTime_ = new DateTime(results[0].ResultTime_.Ticks);
                         }
                     }
+                    // getting the required color
+                    string colorString = scadaTimeseriesPnt.ColorString_;
+                    if (colorString == null)
+                    {
+                        colorString = "NULL";
+                    }
+                    SolidColorBrush requiredColorBrush;
+                    try
+                    {
+                        requiredColorBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(colorString));
+                    }
+                    catch (Exception ex)
+                    {
+                        requiredColorBrush = null;
+                        //AddLinesToConsole($"Unable to parse the color string \"{colorString}\"");
+                    }
 
                     // Add the Data Point fetch results to the Plot lines Collection
-                    SeriesCollection.Add(new GLineSeries() { Title = scadaTimeseriesPnt.ScadaPoint_.Name_, Values = new GearedValues<double>(plotVals), PointGeometry = null, Fill = Brushes.Transparent, StrokeThickness = 1, LineSmoothness = 0 });
+                    SeriesCollection.Add(new GLineSeries() { Title = scadaTimeseriesPnt.ScadaPoint_.Name_, Values = new GearedValues<double>(plotVals), PointGeometry = null, Fill = Brushes.Transparent, StrokeThickness = 1, LineSmoothness = 0, Stroke = requiredColorBrush });
+                    // https://stackoverflow.com/questions/2109756/how-do-i-get-the-color-from-a-hexadecimal-color-code-using-net                    
                 }
             }
 

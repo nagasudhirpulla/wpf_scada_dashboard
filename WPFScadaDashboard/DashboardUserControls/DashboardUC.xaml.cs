@@ -384,7 +384,8 @@ namespace WPFScadaDashboard.DashboardUserControls
 
         private void NewWindow_Click(object sender, RoutedEventArgs e)
         {
-
+            MainWindow win = new MainWindow();
+            win.Show();
         }
 
         private void About_Click(object sender, RoutedEventArgs e)

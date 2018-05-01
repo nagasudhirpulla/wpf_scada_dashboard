@@ -31,13 +31,13 @@
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
             <TextBlock Text="Edit Scada Timeseries Data Point" Grid.ColumnSpan="2" HorizontalAlignment="Center"></TextBlock>
-            <TextBlock Grid.Row="1">Point Id</TextBlock>
+            <TextBlock Grid.Row="1" Margin="5">Point Id</TextBlock>
             <TextBox Text="{Binding ScadaTimeSeriesPoint.ScadaPoint_.Id_, Mode=TwoWay}" Grid.Row="1" Grid.Column="1" Name="PointIdInp"></TextBox>
-            <TextBlock Grid.Row="2">Name</TextBlock>
+            <TextBlock Grid.Row="2" Margin="5">Name</TextBlock>
             <TextBox Text="{Binding ScadaTimeSeriesPoint.ScadaPoint_.Name_, Mode=TwoWay}" Grid.Row="2" Grid.Column="1" Name="PointNameInp"></TextBox>
-            <TextBlock Grid.Row="3">Extended Id</TextBlock>
+            <TextBlock Grid.Row="3" Margin="5">Extended Id</TextBlock>
             <TextBox Text="{Binding ScadaTimeSeriesPoint.ScadaPoint_.ExtendedId_, Mode=TwoWay}" Grid.Row="3" Grid.Column="1" Name="PointExtIdInp"></TextBox>
-            <StackPanel Grid.Row="6">
+            <StackPanel Grid.Row="7">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Start Time Mode" Margin="5"></TextBlock>
                     <ComboBox Name="StartTimeModesComboBox" SelectedIndex="{Binding StartTimeMode, Mode=TwoWay}" ItemsSource="{Binding DateTimeModes}" Margin="5">
@@ -99,7 +99,7 @@
                     <TextBlock Text="Secs |" Margin="5"></TextBlock>
                 </StackPanel>
             </StackPanel>
-            <StackPanel Grid.Row="6" Grid.Column="1">
+            <StackPanel Grid.Row="7" Grid.Column="1">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="End Time Mode" Margin="5"></TextBlock>
                     <ComboBox Name="EndTimeModesComboBox" SelectedIndex="{Binding EndTimeMode, Mode=TwoWay}" ItemsSource="{Binding DateTimeModes}" Margin="5">
@@ -161,9 +161,12 @@
                     <TextBlock Text="Secs |" Margin="5"></TextBlock>
                 </StackPanel>
             </StackPanel>
-            <TextBlock Grid.Row = "4" Grid.Column = "0" Text = "Data Rate" Margin = "5"  
+            <TextBlock Grid.Row = "4" Grid.Column = "0" Text = "Color String" Margin = "5"  
          HorizontalAlignment = "Left" VerticalAlignment = "Center" Width = "100" />
-            <StackPanel Grid.Row = "4" Grid.Column = "1" Orientation="Horizontal">
+            <TextBox Text="{Binding ScadaTimeSeriesPoint.ColorString_, Mode=TwoWay}" Grid.Row="4" Grid.Column="1" Name="ColorStringInp"></TextBox>
+            <TextBlock Grid.Row = "5" Grid.Column = "0" Text = "Data Rate" Margin = "5"  
+         HorizontalAlignment = "Left" VerticalAlignment = "Center" Width = "100" />
+            <StackPanel Grid.Row = "5" Grid.Column = "1" Orientation="Horizontal">
                 <TextBox PreviewTextInput="OnPreviewTextInput" Name="FetchWindowHrsInput" Text="{Binding FetchWindowHrs, Mode=TwoWay}" Margin="5" MinWidth="40"></TextBox>
                 <TextBlock Text="Hrs |" Margin="5"></TextBlock>
                 <TextBox PreviewTextInput="OnPreviewTextInput" Name="FetchWindowMinsInput" Text="{Binding FetchWindowMins, Mode=TwoWay}" Margin="5" MinWidth="40"></TextBox>
@@ -172,9 +175,9 @@
                 <TextBlock Text="Secs |" Margin="5"></TextBlock>
             </StackPanel>
 
-            <TextBlock Grid.Row = "5" Grid.Column = "0" Text = "History Fetch Strategy" Margin = "5"  
+            <TextBlock Grid.Row = "6" Grid.Column = "0" Text = "History Fetch Strategy" Margin = "5"  
          HorizontalAlignment = "Left" VerticalAlignment = "Center"/>
-            <ComboBox Name="FetchStrategiesComboBox" SelectedIndex="{Binding FetchStrategyIndex, Mode=TwoWay}" ItemsSource="{Binding FetchStrategies}" Grid.Row = "5" Grid.Column = "1"  Margin="5" HorizontalAlignment="Left">
+            <ComboBox Name="FetchStrategiesComboBox" SelectedIndex="{Binding FetchStrategyIndex, Mode=TwoWay}" ItemsSource="{Binding FetchStrategies}" Grid.Row = "6" Grid.Column = "1"  Margin="5" HorizontalAlignment="Left">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -184,7 +187,7 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <Button Content="Update" Grid.Row="7" Grid.Column="0" Click="UpdateBtn_Click"></Button>
+            <Button Content="Update" Grid.Row="8" Grid.Column="0" Click="UpdateBtn_Click"></Button>
         </Grid>
     </ScrollViewer>
 </Window>

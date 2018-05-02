@@ -329,10 +329,14 @@ namespace WPFScadaDashboard.DashboardUserControls
                 {
                     //double maxSeriesVal = ((LiveCharts.Geared.GearedValues<float>)SeriesCollection.ElementAt(i).Values).Max();
                     //double minSeriesVal = ((LiveCharts.Geared.GearedValues<float>)SeriesCollection.ElementAt(i).Values).Min();
-                    LiveCharts.Geared.GearedValues<double> SeriesValues = ((LiveCharts.Geared.GearedValues<double>)SeriesCollection.ElementAt(i).Values);
+                    LiveCharts.Geared.GearedValues<double> SeriesValues = ((GearedValues<double>)SeriesCollection.ElementAt(i).Values);
                     if (SeriesValues.Count < 1)
                     {
                         continue;
+                    }
+                    if (numXSamples < SeriesValues.Count)
+                    {
+                        numXSamples = SeriesValues.Count;
                     }
                     double maxSeriesVal = SeriesValues.Max();
                     if (double.IsNaN(maxSeriesVal))

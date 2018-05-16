@@ -13,6 +13,13 @@
             SecsOffset_ = secsOffset_;
         }
 
+        public VariableTime(VariableTime variableTime)
+        {
+            HoursOffset_ = variableTime.HoursOffset_;
+            MinsOffset_ = variableTime.MinsOffset_;
+            SecsOffset_ = variableTime.SecsOffset_;
+        }
+
         public VariableTime()
         {
         }

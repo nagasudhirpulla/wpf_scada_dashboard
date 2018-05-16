@@ -22,10 +22,10 @@ namespace WPFScadaDashboard.DashboardUserControls
     public partial class FetchConfigWindow : Window
     {
         public FetchConfigVM fetchConfigVM;
-        public FetchConfigWindow()
+        public FetchConfigWindow(AutoFetchConfig AutoFetchConfig_)
         {
             InitializeComponent();
-            fetchConfigVM = new FetchConfigVM();
+            fetchConfigVM = new FetchConfigVM(AutoFetchConfig_);
             AutoFetchConfigForm.DataContext = fetchConfigVM;
         }
 
@@ -50,6 +50,10 @@ namespace WPFScadaDashboard.DashboardUserControls
 
     public class FetchConfigVM : INotifyPropertyChanged
     {
+        public FetchConfigVM(AutoFetchConfig AutoFetchConfig_)
+        {
+            autoFetchConfig = new AutoFetchConfig(AutoFetchConfig_);
+        }
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void NotifyPropertyChanged(string propertyName)

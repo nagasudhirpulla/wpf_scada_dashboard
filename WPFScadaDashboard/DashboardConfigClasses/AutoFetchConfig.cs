@@ -20,5 +20,11 @@ namespace WPFScadaDashboard.DashboardConfigClasses
         {
             TimePeriod_ = timePeriod_;
         }
+
+        public AutoFetchConfig(AutoFetchConfig autoFetchConfig)
+        {
+            TimePeriod_ = new VariableTime(autoFetchConfig.TimePeriod_);
+        }
+
     }
 }

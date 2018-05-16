@@ -450,7 +450,7 @@ namespace WPFScadaDashboard.DashboardUserControls
 
         public void AutoFetchConfigBtn_Click(object sender, RoutedEventArgs e)
         {
-            FetchConfigWindow fetchConfigWindow = new FetchConfigWindow();
+            FetchConfigWindow fetchConfigWindow = new FetchConfigWindow(AutoFetchConfig_);
             fetchConfigWindow.ShowDialog();
             if (fetchConfigWindow.DialogResult == true)
             {

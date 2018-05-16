@@ -28,14 +28,14 @@
                 <TextBlock Text="{Binding CellTitle}" PreviewMouseDown="CellTitle_PreviewMouseDown"  VerticalAlignment="Center"></TextBlock>
                 <Button Click="DeleteBtn_Click" Content="{StaticResource DeleteIcon}" Grid.Column="1"></Button>
             </Grid>
-            <lvc:CartesianChart Series="{Binding SeriesCollection}" Grid.Row="1" Name="MyChart" Zoom="Xy" Pan="Xy" DisableAnimations="True" Hoverable="True" Background="#171717">
+            <lvc:CartesianChart Series="{Binding SeriesCollection}" Grid.Row="1" Name="MyChart" Zoom="X" Pan="Xy" DisableAnimations="True" Hoverable="True" Background="{Binding CellBackgroundStr}">
                 <lvc:CartesianChart.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Configure Cell" Click="ConfigPosition_Click"></MenuItem>
                         <MenuItem Header="Configure DataPoints" Click="ConfigDataPoints_Click"></MenuItem>
                         <MenuItem Header="{Binding ZoomHeader}">
-                            <MenuItem Header="ZoomXY" Tag="ZXY" Click="Zoom_Click" IsCheckable="True" IsChecked="True"/>
-                            <MenuItem Header="ZoomX" Tag="ZX" Click="Zoom_Click" IsCheckable="True"/>
+                            <MenuItem Header="ZoomXY" Tag="ZXY" Click="Zoom_Click" IsCheckable="True"/>
+                            <MenuItem Header="ZoomX" Tag="ZX" Click="Zoom_Click" IsCheckable="True" IsChecked="True"/>
                             <MenuItem Header="ZoomY" Tag="ZY" Click="Zoom_Click" IsCheckable="True"/>
                             <MenuItem Header="ZoomOff" Tag="ZOff" Click="Zoom_Click" IsCheckable="True"/>
                         </MenuItem>
@@ -50,17 +50,17 @@
                     </ContextMenu>
                 </lvc:CartesianChart.ContextMenu>
                 <lvc:CartesianChart.ChartLegend>
-                    <lvc:DefaultLegend Foreground="White"/>
+                    <lvc:DefaultLegend Foreground="{Binding CellForegroundStr}"/>
                 </lvc:CartesianChart.ChartLegend>
                 <lvc:CartesianChart.AxisY>
-                    <lvc:Axis Title="" LabelFormatter="{Binding YFormatter}" Foreground="White">
+                    <lvc:Axis Title="" LabelFormatter="{Binding YFormatter}" Foreground="{Binding CellForegroundStr}">
                         <lvc:Axis.Separator>
                             <lvc:Separator IsEnabled="True" Stroke="#3c3c3c"></lvc:Separator>
                         </lvc:Axis.Separator>
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisY>
                 <lvc:CartesianChart.AxisX>
-                    <lvc:Axis Title="" LabelFormatter="{Binding XFormatter}" Foreground="White">
+                    <lvc:Axis Title="" LabelFormatter="{Binding XFormatter}" Foreground="{Binding CellForegroundStr}">
                         <lvc:Axis.Separator>
                             <lvc:Separator IsEnabled="True" Stroke="#3c3c3c"></lvc:Separator>
                         </lvc:Axis.Separator>

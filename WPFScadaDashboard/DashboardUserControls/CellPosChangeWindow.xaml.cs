@@ -31,7 +31,7 @@ namespace WPFScadaDashboard.DashboardUserControls
 
         private void UpdateBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Update Cell Position ?", "Cell Position Configuration", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+            if (MessageBox.Show("Update Cell Configuration ?", "Cell Position Configuration", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
             {
                 //do no stuff
                 return;
@@ -71,9 +71,17 @@ namespace WPFScadaDashboard.DashboardUserControls
 
         public IDashboardCellConfig cellConfig;
 
-        public PosConfigVM(IDashboardCellConfig cellPosition)
+        public PosConfigVM(IDashboardCellConfig cellConfigInput)
         {
-            this.cellConfig = cellPosition;
+            // clone the cellConfigInput
+            if (cellConfigInput is LinePlotCellConfig lineCellConfig)
+            {
+                cellConfig = new LinePlotCellConfig(lineCellConfig);
+            }
+            else
+            {
+                cellConfig = cellConfigInput;
+            }
             NotifyPropertyChanged("RowIndex");
             NotifyPropertyChanged("ColumnIndex");
             NotifyPropertyChanged("RowSpan");
@@ -86,6 +94,8 @@ namespace WPFScadaDashboard.DashboardUserControls
             NotifyPropertyChanged("CellMinHeight");
             NotifyPropertyChanged("CellHorAlignMode");
             NotifyPropertyChanged("CellVertAlignMode");
+            NotifyPropertyChanged("CellBackgroundStr");
+            NotifyPropertyChanged("CellForegroundStr");
         }
 
         public List<string> WidthModes { get; set; } = new List<string> { LinePlotCellConfig.AbsoluteWidthMode, LinePlotCellConfig.VariableWidthMode };
@@ -158,6 +168,41 @@ namespace WPFScadaDashboard.DashboardUserControls
         public string ColumnIndex { get { return cellConfig.CellPosition_.ColIndex_.ToString(); } set { cellConfig.CellPosition_.ColIndex_ = int.Parse(value); } }
         public string RowSpan { get { return cellConfig.CellPosition_.RowSpan_.ToString(); } set { cellConfig.CellPosition_.RowSpan_ = int.Parse(value); } }
         public string ColumnSpan { get { return cellConfig.CellPosition_.ColSpan_.ToString(); } set { cellConfig.CellPosition_.ColSpan_ = int.Parse(value); } }
+        public string CellBackgroundStr {
+            get { return cellConfig.BackgroundColorString_.ToString(); }
+            set {
+                //stub
+                SolidColorBrush requiredColorBrush;
+                try
+                {
+                    requiredColorBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(value));
+                    cellConfig.BackgroundColorString_ = value;
+                }
+                catch (Exception ex)
+                {                    
+                    //AddLinesToConsole($"Unable to parse the color string \"{colorString}\"");
+                }
+                
+            }
+        }
+        public string CellForegroundStr
+        {
+            get { return cellConfig.ForegroundColorString_.ToString(); }
+            set
+            {
+                //stub
+                SolidColorBrush requiredColorBrush;
+                try
+                {
+                    requiredColorBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(value));
+                    cellConfig.ForegroundColorString_ = value;
+                }
+                catch (Exception ex)
+                {
+                    //AddLinesToConsole($"Unable to parse the color string \"{colorString}\"");
+                }
 
+            }
+        }
     }
 }

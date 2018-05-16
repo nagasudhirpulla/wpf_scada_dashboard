@@ -23,12 +23,14 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.ColumnSpan="2" Text="Cell Position" HorizontalAlignment="Center"></TextBlock>
+            <TextBlock Grid.ColumnSpan="2" Text="Cell Configuration" HorizontalAlignment="Center"></TextBlock>
             <TextBlock Grid.Column="0" Grid.Row="1" Text="Row Index"></TextBlock>
             <TextBox Grid.Column="1" Grid.Row="1" Name="RowIndexInput" PreviewTextInput="OnPreviewTextInput" Text="{Binding RowIndex, Mode=TwoWay}"></TextBox>
             <TextBlock Grid.Column="0" Grid.Row="2" Text="Column Index"></TextBlock>
@@ -85,7 +87,11 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <StackPanel Orientation="Horizontal" Grid.Row="13" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+            <TextBlock Grid.Column="0" Grid.Row="13" Text="Cell Background"></TextBlock>
+            <TextBox Grid.Column="1" Grid.Row="13" Name="CellBackgroundInput" Text="{Binding CellBackgroundStr, Mode=TwoWay}"></TextBox>
+            <TextBlock Grid.Column="0" Grid.Row="14" Text="Cell Foreground"></TextBlock>
+            <TextBox Grid.Column="1" Grid.Row="14" Name="CellForegroundInput" Text="{Binding CellForegroundStr, Mode=TwoWay}"></TextBox>
+            <StackPanel Orientation="Horizontal" Grid.Row="15" Grid.ColumnSpan="2" HorizontalAlignment="Center">
                 <Button Name="UpdateBtn" Content="Update" Click="UpdateBtn_Click"></Button>
             </StackPanel>
         </Grid>

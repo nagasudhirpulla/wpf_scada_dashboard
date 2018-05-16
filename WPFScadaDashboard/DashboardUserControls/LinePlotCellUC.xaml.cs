@@ -51,6 +51,10 @@ namespace WPFScadaDashboard.DashboardUserControls
             OnPropertyChanged("CellMinHeight");
             OnPropertyChanged("CellHorizontalAlignment");
             OnPropertyChanged("CellVerticalAlignment");
+            OnPropertyChanged("CellBackgroundStr");
+            OnPropertyChanged("CellForegroundStr");
+            // Update axis legend color manually
+            MyChart.ChartLegend.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(CellForegroundStr));
         }
 
         public void DeleteCell()
@@ -141,7 +145,8 @@ namespace WPFScadaDashboard.DashboardUserControls
                 return value.ToString();
             };
             MyChart.LegendLocation = LegendLocation.Top;
-
+            // Update axis legend color manually
+            MyChart.ChartLegend.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(CellForegroundStr));
             // MyChart.DataTooltip = new ChartToolTipUC();
 
             DataContext = this;
@@ -209,6 +214,10 @@ namespace WPFScadaDashboard.DashboardUserControls
         public string CellHorizontalAlignment { get { return LinePlotCellConfig_.HorizontalAlignment_; } set { LinePlotCellConfig_.HorizontalAlignment_ = value; } }
 
         public string CellVerticalAlignment { get { return LinePlotCellConfig_.VerticalAlignment_; } set { LinePlotCellConfig_.VerticalAlignment_ = value; } }
+
+        public string CellBackgroundStr { get { return LinePlotCellConfig_.BackgroundColorString_; } set { LinePlotCellConfig_.BackgroundColorString_ = value; } }
+
+        public string CellForegroundStr { get { return LinePlotCellConfig_.ForegroundColorString_; } set { LinePlotCellConfig_.ForegroundColorString_ = value; } }
 
         public async Task FetchAndPlotData()
         {
@@ -375,10 +384,10 @@ namespace WPFScadaDashboard.DashboardUserControls
                     valDiff = maxYVal - minYVal;
                     //MyChart.AxisX[0].SetRange(-numXSamples * 0.1, numXSamples * 1.1);
                     //MyChart.AxisY[0].SetRange(minYVal - valDiff * 0.1, maxYVal + valDiff * 0.1);
-                    MyChart.AxisX[0].MinValue = -numXSamples * 0.1;
-                    MyChart.AxisX[0].MaxValue = numXSamples * 1.1;
-                    MyChart.AxisY[0].MinValue = minYVal - valDiff * 0.1;
-                    MyChart.AxisY[0].MaxValue = maxYVal + valDiff * 0.1;
+                    MyChart.AxisX[0].MinValue = 0;
+                    MyChart.AxisX[0].MaxValue = numXSamples;
+                    MyChart.AxisY[0].MinValue = minYVal;
+                    MyChart.AxisY[0].MaxValue = maxYVal;
                 }
                 else
                 {

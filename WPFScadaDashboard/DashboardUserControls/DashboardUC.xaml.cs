@@ -276,6 +276,8 @@ namespace WPFScadaDashboard.DashboardUserControls
                             fc.GetDashboardCellConfig().MinWidth_ = cellPosChangeWindow.posConfigVM.cellConfig.MinWidth_;
                             fc.GetDashboardCellConfig().HorizontalAlignment_ = cellPosChangeWindow.posConfigVM.cellConfig.HorizontalAlignment_;
                             fc.GetDashboardCellConfig().VerticalAlignment_ = cellPosChangeWindow.posConfigVM.cellConfig.VerticalAlignment_;
+                            fc.GetDashboardCellConfig().BackgroundColorString_ = cellPosChangeWindow.posConfigVM.cellConfig.BackgroundColorString_;
+                            fc.GetDashboardCellConfig().ForegroundColorString_ = cellPosChangeWindow.posConfigVM.cellConfig.ForegroundColorString_;
                             SyncRowColDefinitionsWithCells();
                             fc.UpdateCellPosition();
                         }

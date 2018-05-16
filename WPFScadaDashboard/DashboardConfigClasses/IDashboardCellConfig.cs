@@ -34,5 +34,9 @@ namespace WPFScadaDashboard.DashboardConfigClasses
         string HorizontalAlignment_ { get; set; }
 
         string VerticalAlignment_ { get; set; }
+
+        string BackgroundColorString_ { get; set; }
+
+        string ForegroundColorString_ { get; set; }
     }
 }

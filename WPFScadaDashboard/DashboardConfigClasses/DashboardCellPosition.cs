@@ -32,5 +32,13 @@ namespace WPFScadaDashboard.DashboardConfigClasses
             RowSpan_ = RowSpan;
             ColSpan_ = ColSpan;
         }
+
+        public DashboardCellPosition(DashboardCellPosition cellPosition)
+        {
+            RowIndex_ = cellPosition.RowIndex_;
+            ColIndex_ = cellPosition.ColIndex_;
+            ColSpan_ = cellPosition.ColSpan_;
+            RowSpan_ = cellPosition.RowSpan_;
+        }
     }
 }

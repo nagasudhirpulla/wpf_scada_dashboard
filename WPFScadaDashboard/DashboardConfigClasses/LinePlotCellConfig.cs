@@ -31,6 +31,10 @@ namespace WPFScadaDashboard.DashboardConfigClasses
 
         public string Name_ { get; set; } = "Line Plot Cell";
 
+        public string BackgroundColorString_ { get; set; } = "#171717";
+
+        public string ForegroundColorString_ { get; set; } = "White";
+
         public double MinWidth_ { get; set; } = 0;
 
         public double MinHeight_ { get; set; } = 0;
@@ -110,6 +114,26 @@ namespace WPFScadaDashboard.DashboardConfigClasses
         // constructor
         public LinePlotCellConfig()
         {
+        }
+
+        // constructor
+        public LinePlotCellConfig(LinePlotCellConfig cellConfig)
+        {
+            Name_ = cellConfig.Name_;
+            BackgroundColorString_ = cellConfig.BackgroundColorString_;
+            ForegroundColorString_ = cellConfig.ForegroundColorString_;
+            MinWidth_ = cellConfig.MinWidth_;
+            MinHeight_ = cellConfig.MinHeight_;
+            Width_ = cellConfig.Height_;
+            Height_ = cellConfig.Height_;
+            WidthMode_ = cellConfig.WidthMode_;
+            HeightMode_ = cellConfig.HeightMode_;
+            HorizontalAlignment_ = cellConfig.HorizontalAlignment_;
+            VerticalAlignment_ = cellConfig.VerticalAlignment_;
+            CellWidth_ = cellConfig.CellWidth_;
+            CellHeight_ = cellConfig.CellHeight_;
+            CellPosition_ = new DashboardCellPosition(cellConfig.CellPosition_);
+            TimeSeriesPoints_ = new List<IDashboardTimeSeriesPoint>(cellConfig.TimeSeriesPoints_);
         }
 
         // Implementing Interface
